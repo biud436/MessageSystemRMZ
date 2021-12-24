@@ -1090,7 +1090,7 @@ RS.MessageSystem.getBrowser = function () {
 };
 
 Color.gmColor = function (str: string) {
-  var type = RS.MessageSystem.Params.langCode;
+  const type = <string>RS.MessageSystem.Params.langCode;
   if (type.match(/ko/)) {
     return RS.MessageSystem.getKoreanColor(str);
   }
