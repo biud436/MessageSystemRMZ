@@ -3,7 +3,94 @@
  */
 import { Types } from "../types/parameters";
 
-export const RS: any = {};
+type TextCodes =
+  | "COLOR"
+  | "TEXT_SPEED"
+  | "OUTLINE_COLOR"
+  | "OUTLINE_WIDTH"
+  | "INDENT"
+  | "BOLD"
+  | "ITALIC"
+  | "NAME"
+  | "GRADIENT"
+  | "PARTY_MEMBER"
+  | "PLAYER"
+  | "VAR"
+  | "ICON"
+  | "INCREASE"
+  | "DECREASE"
+  | "GOLD"
+  | "BALLOON"
+  | "ALIGN"
+  | "NUM"
+  | "TEXT_SIZE"
+  | "TAB"
+  | "CARRIAGE_RETURN"
+  | "PLAY_SE"
+  | "SHOW_PICTURE"
+  | "HIDE_PICTURE"
+  | "ITEM"
+  | "WEAPON"
+  | "ARMOR"
+  | "CLASSES"
+  | "ENEMY"
+  | "STATE"
+  | "SKILL"
+  | "FACE"
+  | "FRIENDLY_TROOPS"
+  | "ENEMY_TROOPS"
+  | "WAIT_SEC_15"
+  | "WAIT_SEC_60"
+  | "START_PAUSE"
+  | "LINE_SHOW_FAST_LT"
+  | "LINE_SHOW_FAST_GT"
+  | "PAUSE_SKIP"
+  | "BOLD_START"
+  | "BOLD_END"
+  | "ITALIC_START"
+  | "ITALIC_END"
+  | "ALIGN_LEFT"
+  | "ALIGN_CENTER"
+  | "ALIGN_RIGHT"
+  | "BOLD_START_CV"
+  | "BOLD_END_CV"
+  | "ITALIC_START_CV"
+  | "ITALIC_END_CV"
+  | "ALIGN_CLEAR"
+  | "HIGHLIGHT_TEXT_COLOR"
+  | "FACE_DIRECTION";
+
+interface TextCodeEnum {
+  ENUM: Record<TextCodes, number>;
+}
+
+interface RS {
+  MessageSystem: {
+    jsonParse: (str: string) => any;
+    popParameter: (...args: any[]) => any;
+    getTextCode: (idx: number) => string;
+    getEventComments: (
+      eventId: number,
+      index: number
+    ) => EventCommand.CommentMeta;
+    initSystem(): void;
+    getKoreanColor(str: string): string;
+    getChineseColor(str: string): string;
+    getEnglishColor(str: string): string;
+    getJapaneseColor(str: string): string;
+    getBrowser(str: string): {
+      name: string;
+      version: string;
+    };
+    Reg: Record<string, any>;
+    TextCodes: Record<string, any> & TextCodeEnum;
+    Params: Record<string, any> & {
+      fonts: Record<string, any>;
+    };
+  };
+}
+
+export const RS = <RS>{};
 
 const pluginParams = $plugins.filter((i) => {
   return i.description.contains("<RS_MessageSystem>");
@@ -53,8 +140,6 @@ RS.MessageSystem.Reg = {
   English: [],
   Japanese: [],
 };
-
-RS.MessageSystem.TextCodes = {};
 
 enum MessageParams {
   FACE_START_ORIGIN_X = 168,
@@ -268,7 +353,7 @@ RS.MessageSystem.Reg.defaultEscapeCode =
 RS.MessageSystem.TextCodes = (function () {
   const rowData = RS.MessageSystem.popParameter("Text Code", "텍스트 코드");
   const data = JSON.parse(rowData);
-  const retData = <Record<string, any>>{};
+  const retData = <Record<string, any> & TextCodeEnum>{};
 
   retData.Korean = [undefined].concat(JSON.parse(data.Korean));
   retData.Chinese = [undefined].concat(JSON.parse(data.Chinese));
