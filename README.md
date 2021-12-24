@@ -6,11 +6,22 @@ This plugin package includes helpful features to get you on your way to create y
 
 # How to build
 
+`yarn` is a new package manager. To build this plugin directly, You should install `yarn` or `npm` first after installing `Node.js`. I recommand a package manager called 'yarn' because it is more stable and easy to use.
+
+In case of using on `MacOS`, you can use a below command to install yarn.
+
+```sh
+brew install node
+brew install yarn
+```
+
 To build this plugin, you need to run the following command:
 
 ```
 yarn install
 yarn run build
+cd ./dist
+open .
 ```
 
 # Credit and Thanks
