@@ -3,7 +3,7 @@
  */
 import { Types } from "../types/parameters";
 
-type TextCodes =
+type TextCodeKey =
   | "COLOR"
   | "TEXT_SPEED"
   | "OUTLINE_COLOR"
@@ -61,8 +61,10 @@ type TextCodes =
   | "FACE_DIRECTION";
 
 interface TextCodeEnum {
-  ENUM: Record<TextCodes, number>;
+  ENUM: Record<TextCodeKey, number>;
 }
+
+type TextCode = Record<string, any> & TextCodeEnum;
 
 interface RS {
   MessageSystem: {
@@ -83,7 +85,7 @@ interface RS {
       version: string;
     };
     Reg: Record<string, any>;
-    TextCodes: Record<string, any> & TextCodeEnum;
+    TextCodes: TextCode;
     Params: Record<string, any> & {
       fonts: Record<string, any>;
     };
@@ -353,7 +355,7 @@ RS.MessageSystem.Reg.defaultEscapeCode =
 RS.MessageSystem.TextCodes = (function () {
   const rowData = RS.MessageSystem.popParameter("Text Code", "텍스트 코드");
   const data = JSON.parse(rowData);
-  const retData = <Record<string, any> & TextCodeEnum>{};
+  const retData = <TextCode>{};
 
   retData.Korean = [undefined].concat(JSON.parse(data.Korean));
   retData.Chinese = [undefined].concat(JSON.parse(data.Chinese));
