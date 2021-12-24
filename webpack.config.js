@@ -4,7 +4,7 @@ const webpack = require("webpack");
 
 const target = {
   mode: "production", // none' | 'development' | 'production'
-  entry: `./RS_MessageSystem.ts`,
+  entry: path.join(__dirname, "src", "index.ts"),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: `RS_MessageSystem.js`,
@@ -16,9 +16,12 @@ const target = {
         test: /\.ts$/,
         use: "ts-loader",
         exclude: /node_modules/,
-        include: [path.resolve(__dirname)],
+        include: [path.resolve(__dirname, "src")],
       },
     ],
+  },
+  resolve: {
+    extensions: [".ts", ".json"],
   },
   plugins: [
     {
