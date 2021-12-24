@@ -1,9 +1,6 @@
 /// <reference types="../types/lunalite-pixi-mz" />
-import { Types } from "../types/parameters";
 import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
-import { BaseComponent } from "./BaseComponent";
 import { DependencyInjector } from "./DependencyInjector";
-import { EventEmitter } from "./EventEmitter";
 import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
 import { Color, RS } from "./RS";
 
