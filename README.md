@@ -1,4 +1,4 @@
-:exclamation: :warning: <p style="color:red">**This is still under development**</p>
+:exclamation: **This is still under development**
 
 # Introduction
 
