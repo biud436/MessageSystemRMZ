@@ -3,7 +3,7 @@ const fs = require("fs");
 const webpack = require("webpack");
 
 const target = {
-  mode: "development", // none' | 'development' | 'production'
+  mode: "production", // none' | 'development' | 'production'
   entry: `./RS_MessageSystem.ts`,
   output: {
     path: path.resolve(__dirname, "dist"),
