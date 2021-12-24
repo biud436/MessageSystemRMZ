@@ -1,4 +1,4 @@
-/// <reference types="./lunalite-pixi-mz" />
+/// <reference types="./types/lunalite-pixi-mz" />
 
 import { Types } from "./types/parameters";
 
