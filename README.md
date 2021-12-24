@@ -1,5 +1,7 @@
 :exclamation: **This is still under development**
 
+![WebPackWorkflow](https://github.com/biud436/MessageSystemRMZ/actions/workflows/webpack.yml/badge.svg)
+
 # Introduction
 
 This plugin package includes helpful features to get you on your way to create your game in RPG Maker MZ.
