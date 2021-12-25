@@ -1234,6 +1234,7 @@ Window_Message.prototype.initialize = function (rect) {
     this.createFaceContents();
     this.on("removed", this.removeEventHandler, this);
     this.on("onLoadWindowskin", this.onLoadWindowskin, this);
+    DependencyInjector.inject(this);
 };
 
 Window_Message.prototype.removeEventHandler = function () {
