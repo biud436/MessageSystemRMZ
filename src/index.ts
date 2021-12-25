@@ -1074,14 +1074,22 @@ Window_Message.prototype.updatePlacement = function () {
                 (this._positionType * (Graphics.boxHeight - this.height)) / 2 +
                 RS.MessageSystem.Params.windowOffset.y;
         } else {
-            if (SceneManager._scene instanceof Scene_Map)
-                this.updateBalloonPosition();
+            if (SceneManager._scene instanceof Scene_Map) {
+                (<BalloonWindowTransformComponent>(
+                    DependencyInjector.getComponent(
+                        "BalloonWindowTransformComponent"
+                    )
+                )).updateBalloonPosition();
+                // this.updateBalloonPosition();
+            }
         }
 
         // 골드 윈도우의 위치 설정
-        const minGoldY = goldWindow.height;
-        this._goldWindow.y =
-            this.y > minGoldY ? 0 : Graphics.boxHeight - goldWindow.height;
+        if (goldWindow) {
+            const minGoldY = goldWindow.height;
+            this._goldWindow.y =
+                this.y > minGoldY ? 0 : Graphics.boxHeight - goldWindow.height;
+        }
 
         // 투명도 업데이트
         this.updateDefaultOpacity();
@@ -1234,7 +1242,11 @@ Window_Message.prototype.initialize = function (rect) {
     this.createFaceContents();
     this.on("removed", this.removeEventHandler, this);
     this.on("onLoadWindowskin", this.onLoadWindowskin, this);
+    DependencyInjector.COMPONENTS = [];
+    DependencyInjector.COMPONENTS.push(BalloonWindowTransformComponent);
+    DependencyInjector.COMPONENTS.push(NameWindowPositionComponent);
     DependencyInjector.inject(this);
+    DependencyInjector.ready();
 };
 
 Window_Message.prototype.removeEventHandler = function () {
@@ -1473,13 +1485,6 @@ Window_Message.prototype.shouldBreakHere = function (text) {
 };
 
 //============================================================================
-// Components
-//============================================================================
-
-DependencyInjector.COMPONENTS.push(BalloonWindowTransformComponent);
-DependencyInjector.COMPONENTS.push(NameWindowPositionComponent);
-
-//============================================================================
 // Game_Interpreter
 //============================================================================
 
@@ -1542,35 +1547,35 @@ Game_Interpreter.prototype.processMessageParams = function (
     }
 };
 
-// Game_Interpreter.prototype.isValidMultiLine = function () {
-//     const codes = [];
-//     let prevCode = 401;
-//     let lineCount = 0;
-//     for (var i = 1; i < 8; i++) {
-//         const currentCommand = this._list[this._index + i];
-//         if (currentCommand) {
-//             const code = currentCommand.code;
-//             codes.push(code);
-//             prevCode = code;
-//             if ([101, 401].contains(code)) {
-//                 lineCount++;
-//             }
-//         }
-//     }
-//     if (codes.contains(102)) {
-//         return false;
-//     } else if (codes.contains(103)) {
-//         return false;
-//     } else if ($gameMessage.getMaxLine() <= 4) {
-//         return false;
-//     } else if (lineCount <= 4) {
-//         return false;
-//     } else if (RS.MessageSystem.Params.choiceWindowStyle == "RMXP") {
-//         return false;
-//     } else {
-//         return true;
-//     }
-// };
+Game_Interpreter.prototype.isValidMultiLine = function () {
+    const codes = [];
+    let prevCode = 401;
+    let lineCount = 0;
+    for (let i = 1; i < 8; i++) {
+        const currentCommand = this._list[this._index + i];
+        if (currentCommand) {
+            const code = currentCommand.code;
+            codes.push(code);
+            prevCode = code;
+            if ([101, 401].contains(code)) {
+                lineCount++;
+            }
+        }
+    }
+    if (codes.contains(102)) {
+        return false;
+    } else if (codes.contains(103)) {
+        return false;
+    } else if ($gameMessage.getMaxLine() <= 4) {
+        return false;
+    } else if (lineCount <= 4) {
+        return false;
+    } else if (RS.MessageSystem.Params.choiceWindowStyle == "RMXP") {
+        return false;
+    } else {
+        return true;
+    }
+};
 
 // Game_Interpreter.prototype.command101 = function () {
 //     if (!$gameMessage.isBusy()) {
@@ -1611,44 +1616,44 @@ Game_Interpreter.prototype.processMessageParams = function (
 //     return false;
 // };
 
-// Game_Interpreter.prototype.multiLineAddMessage = function () {
-//     this.initLineHeight();
+Game_Interpreter.prototype.multiLineAddMessage = function () {
+    this.initLineHeight();
 
-//     while ($gameMessage._texts.length < $gameMessage.getMaxLine()) {
-//         while (this.nextEventCode() === 401) {
-//             this._index++;
-//             $gameMessage.add(this.currentCommand().parameters[0]);
-//             this.addLineHeight();
-//             if (this._lineHeight >= $gameMessage.getMaxLine()) {
-//                 break;
-//             }
-//         }
-//         if (this.nextEventCode() !== 101) {
-//             break;
-//         }
-//     }
+    while ($gameMessage._texts.length < $gameMessage.getMaxLine()) {
+        while (this.nextEventCode() === 401) {
+            this._index++;
+            $gameMessage.add(this.currentCommand().parameters[0]);
+            this.addLineHeight();
+            if (this._lineHeight >= $gameMessage.getMaxLine()) {
+                break;
+            }
+        }
+        if (this.nextEventCode() !== 101) {
+            break;
+        }
+    }
 
-//     // 커맨드 코드 401번이 아직 남아있는 상황이라면,
-//     // 다음 인덱스로 넘겨야 선택지가 제대로 동작한다.
-//     while (this.nextEventCode() === 401) {
-//         this._index++;
-//     }
-// };
+    // 커맨드 코드 401번이 아직 남아있는 상황이라면,
+    // 다음 인덱스로 넘겨야 선택지가 제대로 동작한다.
+    while (this.nextEventCode() === 401) {
+        this._index++;
+    }
+};
 
-// Game_Interpreter.prototype.initLineHeight = function () {
-//     this._lineHeight = 0;
-// };
+Game_Interpreter.prototype.initLineHeight = function () {
+    this._lineHeight = 0;
+};
 
-// Game_Interpreter.prototype.isMultiLine = function () {
-//     return this.isValidMultiLine();
-// };
+Game_Interpreter.prototype.isMultiLine = function () {
+    return this.isValidMultiLine();
+};
 
-// Game_Interpreter.prototype.addLineHeight = function () {
-//     this._lineHeight++;
-//     if (this.nextEventCode() === 101) {
-//         this._index++;
-//     }
-// };
+Game_Interpreter.prototype.addLineHeight = function () {
+    this._lineHeight++;
+    if (this.nextEventCode() === 101) {
+        this._index++;
+    }
+};
 
 //============================================================================
 // Window_NameBox

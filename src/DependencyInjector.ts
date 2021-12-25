@@ -1,5 +1,9 @@
 import { BaseComponent } from "./BaseComponent";
 
+type BaseComponentName =
+    | "NameWindowPositionComponent"
+    | "BalloonWindowTransformComponent";
+
 /**
  * @static
  * @class DependencyInjector
@@ -9,41 +13,50 @@ import { BaseComponent } from "./BaseComponent";
  * 샌드박스 환경이라함은 MZ에서도 오류 없이 안전하게 동작한다는 것을 의미합니다.
  */
 export class DependencyInjector {
-  public static COMPONENTS: typeof BaseComponent[] = [];
+    public static COMPONENTS: typeof BaseComponent[] = [];
 
-  public static components: { [key: string]: BaseComponent } = {};
-  private static _isDirty: Boolean = false;
+    private static _components: { [key: string]: BaseComponent } = {};
+    private static _isDirty: Boolean = false;
 
-  /**
-   * inject all components inside the sandbox environment.
-   *
-   * @param messageWindow Specify the message window.
-   * @returns void
-   */
-  public static inject(messageWindow: Window_Message): void {
-    if (this._isDirty) {
-      console.log("components are already injected");
-      return;
+    /**
+     * inject all components inside the sandbox environment.
+     *
+     * @param messageWindow Specify the message window.
+     * @returns void
+     */
+    public static inject(messageWindow: Window_Message): void {
+        if (this._isDirty) {
+            console.log("components are already injected");
+            return;
+        }
+
+        if (DependencyInjector.COMPONENTS) {
+            DependencyInjector.COMPONENTS.forEach((component) => {
+                console.log(component.name);
+                DependencyInjector._components[component.name] = new component({
+                    messageWindow,
+                });
+            });
+        }
+
+        this._isDirty = true;
     }
 
-    if (DependencyInjector.COMPONENTS) {
-      DependencyInjector.COMPONENTS.forEach((component) => {
-        this.components[component.name] = new component({
-          messageWindow,
-        });
-      });
+    /**
+     * get the component by name.
+     *
+     * @param name Specify the component name
+     * @returns BaseComponent
+     */
+    public static getComponent<T extends BaseComponent>(
+        name: BaseComponentName
+    ): T {
+        return <T>DependencyInjector._components[name];
     }
 
-    this._isDirty = true;
-  }
-
-  /**
-   * get the component by name.
-   *
-   * @param name Specify the component name
-   * @returns BaseComponent
-   */
-  public static getComponent<T extends BaseComponent>(name: string): T {
-    return <T>this.components[name];
-  }
+    public static ready() {
+        for (let name in this._components) {
+            this._components[name].emit("ready");
+        }
+    }
 }
