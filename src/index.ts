@@ -7,6 +7,7 @@ import { RS, Color } from "./RS";
 import { DependencyInjector } from "./DependencyInjector";
 import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
 import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
+import { ComponentExecutor } from "./ComponentExecutor";
 
 //============================================================================
 // Bitmap
@@ -1723,5 +1724,13 @@ Game_Map.prototype.getMsgEvent = function () {
 Game_Map.prototype.setMsgEvent = function (ev) {
     this._msgEvent = ev;
 };
+
+const executor = ComponentExecutor.getInstance();
+
+executor
+    .add("main", () => {
+        console.log("run");
+    })
+    .executeAll();
 
 RS.MessageSystem.initSystem();

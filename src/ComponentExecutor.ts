@@ -7,7 +7,7 @@ interface DataLinkSet {
  * @class ComponentExecutor
  * @author biud436
  */
-class ComponentExecutor {
+export class ComponentExecutor {
     public static INSTANCE: ComponentExecutor = new ComponentExecutor();
     private _components: Record<string, DataLinkSet> = {};
 
@@ -35,6 +35,10 @@ class ComponentExecutor {
         };
 
         return this;
+    }
+
+    public wrap(name: string, func: Function): ComponentExecutor {
+        return this.add(name, func);
     }
 
     public get(name: string): Function {
@@ -73,5 +77,3 @@ class ComponentExecutor {
         }
     }
 }
-
-export = ComponentExecutor;
