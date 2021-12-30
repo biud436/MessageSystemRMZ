@@ -1246,7 +1246,12 @@ Window_Message.prototype.initialize = function (rect) {
     DependencyInjector.COMPONENTS.push(BalloonWindowTransformComponent);
     DependencyInjector.COMPONENTS.push(NameWindowPositionComponent);
     DependencyInjector.inject(this);
+};
+
+const alias_Window_Message_startMessage = Window_Message.prototype.startMessage;
+Window_Message.prototype.startMessage = function () {
     DependencyInjector.ready();
+    alias_Window_Message_startMessage.call(this);
 };
 
 Window_Message.prototype.removeEventHandler = function () {
