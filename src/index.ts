@@ -1725,12 +1725,13 @@ Game_Map.prototype.setMsgEvent = function (ev) {
     this._msgEvent = ev;
 };
 
+RS.MessageSystem.initSystem();
+
 const executor = ComponentExecutor.getInstance();
 
 executor
     .add("main", () => {
         console.log("run");
     })
+    .active("main")
     .executeAll();
-
-RS.MessageSystem.initSystem();
