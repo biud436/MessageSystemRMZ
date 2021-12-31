@@ -9,7 +9,7 @@ import { ComponentExecutor } from "./ComponentExecutor";
 const executor = ComponentExecutor.getInstance();
 
 executor
-    .add("main", () => {
+    .add("bitmap", () => {
         //============================================================================
         // Bitmap
         //============================================================================
@@ -125,7 +125,8 @@ executor
             context.fillStyle = this.textColor;
             context.restore();
         };
-
+    })
+    .add("main", () => {
         //============================================================================
         // Game_Message
         //============================================================================
@@ -1798,5 +1799,6 @@ executor
 
         RS.MessageSystem.initSystem();
     })
+    .ready("bitmap")
     .ready("main")
     .executeAll();
