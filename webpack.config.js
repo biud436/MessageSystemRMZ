@@ -14,7 +14,7 @@ const target = {
         rules: [
             {
                 test: /\.ts$/,
-                use: "ts-loader",
+                use: "awesome-typescript-loader",
                 exclude: /node_modules/,
                 include: [path.resolve(__dirname, "src")],
             },
