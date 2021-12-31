@@ -14,7 +14,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - uses: fregante/setup-git-user@v1
 
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v1
@@ -27,6 +26,7 @@ jobs:
                   yarn run build
 
             - name: Update files and push git
+              uses: fregante/setup-git-user@v1
               run: |
                   git add .
                   git commit -m "Build (Auto-generated commit)"
