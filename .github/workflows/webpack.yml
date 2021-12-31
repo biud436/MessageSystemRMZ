@@ -27,6 +27,8 @@ jobs:
 
             - name: Update files and push git
               run: |
+                  git config --global user.name "{{ github.actor }}"
+                  git config --global user.email "{{ github.actor }}@gmail.com"
                   git add .
                   git commit -m "Build (Auto-generated commit)"
                   git push origin main
