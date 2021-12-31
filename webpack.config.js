@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
+const { CheckerPlugin } = require("awesome-typescript-loader");
 
 const target = {
     mode: "production", // none' | 'development' | 'production'
@@ -24,6 +25,7 @@ const target = {
         extensions: [".ts", ".json"],
     },
     plugins: [
+        new CheckerPlugin(),
         new webpack.DefinePlugin({
             RS: "RS",
         }),
