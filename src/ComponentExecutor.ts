@@ -63,6 +63,10 @@ export class ComponentExecutor {
         return this;
     }
 
+    public ready(name: string): ComponentExecutor {
+        return this.active(name);
+    }
+
     public executeAll() {
         for (const key in this._components) {
             const prop = this._components[key];
