@@ -1,28 +1,32 @@
 name: NodeJS with Webpack
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-    
-    steps:
-    - uses: actions/checkout@v2
+        strategy:
+            matrix:
+                node-version: [16.x]
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+        steps:
+            - uses: actions/checkout@v2
 
-    - name: Build
-      run: |
-        yarn install
-        yarn run build
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Build
+              run: |
+                  yarn install
+                  yarn run build
+
+            - name: Update files and push git
+              run: |
+                  git add .
+                  git commit -m "Build (Auto-generated commit)"
+                  git push origin main
