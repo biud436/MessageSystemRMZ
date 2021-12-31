@@ -26,8 +26,9 @@ jobs:
                   yarn run build
 
             - name: Update files and push git
-              uses: fregante/setup-git-user@v1
               run: |
+                  git config --global user.email "biud436@gmail.com"
+                  git config --global user.name "biud436"
                   git add .
                   git commit -m "Build (Auto-generated commit)"
                   git push
