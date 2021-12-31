@@ -29,6 +29,8 @@ jobs:
               run: |
                   git config --global user.email "biud436@gmail.com"
                   git config --global user.name "biud436"
+                  git pull origin main
+                  git branch --set-upstream-to=origin/main main
                   git add .
                   git commit -m "Build (Auto-generated commit)"
                   git push
