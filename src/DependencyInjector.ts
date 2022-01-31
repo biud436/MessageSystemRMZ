@@ -12,6 +12,9 @@ interface Class<T> {
     new (...args: any[]): T;
 }
 
+/**
+ * 13만원 짜리 강의를 듣고 영감을 받아 만든 타입.
+ */
 type InjectFunctionWithInfer = <
     R = InstanceType<new (rect: Rectangle) => Window_Message>
 >(
@@ -19,6 +22,7 @@ type InjectFunctionWithInfer = <
 ) => InstanceType<new (messageWindow: R) => Component>;
 
 /**
+ * 13만원 짜리 강의를 듣고 만든 타입. 그만한 가치가 있나.
  * @function getComponentValue
  * @param item
  * @param key
