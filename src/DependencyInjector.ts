@@ -14,7 +14,6 @@ interface Class<T> {
 
 type InjectFunction = (messageWindow: Window_Message) => void;
 type InjectFunctionWithInfer = <
-    T extends Component,
     R = InstanceType<new (rect: Rectangle) => Window_Message>
 >(
     messageWindow: R
