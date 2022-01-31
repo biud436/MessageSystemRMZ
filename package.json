@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^17.0.4",
+    "@types/nw.gui": "^0.0.21",
     "reflect-metadata": "^0.1.13",
     "source-map-loader": "^3.0.0",
     "source-map-support": "^0.5.21",

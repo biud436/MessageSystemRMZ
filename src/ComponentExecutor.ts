@@ -1,3 +1,5 @@
+import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
+
 interface DataLinkSet {
     callbackFunction: Function;
     active: boolean;
@@ -10,13 +12,18 @@ interface DataLinkSet {
  * ComponentExecutor는 컴포넌트를 샌드박스 환경에서 안전하게 실행합니다.
  * 샌드박스 환경이라는 것은 주요 메서드가 외부와 차단되어, 예외 처리를 통하여 각종 오류를 캐치할 수 있게 합니다.
  */
-export class ComponentExecutor {
-    public static INSTANCE: ComponentExecutor = new ComponentExecutor();
+class ComponentExecutor {
+    public static INSTANCE?: ComponentExecutor;
     private _components: Record<string, DataLinkSet> = {};
 
     public static getInstance(): ComponentExecutor {
+        if (!ComponentExecutor.INSTANCE) {
+            ComponentExecutor.INSTANCE = new ComponentExecutor();
+        }
         return ComponentExecutor.INSTANCE;
     }
+
+    public constructor() {}
 
     public add(name: string, func: Function): ComponentExecutor {
         if (name === "") {
@@ -88,3 +95,5 @@ export class ComponentExecutor {
         }
     }
 }
+
+export = ComponentExecutor;

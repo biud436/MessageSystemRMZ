@@ -4,7 +4,7 @@ import { RS, Color } from "./RS";
 import { DependencyInjector } from "./DependencyInjector";
 import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
 import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
-import { ComponentExecutor } from "./ComponentExecutor";
+import ComponentExecutor from "./ComponentExecutor";
 
 const executor = ComponentExecutor.getInstance();
 
@@ -1313,16 +1313,25 @@ executor
         const alias_Window_Message_initialize =
             Window_Message.prototype.initialize;
         Window_Message.prototype.initialize = function (rect) {
+            DependencyInjector.COMPONENTS = [];
+            DependencyInjector.COMPONENTS.push((messageWindow) => {
+                const name = BalloonWindowTransformComponent.name;
+                DependencyInjector._components[name] =
+                    new BalloonWindowTransformComponent(messageWindow);
+            });
+            DependencyInjector.COMPONENTS.push((messageWindow) => {
+                const name = NameWindowPositionComponent.name;
+                DependencyInjector._components[name] =
+                    new NameWindowPositionComponent(messageWindow);
+            });
+            DependencyInjector.inject(this);
+
             alias_Window_Message_initialize.call(this, rect);
             $gameTemp.setMSHeightFunc(this.setHeight.bind(this));
             this.setHeight(RS.MessageSystem.Params.numVisibleRows);
             this.createFaceContents();
             this.on("removed", this.removeEventHandler, this);
             this.on("onLoadWindowskin", this.onLoadWindowskin, this);
-            DependencyInjector.COMPONENTS = [];
-            DependencyInjector.COMPONENTS.push(BalloonWindowTransformComponent);
-            DependencyInjector.COMPONENTS.push(NameWindowPositionComponent);
-            DependencyInjector.inject(this);
         };
 
         const alias_Window_Message_startMessage =
@@ -1810,6 +1819,11 @@ executor
         };
 
         RS.MessageSystem.initSystem();
+
+        // ! [DEBUG]
+        nw.Window.get().showDevTools();
+        const win = nw.Window.get();
+        win.moveTo(window.outerWidth / 3, 153);
     })
     .ready("bitmap")
     .ready("main")

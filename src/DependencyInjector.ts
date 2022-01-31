@@ -1,9 +1,17 @@
+import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
 import { BaseComponent } from "./BaseComponent";
+import { Component } from "./Component";
+import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
 
 type BaseComponentName =
     | "NameWindowPositionComponent"
     | "BalloonWindowTransformComponent";
 
+interface Class<T> {
+    new (...args: any[]): T;
+}
+
+type InjectFunction = (messageWindow: Window_Message) => void;
 /**
  * @static
  * @class DependencyInjector
@@ -13,9 +21,9 @@ type BaseComponentName =
  * 샌드박스 환경이라함은 MZ에서도 오류 없이 안전하게 동작한다는 것을 의미합니다.
  */
 export class DependencyInjector {
-    public static COMPONENTS: typeof BaseComponent[] = [];
+    public static COMPONENTS: InjectFunction[] = [];
 
-    private static _components: { [key: string]: BaseComponent } = {};
+    public static _components: { [key: string]: BaseComponent } = {};
     private static _isDirty: Boolean = false;
 
     /**
@@ -31,12 +39,11 @@ export class DependencyInjector {
         }
 
         if (DependencyInjector.COMPONENTS) {
-            DependencyInjector.COMPONENTS.forEach((component) => {
-                console.log(component.name);
-                DependencyInjector._components[component.name] = new component({
-                    messageWindow,
-                });
-            });
+            DependencyInjector.COMPONENTS.forEach(
+                (createFunction: InjectFunction) => {
+                    createFunction(messageWindow);
+                }
+            );
         }
 
         this._isDirty = true;

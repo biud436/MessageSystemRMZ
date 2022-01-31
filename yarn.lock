@@ -39,6 +39,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.4.tgz#fec0ce0526abb6062fd206d72a642811b887a111"
   integrity sha512-6xwbrW4JJiJLgF+zNypN5wr2ykM9/jHcL7rQ8fZe2vuftggjzZeRSM4OwRc6Xk8qWjwJ99qVHo/JgOGmomWRog==
 
+"@types/nw.gui@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@types/nw.gui/-/nw.gui-0.0.21.tgz#48757b2f2a8f490b3d1ab6fddf4b1e136fb9be67"
+  integrity sha512-rxHmxwiPe8PWzUrW4btdESqJ3WRCoS9abx6yiis++i1sILJvoGAjJ4Eizepuly3kWzq5AP7MuERjw+9xahxGKw==
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
