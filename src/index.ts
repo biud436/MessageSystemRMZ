@@ -1781,7 +1781,7 @@ executor
         // Game_Map
         //============================================================================
 
-        var alias_Game_Map_initialize = Game_Map.prototype.initialize;
+        const alias_Game_Map_initialize = Game_Map.prototype.initialize;
         Game_Map.prototype.initialize = function () {
             alias_Game_Map_initialize.call(this);
             this._msgOwner = $gamePlayer;
