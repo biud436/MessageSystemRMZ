@@ -43,7 +43,7 @@ function getComponentValue<T, K extends keyof T>(item: T, key: K): T[K] {
 export class DependencyInjector {
     public static COMPONENTS: Array<InjectFunctionWithInfer> = [];
 
-    public static _components: { [key: string]: BaseComponent } = {};
+    public static _components: { [key: string]: Component } = {};
     private static _isDirty: Boolean = false;
 
     /**
@@ -75,10 +75,11 @@ export class DependencyInjector {
      * @param name Specify the component name
      * @returns BaseComponent
      */
-    public static getComponent<T extends BaseComponent>(
-        name: BaseComponentName
-    ): T {
-        return <T>DependencyInjector._components[name];
+    public static getComponent<
+        F extends Component,
+        R extends BaseComponentName
+    >(name: BaseComponentName): F | R | Component {
+        return DependencyInjector._components[name];
     }
 
     public static ready() {
