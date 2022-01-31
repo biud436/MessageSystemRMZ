@@ -9,12 +9,12 @@ import { ComponentExecutor } from "./ComponentExecutor";
 const executor = ComponentExecutor.getInstance();
 
 executor
+    /**
+     * ? Bitmap
+     * @description 텍스트에 그라데이션을 채우는 기능을 추가합니다.
+     */
     .add("bitmap", () => {
-        //============================================================================
-        // Bitmap
-        //============================================================================
-
-        var alias_Bitmap_initialize = Bitmap.prototype.initialize;
+        const alias_Bitmap_initialize = Bitmap.prototype.initialize;
         Bitmap.prototype.initialize = function (width: number, height: number) {
             alias_Bitmap_initialize.call(this, width, height);
             this.fontBold = false;
@@ -30,10 +30,15 @@ executor
             tx,
             ty
         ) {
-            var context = this._context;
-            var tWidth = this.measureTextWidth(text);
+            const context = this._context;
+            const tWidth = this.measureTextWidth(text);
             context.save();
-            var gradient = context.createLinearGradient(tx, 0, tx + tWidth, 0);
+            const gradient = context.createLinearGradient(
+                tx,
+                0,
+                tx + tWidth,
+                0
+            );
             gradient.addColorStop(0, color1);
             gradient.addColorStop(0.6, color2);
             gradient.addColorStop(1, color3);
@@ -52,14 +57,14 @@ executor
             tx,
             ty
         ) {
-            var context = this._context;
-            var width = this.measureTextWidth(text);
-            var height = RS.MessageSystem.Params.lineHeight;
-            var grd;
+            const context = this._context;
+            const width = this.measureTextWidth(text);
+            const height = RS.MessageSystem.Params.lineHeight;
+            let grd;
 
             context.save();
 
-            var style = RS.MessageSystem.Params.gradientStyle;
+            const style = RS.MessageSystem.Params.gradientStyle;
 
             if (style !== "radial") {
                 if (style.contains("horizontal")) {
@@ -68,8 +73,8 @@ executor
                     grd = context.createLinearGradient(tx, 0, 0, ty + height);
                 }
             } else {
-                var ws = width * 0.5;
-                var hs = height * 0.5;
+                const ws = width * 0.5;
+                const hs = height * 0.5;
                 grd = context.createRadialGradient(ws, hs, 0.0, ws, hs, ws);
             }
 
@@ -126,12 +131,16 @@ executor
             context.restore();
         };
     })
+    /**
+     * ? Main
+     * @description
+     * 메인 엔트리 포인트입니다.
+     */
     .add("main", () => {
         //============================================================================
         // Game_Message
         //============================================================================
-
-        var alias_Game_Message_clear = Game_Message.prototype.clear;
+        const alias_Game_Message_clear = Game_Message.prototype.clear;
         Game_Message.prototype.clear = function () {
             alias_Game_Message_clear.call(this);
             this._waitTime = 0;
@@ -294,8 +303,8 @@ executor
         //============================================================================
 
         Window_Base.prototype.obtainEscapeCode = function (textState) {
-            var regExp = RS.MessageSystem.Reg.defaultEscapeCode;
-            var arr = regExp.exec(textState.text.slice(textState.index));
+            const regExp = RS.MessageSystem.Reg.defaultEscapeCode;
+            const arr = regExp.exec(textState.text.slice(textState.index));
             if (arr) {
                 textState.index += arr[0].length;
                 return arr[0].toUpperCase();
@@ -310,7 +319,9 @@ executor
          * @param {}} textState
          */
         Window_Base.prototype.obtainNameColor = function (textState) {
-            var arr = /\[(.+?)\]/gi.exec(textState.text.slice(textState.index));
+            const arr = /\[(.+?)\]/gi.exec(
+                textState.text.slice(textState.index)
+            );
             if (arr) {
                 textState.index += arr[0].length;
                 return Color.gmColor(arr[1]);
@@ -320,7 +331,7 @@ executor
         };
 
         Window_Base.prototype.changeTextColor = function (color) {
-            var c = parseInt(color);
+            const c = parseInt(color);
             // 색상 코드가 숫자인 경우
             if (c > 0 && c < 32) {
                 color = ColorManager.textColor(color);
@@ -330,14 +341,14 @@ executor
             }
         };
 
-        var alias_Window_Base_processEscapeCharacter =
+        const alias_Window_Base_processEscapeCharacter =
             Window_Base.prototype.processEscapeCharacter;
         Window_Base.prototype.processEscapeCharacter = function (
             code,
             textState
         ) {
-            var tcGroup = RS.MessageSystem.TextCodes.ENUM;
-            var textCode = RS.MessageSystem.TextCodes.Main;
+            const tcGroup = RS.MessageSystem.TextCodes.ENUM;
+            const textCode = RS.MessageSystem.TextCodes.Main;
             switch (code) {
                 case "C":
                     this.changeTextColor(
@@ -379,7 +390,7 @@ executor
             }
         };
 
-        var alias_loadWindowskin = Window_Base.prototype.loadWindowskin;
+        const alias_loadWindowskin = Window_Base.prototype.loadWindowskin;
         Window_Base.prototype.loadWindowskin = function () {
             alias_loadWindowskin.call(this);
             this.windowskin.addLoadListener(() => {
@@ -388,10 +399,10 @@ executor
         };
 
         Window_Base.prototype.getFontFace = function () {
-            var langCode =
+            const langCode =
                 RS.MessageSystem.Params.langCode ||
                 navigator.language.slice(0, 2);
-            var fonts = RS.MessageSystem.Params.fonts[langCode];
+            const fonts = RS.MessageSystem.Params.fonts[langCode];
             if (fonts) {
                 return fonts;
             } else {
@@ -453,7 +464,7 @@ executor
             this._messageDesc = undefined;
         };
 
-        var alias_Window_Base_convertEscapeCharacters =
+        const alias_Window_Base_convertEscapeCharacters =
             Window_Base.prototype.convertEscapeCharacters;
         Window_Base.prototype.convertEscapeCharacters = function (text) {
             const regGroup = RS.MessageSystem.Reg.Group;
@@ -601,7 +612,7 @@ executor
             }
         };
 
-        var alias_Window_Base_processNewLine_align =
+        const alias_Window_Base_processNewLine_align =
             Window_Base.prototype.processNewLine;
         Window_Base.prototype.processNewLine = function (textState) {
             alias_Window_Base_processNewLine_align.call(this, textState);
@@ -614,7 +625,7 @@ executor
         };
 
         Window_Base.prototype.setAlignCenter = function (textState) {
-            var padding = this.textPadding();
+            const padding = this.textPadding();
             textState.x =
                 (this.newLineX(textState) + this.contentsWidth() + padding) /
                     2 -
@@ -623,7 +634,7 @@ executor
         };
 
         Window_Base.prototype.setAlignRight = function (textState) {
-            var padding = this.textPadding();
+            const padding = this.textPadding();
             textState.x =
                 this.contentsWidth() - padding - textState.outputWidth;
             textState.startX = textState.x;
@@ -634,7 +645,7 @@ executor
         //============================================================================
 
         Window_Message.prototype.obtainTextSpeed = function (textState) {
-            var arr = /\[(\d+)\]/.exec(textState.text.slice(textState.index));
+            const arr = /\[(\d+)\]/.exec(textState.text.slice(textState.index));
             if (arr) {
                 textState.index += arr[0].length;
                 return parseInt(arr[1]);
@@ -644,7 +655,7 @@ executor
         };
 
         Window_Message.prototype.obtainGradientText = function (textState) {
-            var arr = /^<(.+?)>/.exec(textState.text.slice(textState.index));
+            const arr = /^<(.+?)>/.exec(textState.text.slice(textState.index));
             if (arr) {
                 textState.index += arr[0].length;
                 return String(arr[1]);
@@ -654,7 +665,7 @@ executor
         };
 
         Window_Message.prototype.obtainSoundName = function (textState) {
-            var arr = /\<(.+?)\>/.exec(textState.text.slice(textState.index));
+            const arr = /\<(.+?)\>/.exec(textState.text.slice(textState.index));
             if (arr) {
                 textState.index += arr[0].length;
                 return String(arr[1]);
@@ -663,14 +674,14 @@ executor
             }
         };
 
-        var alias_Window_Message_processEscapeCharacter =
+        const alias_Window_Message_processEscapeCharacter =
             Window_Message.prototype.processEscapeCharacter;
         Window_Message.prototype.processEscapeCharacter = function (
             code,
             textState: TextState | string
         ) {
-            var tcGroup = RS.MessageSystem.TextCodes.ENUM;
-            var textCode = RS.MessageSystem.TextCodes.Main;
+            const tcGroup = RS.MessageSystem.TextCodes.ENUM;
+            const textCode = RS.MessageSystem.TextCodes.Main;
             switch (code) {
                 case textCode[tcGroup.TEXT_SPEED]:
                     $gameMessage.setWaitTime(
@@ -808,8 +819,8 @@ executor
         };
 
         Window_Message.prototype.playSe = function (seName) {
-            var realName = seName.trim();
-            var data = <rm.types.AudioParameters>{
+            const realName = seName.trim();
+            const data = <rm.types.AudioParameters>{
                 name: realName,
                 pan: 0,
                 pitch: 100,
@@ -838,7 +849,7 @@ executor
 
             // 모든 요소 검증
             if (params) {
-                params.forEach(function (e, i, a) {
+                params.forEach((e, i, a) => {
                     if (e === undefined || e === null) {
                         ret = false;
                     }
@@ -1170,6 +1181,7 @@ executor
                     }
                 }
             } catch (e) {
+                console.log("!------ updatePlacement error ------!");
                 console.error(e);
             }
         };
@@ -1259,7 +1271,7 @@ executor
             text = text.replace(
                 regGroup[tcGroup.FRIENDLY_TROOPS],
                 function () {
-                    var value = Number(arguments[1] || 0);
+                    const value = Number(arguments[1] || 0);
                     $gameMessage.setBalloon(
                         // @ts-ignore
                         "ACTORS : " + value
@@ -1270,7 +1282,7 @@ executor
             text = text.replace(
                 regGroup[tcGroup.ENEMY_TROOPS],
                 function () {
-                    var value = Number(arguments[1] || 0);
+                    const value = Number(arguments[1] || 0);
                     $gameMessage.setBalloon(
                         // @ts-ignore
                         "ENEMIES : " + value
@@ -1279,7 +1291,7 @@ executor
                 }.bind(this)
             );
             text = text.replace(regGroup[tcGroup.FACE_DIRECTION], () => {
-                var value = Number(arguments[1] || 0);
+                const value = Number(arguments[1] || 0);
                 if (!this._isUsedTextWidthEx) {
                     RS.MessageSystem.Params.faceDirection = value;
                 }
@@ -1370,7 +1382,7 @@ executor
             }
         };
 
-        var _Window_Message_updateLoading =
+        const _Window_Message_updateLoading =
             Window_Message.prototype.updateLoading;
         Window_Message.prototype.updateLoading = function () {
             let ret = true;
@@ -1428,7 +1440,7 @@ executor
          * @param {String} faceName
          */
         Window_Message.prototype.isValidBigFace = function (faceName) {
-            var reg = /^Big_/i;
+            const reg = /^Big_/i;
             return reg.exec(faceName);
         };
 
