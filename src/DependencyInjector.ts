@@ -12,7 +12,6 @@ interface Class<T> {
     new (...args: any[]): T;
 }
 
-type InjectFunction = (messageWindow: Window_Message) => void;
 type InjectFunctionWithInfer = <
     R = InstanceType<new (rect: Rectangle) => Window_Message>
 >(
