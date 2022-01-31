@@ -28,6 +28,8 @@ cd ./dist
 open .
 ```
 
+https://user-images.githubusercontent.com/13586185/151744058-28915439-666c-4126-8125-506de6566782.mov
+
 # Credit and Thanks
 
 Biud436.
