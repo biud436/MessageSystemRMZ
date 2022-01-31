@@ -73,13 +73,13 @@ export class DependencyInjector {
      * get the component by name.
      *
      * @param name Specify the component name
-     * @returns BaseComponent
+     * @returns Component
      */
     public static getComponent<
         F extends Component,
         R extends BaseComponentName
-    >(name: R): F | Component {
-        return DependencyInjector._components[name];
+    >(name: R) {
+        return getComponentValue(DependencyInjector._components, name);
     }
 
     public static ready() {
