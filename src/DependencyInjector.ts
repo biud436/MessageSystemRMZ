@@ -78,7 +78,7 @@ export class DependencyInjector {
     public static getComponent<
         F extends Component,
         R extends BaseComponentName
-    >(name: BaseComponentName): F | R | Component {
+    >(name: R): F | Component {
         return DependencyInjector._components[name];
     }
 
