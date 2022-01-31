@@ -1,3 +1,4 @@
+import { Rectangle } from "pixi.js";
 import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Component } from "./Component";
@@ -12,6 +13,23 @@ interface Class<T> {
 }
 
 type InjectFunction = (messageWindow: Window_Message) => void;
+type InjectFunctionWithInfer = <
+    T extends Component,
+    R = InstanceType<new (rect: Rectangle) => Window_Message>
+>(
+    messageWindow: R
+) => InstanceType<new (messageWindow: R) => Component>;
+
+/**
+ * @function getComponentValue
+ * @param item
+ * @param key
+ * @returns
+ */
+function getComponentValue<T, K extends keyof T>(item: T, key: K): T[K] {
+    return item[key];
+}
+
 /**
  * @static
  * @class DependencyInjector
@@ -21,7 +39,7 @@ type InjectFunction = (messageWindow: Window_Message) => void;
  * 샌드박스 환경이라함은 MZ에서도 오류 없이 안전하게 동작한다는 것을 의미합니다.
  */
 export class DependencyInjector {
-    public static COMPONENTS: InjectFunction[] = [];
+    public static COMPONENTS: Array<InjectFunctionWithInfer> = [];
 
     public static _components: { [key: string]: BaseComponent } = {};
     private static _isDirty: Boolean = false;
@@ -40,7 +58,7 @@ export class DependencyInjector {
 
         if (DependencyInjector.COMPONENTS) {
             DependencyInjector.COMPONENTS.forEach(
-                (createFunction: InjectFunction) => {
+                (createFunction: InjectFunctionWithInfer, i, a) => {
                     createFunction(messageWindow);
                 }
             );

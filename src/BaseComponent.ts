@@ -6,141 +6,141 @@ import { Component } from "./Component";
  * 샌드박스 환경에서 MV 메소드를 호출하여 이전 버전에 대한 안전성을 제공합니다.
  */
 export class BaseComponent extends Component {
-  private _messageWindow!: Window_Message;
+    private _messageWindow!: Window_Message;
 
-  constructor(props: { [key: string]: any }) {
-    super(props);
-  }
+    constructor(props: { [key: string]: any }) {
+        super(props);
+    }
 
-  onReady(props: { [key: string]: any }) {
-    // if the message window is valid from passed props.
-    if (!("messageWindow" in props)) {
-      console.error("messageWindow is not defined");
-      return;
+    onReady(props: { [key: string]: any }) {
+        // if the message window is valid from passed props.
+        if (!("messageWindow" in props)) {
+            console.error("messageWindow is not defined");
+            return;
+        }
+
+        /**
+         * @type {Window_Message}
+         */
+        this._messageWindow = props.messageWindow;
+    }
+
+    // Getters
+    get messageWindow() {
+        return this._messageWindow;
+    }
+
+    get contents() {
+        return this._messageWindow.contents;
     }
 
     /**
-     * @type {Window_Message}
+     * @returns {Window_NameBox}
      */
-    this._messageWindow = props.messageWindow;
-  }
+    get _nameWindow() {
+        return this._messageWindow._nameBoxWindow;
+    }
 
-  // Getters
-  get messageWindow() {
-    return this._messageWindow;
-  }
+    get _choiceWindow() {
+        return this._messageWindow._choiceListWindow
+            ? this._messageWindow._choiceListWindow
+            : {
+                  windowWidth: () => 0,
+                  windowHeight: () => 0,
+              };
+    }
 
-  get contents() {
-    return this._messageWindow.contents;
-  }
+    save() {
+        // 'this._messageWindow?.save()'의 구현입니다.
+        // 하지만 save는 함수가 아닐 수도 있습니다.
+        // 타입의 안전성은 체크하지 않습니다.
+        this._messageWindow.save ? this._messageWindow.save() : null;
+    }
 
-  /**
-   * @returns {Window_NameBox}
-   */
-  get _nameWindow() {
-    return this._messageWindow._nameBoxWindow;
-  }
+    restore() {
+        // 'this._messageWindow?.restore()'의 구현입니다.
+        // 하지만 save는 함수가 아닐 수도 있습니다.
+        // 타입의 안전성은 체크하지 않습니다.
+        this._messageWindow.restore ? this._messageWindow.restore() : null;
+    }
 
-  get _choiceWindow() {
-    return this._messageWindow._choiceListWindow
-      ? this._messageWindow._choiceListWindow
-      : {
-          windowWidth: () => 0,
-          windowHeight: () => 0,
-        };
-  }
+    standardPadding() {
+        // 패딩을 업데이트해야 합니다 (MZ에서 달라진 부분입니다)
+        // 꼭 체크할 필요는 없지만...
+        this._messageWindow.updatePadding();
+        const padding = this._messageWindow.padding || 12;
 
-  save() {
-    // 'this._messageWindow?.save()'의 구현입니다.
-    // 하지만 save는 함수가 아닐 수도 있습니다.
-    // 타입의 안전성은 체크하지 않습니다.
-    this._messageWindow.save ? this._messageWindow.save() : null;
-  }
+        return padding;
+    }
 
-  restore() {
-    // 'this._messageWindow?.restore()'의 구현입니다.
-    // 하지만 save는 함수가 아닐 수도 있습니다.
-    // 타입의 안전성은 체크하지 않습니다.
-    this._messageWindow.restore ? this._messageWindow.restore() : null;
-  }
+    textPadding() {
+        // textPadding()의 구현입니다.
+        return this._messageWindow.itemPadding() || 6;
+    }
 
-  standardPadding() {
-    // 패딩을 업데이트해야 합니다 (MZ에서 달라진 부분입니다)
-    // 꼭 체크할 필요는 없지만...
-    this._messageWindow.updatePadding();
-    const padding = this._messageWindow.padding || 12;
+    newLineX() {
+        return this._messageWindow.newLineX();
+    }
 
-    return padding;
-  }
+    fittingHeight(numLines: number) {
+        return this._messageWindow.fittingHeight(numLines);
+    }
 
-  textPadding() {
-    // textPadding()의 구현입니다.
-    return this._messageWindow.itemPadding() || 6;
-  }
+    drawTextEx(text: string) {
+        const box = this._messageWindow.textSizeEx(text);
+        return box.width;
+    }
 
-  newLineX() {
-    return this._messageWindow.newLineX();
-  }
+    lineHeight() {
+        return this._messageWindow.lineHeight();
+    }
 
-  fittingHeight(numLines: number) {
-    return this._messageWindow.fittingHeight(numLines);
-  }
+    /**
+     * TODO: 상속 시, 이 메소드를 오버라이드 하세요.
+     */
+    updatePlacement() {}
 
-  drawTextEx(text: string) {
-    const box = this._messageWindow.textSizeEx(text);
-    return box.width;
-  }
+    drawMessageFace() {
+        this._messageWindow.drawMessageFace();
+    }
 
-  lineHeight() {
-    return this._messageWindow.lineHeight();
-  }
+    set x(value: number) {
+        this._messageWindow.x = value;
+    }
 
-  /**
-   * TODO: 상속 시, 이 메소드를 오버라이드 하세요.
-   */
-  updatePlacement() {}
+    set y(value: number) {
+        this._messageWindow.y = value;
+    }
 
-  drawMessageFace() {
-    this._messageWindow.drawMessageFace();
-  }
+    set width(value: number) {
+        this._messageWindow.width = value;
+    }
 
-  set x(value: number) {
-    this._messageWindow.x = value;
-  }
+    set height(value: number) {
+        this._messageWindow.height = value;
+    }
 
-  set y(value: number) {
-    this._messageWindow.y = value;
-  }
+    get width() {
+        return this._messageWindow.width;
+    }
 
-  set width(value: number) {
-    this._messageWindow.width = value;
-  }
+    get _width() {
+        return this._messageWindow.width;
+    }
 
-  set height(value: number) {
-    this._messageWindow.height = value;
-  }
+    get height() {
+        return this._messageWindow.height;
+    }
 
-  get width() {
-    return this._messageWindow.width;
-  }
+    get _height() {
+        return this._messageWindow.height;
+    }
 
-  get _width() {
-    return this._messageWindow.width;
-  }
+    canvasToLocalX(x: number) {
+        return x;
+    }
 
-  get height() {
-    return this._messageWindow.height;
-  }
-
-  get _height() {
-    return this._messageWindow.height;
-  }
-
-  canvasToLocalX(x: number) {
-    return x;
-  }
-
-  canvasToLocalY(y: number) {
-    return y;
-  }
+    canvasToLocalY(y: number) {
+        return y;
+    }
 }

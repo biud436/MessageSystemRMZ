@@ -1314,15 +1314,11 @@ executor
             Window_Message.prototype.initialize;
         Window_Message.prototype.initialize = function (rect) {
             DependencyInjector.COMPONENTS = [];
-            DependencyInjector.COMPONENTS.push((messageWindow) => {
-                const name = BalloonWindowTransformComponent.name;
-                DependencyInjector._components[name] =
-                    new BalloonWindowTransformComponent(messageWindow);
+            DependencyInjector.COMPONENTS.push(() => {
+                return new BalloonWindowTransformComponent(this);
             });
-            DependencyInjector.COMPONENTS.push((messageWindow) => {
-                const name = NameWindowPositionComponent.name;
-                DependencyInjector._components[name] =
-                    new NameWindowPositionComponent(messageWindow);
+            DependencyInjector.COMPONENTS.push(() => {
+                return new NameWindowPositionComponent(this);
             });
             DependencyInjector.inject(this);
 
