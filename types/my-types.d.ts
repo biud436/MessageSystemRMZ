@@ -272,6 +272,10 @@ export declare global {
         _spriteset: Spriteset_Map;
     }
 
+    export interface Scene_Message {
+        _messageWindow: Window_Message;
+    }
+
     export interface Scene_Battle {
         _spriteset: Spriteset_Battle;
     }

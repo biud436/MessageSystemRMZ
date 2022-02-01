@@ -55,9 +55,7 @@ export class DependencyInjector {
 
     private static _messageWindow?: Window_Message | undefined;
 
-    public static injectMessageWindow(
-        messageWindow: Window_Message
-    ): never | void {
+    public static injectMessageWindow(messageWindow: Window_Message) {
         // 주입할 메시지 윈도우 클래스의 인스턴스를 가져옵니다.
         DependencyInjector._messageWindow = messageWindow;
         DependencyInjector.inject(messageWindow);
@@ -85,8 +83,8 @@ export class DependencyInjector {
 
         // 컴포넌트에 메시지 윈도우를 주입합니다.
         DependencyInjector.COMPONENTS = [
-            new BalloonWindowTransformComponent(messageWindow),
-            new NameWindowPositionComponent(messageWindow),
+            new BalloonWindowTransformComponent({ messageWindow }),
+            new NameWindowPositionComponent({ messageWindow }),
         ];
 
         DependencyInjector._isDirty = true;
@@ -123,8 +121,10 @@ export class DependencyInjector {
     }
 
     public static ready() {
-        for (let name in DependencyInjector._components) {
-            DependencyInjector._components[name].emit("ready");
+        if (DependencyInjector.COMPONENTS) {
+            DependencyInjector.COMPONENTS.forEach((component) => {
+                component.ready();
+            });
         }
     }
 }

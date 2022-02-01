@@ -1314,19 +1314,11 @@ executor
             Window_Message.prototype.initialize;
         Window_Message.prototype.initialize = function (rect) {
             alias_Window_Message_initialize.call(this, rect);
-            DependencyInjector.injectMessageWindow(this);
             $gameTemp.setMSHeightFunc(this.setHeight.bind(this));
             this.setHeight(RS.MessageSystem.Params.numVisibleRows);
             this.createFaceContents();
             this.on("removed", this.removeEventHandler, this);
             this.on("onLoadWindowskin", this.onLoadWindowskin, this);
-        };
-
-        const alias_Window_Message_destroyOrigin =
-            Window_Message.prototype.destroy;
-        Window_Message.prototype.destroy = function () {
-            alias_Window_Message_destroyOrigin.call(this);
-            DependencyInjector.ejectMessageWindow();
         };
 
         const alias_Window_Message_startMessage =
@@ -1811,6 +1803,24 @@ executor
 
         Game_Map.prototype.setMsgEvent = function (ev) {
             this._msgEvent = ev;
+        };
+
+        /// ======================================================================
+        /// DI
+        /// ======================================================================
+        const alias_Scene_Message_associateWindows__enrtyPoint =
+            Scene_Message.prototype.associateWindows;
+        Scene_Message.prototype.associateWindows = function () {
+            alias_Scene_Message_associateWindows__enrtyPoint.call(this);
+            const messageWindow = this._messageWindow;
+            DependencyInjector.injectMessageWindow(messageWindow);
+            DependencyInjector.ready();
+        };
+
+        const alias_Scene_Message_terminate = Scene_Message.prototype.terminate;
+        Scene_Message.prototype.terminate = function () {
+            alias_Scene_Message_terminate.call(this);
+            DependencyInjector.ejectMessageWindow();
         };
 
         RS.MessageSystem.initSystem();

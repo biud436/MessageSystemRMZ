@@ -1,4 +1,5 @@
 import { BaseComponent } from "./BaseComponent";
+import { ComponentProp } from "./Component";
 
 /**
  * @class BalloonWindowTransformComponent
@@ -11,7 +12,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     private _isUsedTextWidthEx: boolean = false;
     public transform!: PIXI.Transform;
 
-    onReady(props: { [key: string]: any }) {
+    onReady(props: ComponentProp) {
         super.onReady(props);
         this._bWidth = 0;
         this._bHeight = 0;
@@ -165,6 +166,12 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     updateBalloonPosition() {
+        console.log(
+            "============ DEBUG updateBalloonPosition() ===================="
+        );
+
+        console.log(this.messageWindow);
+
         let data: { [key: string]: any } = {};
 
         if (!this.isActiveInBalloon()) return;

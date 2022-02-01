@@ -1109,3 +1109,5 @@ Color.gmColor = function (str: string) {
     }
     return RS.MessageSystem.getEnglishColor(str);
 };
+
+Object.assign(window.RS || {}, RS);

@@ -1,4 +1,4 @@
-import { Component } from "./Component";
+import { Component, ComponentProp } from "./Component";
 
 /**
  * @class BaseComponent
@@ -8,16 +8,18 @@ import { Component } from "./Component";
 export class BaseComponent extends Component {
     private _messageWindow!: Window_Message;
 
-    constructor(props: { [key: string]: any }) {
+    constructor(props: ComponentProp) {
         super(props);
     }
 
-    onReady(props: { [key: string]: any }) {
+    onReady(props: ComponentProp) {
         // if the message window is valid from passed props.
         if (!("messageWindow" in props)) {
             console.error("messageWindow is not defined");
             return;
         }
+
+        console.log("On Ready 이벤트가 실행되었습니다.");
 
         /**
          * @type {Window_Message}
@@ -37,7 +39,14 @@ export class BaseComponent extends Component {
     /**
      * @returns {Window_NameBox}
      */
-    get _nameWindow() {
+    get _nameWindow(): never | Window_NameBox {
+        const isNameWindowOK = this._messageWindow._nameBoxWindow;
+        if (!isNameWindowOK) {
+            throw new Error(
+                "이름 윈도우가 아직 정의되지 않았습니다. DI를 제대로된 시점에 하시기 바랍니다."
+            );
+        }
+
         return this._messageWindow._nameBoxWindow;
     }
 
