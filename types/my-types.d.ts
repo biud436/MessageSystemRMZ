@@ -280,30 +280,32 @@ export declare global {
         _spriteset: Spriteset_Battle;
     }
 
-    export interface RS {
-        MessageSystem: {
-            jsonParse: (str: string) => any;
-            popParameter: (...args: any[]) => any;
-            getTextCode: (idx: number) => string;
-            getEventComments: (
-                eventId: number,
-                index: number
-            ) => EventCommand.CommentMeta;
-            initSystem(): void;
-            getKoreanColor(str: string): string;
-            getChineseColor(str: string): string;
-            getEnglishColor(str: string): string;
-            getJapaneseColor(str: string): string;
-            getBrowser(str: string): {
-                name: string;
-                version: string;
-            };
-            Reg: Record<string, any>;
-            TextCodes: TextCode;
-            Params: Record<string, any> & {
-                fonts: Record<string, any>;
-            };
+    export interface IMessageSytem {
+        jsonParse: (str: string) => any;
+        popParameter: (...args: any[]) => any;
+        getTextCode: (idx: number) => string;
+        getEventComments: (
+            eventId: number,
+            index: number
+        ) => EventCommand.CommentMeta;
+        initSystem(): void;
+        getKoreanColor(str: string): string;
+        getChineseColor(str: string): string;
+        getEnglishColor(str: string): string;
+        getJapaneseColor(str: string): string;
+        getBrowser(str: string): {
+            name: string;
+            version: string;
         };
+        Reg: Record<string, any>;
+        TextCodes: TextCode;
+        Params: Record<string, any> & {
+            fonts: Record<string, any>;
+        };
+    }
+
+    export interface RS {
+        MessageSystem: IMessageSytem;
     }
 
     declare var nw: any;
