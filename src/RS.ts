@@ -77,7 +77,7 @@ const parameters = <Types.PluginParameters>(
     (pluginParams.length > 0 && pluginParams[0].parameters)
 );
 
-export const RS = <RS>{};
+const RS = <RS>{};
 RS.MessageSystem = <IMessageSytem>{};
 
 RS.MessageSystem.jsonParse = function (str: string) {
@@ -1110,4 +1110,4 @@ Color.gmColor = function (str: string) {
     return RS.MessageSystem.getEnglishColor(str);
 };
 
-Object.assign(window.RS || {}, RS);
+window.RS = RS;

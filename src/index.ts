@@ -1,6 +1,6 @@
 /// <reference types="../types/my-types" />
 /// <reference types="../types/lunalite-pixi-mz" />
-import { RS, Color } from "./RS";
+import { Color } from "./RS";
 import { DependencyInjector } from "./DependencyInjector";
 import { BalloonWindowTransformComponent } from "./BalloonWindowTransformComponent";
 import { NameWindowPositionComponent } from "./NameWindowPositionComponent";

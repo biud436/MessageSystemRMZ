@@ -309,6 +309,8 @@ export declare global {
     }
 
     declare var nw: any;
-
-    declare var RS: RS;
+    interface Window {
+        RS: RS;
+    }
+    declare var RS: Window.RS;
 }
