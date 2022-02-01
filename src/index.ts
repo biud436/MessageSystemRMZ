@@ -1313,21 +1313,20 @@ executor
         const alias_Window_Message_initialize =
             Window_Message.prototype.initialize;
         Window_Message.prototype.initialize = function (rect) {
-            DependencyInjector.COMPONENTS = [];
-            DependencyInjector.COMPONENTS.push(() => {
-                return new BalloonWindowTransformComponent(this);
-            });
-            DependencyInjector.COMPONENTS.push(() => {
-                return new NameWindowPositionComponent(this);
-            });
-            DependencyInjector.inject(this);
-
             alias_Window_Message_initialize.call(this, rect);
+            DependencyInjector.injectMessageWindow(this);
             $gameTemp.setMSHeightFunc(this.setHeight.bind(this));
             this.setHeight(RS.MessageSystem.Params.numVisibleRows);
             this.createFaceContents();
             this.on("removed", this.removeEventHandler, this);
             this.on("onLoadWindowskin", this.onLoadWindowskin, this);
+        };
+
+        const alias_Window_Message_destroyOrigin =
+            Window_Message.prototype.destroy;
+        Window_Message.prototype.destroy = function () {
+            alias_Window_Message_destroyOrigin.call(this);
+            DependencyInjector.ejectMessageWindow();
         };
 
         const alias_Window_Message_startMessage =

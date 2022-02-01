@@ -13,16 +13,20 @@ interface Class<T> {
 }
 
 /**
- * 13만원 짜리 강의를 듣고 영감을 받아 만든 타입.
+ *
  */
+// type InjectFunctionWithInfer = <
+//     R = InstanceType<new (rect: Rectangle) => Window_Message>
+// >(
+//     messageWindow: R
+// ) => InstanceType<new (messageWindow: R) => Component>;
 type InjectFunctionWithInfer = <
     R = InstanceType<new (rect: Rectangle) => Window_Message>
 >(
     messageWindow: R
-) => InstanceType<new (messageWindow: R) => Component>;
+) => BaseComponent;
 
 /**
- * 13만원 짜리 강의를 듣고 만든 타입. 그만한 가치가 있나.
  * @function getComponentValue
  * @param item
  * @param key
@@ -41,10 +45,31 @@ function getComponentValue<T, K extends keyof T>(item: T, key: K): T[K] {
  * 샌드박스 환경이라함은 MZ에서도 오류 없이 안전하게 동작한다는 것을 의미합니다.
  */
 export class DependencyInjector {
-    public static COMPONENTS: Array<InjectFunctionWithInfer> = [];
+    public static COMPONENTS?: [
+        BalloonWindowTransformComponent,
+        NameWindowPositionComponent
+    ];
 
     public static _components: { [key: string]: Component } = {};
     private static _isDirty: Boolean = false;
+
+    private static _messageWindow?: Window_Message | undefined;
+
+    public static injectMessageWindow(
+        messageWindow: Window_Message
+    ): never | void {
+        // 주입할 메시지 윈도우 클래스의 인스턴스를 가져옵니다.
+        DependencyInjector._messageWindow = messageWindow;
+        DependencyInjector.inject(messageWindow);
+    }
+
+    public static ejectMessageWindow() {
+        if (DependencyInjector._isDirty) {
+            DependencyInjector._messageWindow = undefined;
+            DependencyInjector.COMPONENTS = undefined;
+            DependencyInjector._isDirty = false;
+        }
+    }
 
     /**
      * inject all components inside the sandbox environment.
@@ -52,21 +77,19 @@ export class DependencyInjector {
      * @param messageWindow Specify the message window.
      * @returns void
      */
-    public static inject(messageWindow: Window_Message): void {
-        if (this._isDirty) {
+    private static inject(messageWindow: Window_Message): void {
+        if (DependencyInjector._isDirty) {
             console.log("components are already injected");
             return;
         }
 
-        if (DependencyInjector.COMPONENTS) {
-            DependencyInjector.COMPONENTS.forEach(
-                (createFunction: InjectFunctionWithInfer, i, a) => {
-                    createFunction(messageWindow);
-                }
-            );
-        }
+        // 컴포넌트에 메시지 윈도우를 주입합니다.
+        DependencyInjector.COMPONENTS = [
+            new BalloonWindowTransformComponent(messageWindow),
+            new NameWindowPositionComponent(messageWindow),
+        ];
 
-        this._isDirty = true;
+        DependencyInjector._isDirty = true;
     }
 
     /**
@@ -75,13 +98,33 @@ export class DependencyInjector {
      * @param name Specify the component name
      * @returns Component
      */
-    public static getComponent<R extends BaseComponentName>(name: R) {
-        return getComponentValue(DependencyInjector._components, name);
+    public static getComponent<R extends BaseComponentName>(
+        name: R
+    ):
+        | BalloonWindowTransformComponent
+        | NameWindowPositionComponent
+        | undefined {
+        const items = DependencyInjector.COMPONENTS!.filter((e) => {
+            return e instanceof DependencyInjector.getComponentClass(name);
+        });
+
+        return items.pop();
+    }
+
+    static getComponentClass(name: BaseComponentName): typeof BaseComponent {
+        switch (name) {
+            case "BalloonWindowTransformComponent":
+                return BalloonWindowTransformComponent;
+            case "NameWindowPositionComponent":
+                return NameWindowPositionComponent;
+            default:
+                return BaseComponent;
+        }
     }
 
     public static ready() {
-        for (let name in this._components) {
-            this._components[name].emit("ready");
+        for (let name in DependencyInjector._components) {
+            DependencyInjector._components[name].emit("ready");
         }
     }
 }
