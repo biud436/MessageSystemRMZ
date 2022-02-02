@@ -58,8 +58,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
 
     onReady(props: ComponentProp) {
         super.onReady(props);
-        this._bWidth = 0;
-        this._bHeight = 0;
+        this._bWidth = this.width;
+        this._bHeight = this.height;
         this._isUsedTextWidthEx = false;
     }
 
