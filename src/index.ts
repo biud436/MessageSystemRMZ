@@ -1324,8 +1324,79 @@ executor
         const alias_Window_Message_startMessage =
             Window_Message.prototype.startMessage;
         Window_Message.prototype.startMessage = function () {
-            DependencyInjector.ready();
-            alias_Window_Message_startMessage.call(this);
+            const text = $gameMessage.allText();
+            const textState = this.createTextState(text, 0, 0, 0);
+            textState.x = this.newLineX(textState);
+            textState.startX = textState.x;
+            this._textState = textState;
+
+            const tempText = textState.text.slice(0);
+            (<BalloonWindowTransformComponent>(
+                DependencyInjector.getComponent(
+                    "BalloonWindowTransformComponent"
+                )
+            )).calcBalloonRect(tempText);
+
+            this.newPage(this._textState);
+
+            // width 와 height를 재설정한다.
+            this.resizeMessageSystem("no reset");
+
+            this.updatePlacement();
+            this.updateBackground();
+            this.open();
+            this._nameBoxWindow.start();
+        };
+
+        Window_Message.prototype.getDefaultWindowRect = function () {
+            return Scene_Message.prototype.messageWindowRect();
+        };
+
+        /**
+         * @deprecated
+         */
+        Window_Message.prototype.windowWidth = function () {
+            const rect = this.getDefaultWindowRect();
+            return rect.width;
+        };
+
+        Window_Message.prototype.windowHeight = function () {
+            const rect = this.getDefaultWindowRect();
+            return rect.height;
+        };
+
+        Window_Message.prototype.resizeMessageSystem = function (
+            ...args: any[]
+        ) {
+            const isResetOwner: Boolean = !(args.length > 0);
+
+            if (!isResetOwner && SceneManager._scene instanceof Scene_Battle) {
+                return;
+            }
+
+            const n = $gameMessage.positionType();
+            const ox = RS.MessageSystem.Params.windowOffset.x;
+            const oy = RS.MessageSystem.Params.windowOffset.y;
+
+            const windowRect = {
+                width: this.windowWidth(),
+                height: this.windowHeight(),
+            };
+            const x = Graphics.boxWidth / 2 - windowRect.width / 2 + ox;
+            const y = (n * (Graphics.boxHeight - windowRect.height)) / 2 + oy;
+            const width = windowRect.width;
+            const height = windowRect.height;
+
+            if (x !== this.x) this.x = x;
+            if (y !== this.y) this.y = y;
+            if (width !== this.width || height !== this.height) {
+                this.width = width;
+                this.height = height;
+            }
+
+            if (isResetOwner) {
+                $gameMap.setMsgOwner($gamePlayer);
+            }
         };
 
         Window_Message.prototype.removeEventHandler = function () {

@@ -44797,7 +44797,7 @@ declare class Window_Message extends Window_Base {
     newPage(textState: rm.types.TextState): void;
     loadMessageFace(): void;
     drawMessageFace(): void;
-    newLineX(): number;
+    newLineX(textState?: rm.types.TextState): number;
     processNewLine(textState: rm.types.TextState): void;
     processNewPage(textState: rm.types.TextState): void;
 }

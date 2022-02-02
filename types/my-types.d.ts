@@ -242,6 +242,13 @@ export declare global {
         getSpriteActors(sign: number): IBalloonSpriteTarget | null;
         getSpriteEnemies(sign: number): IBalloonSpriteTarget | null;
         setupOwner(sign: number): void;
+        resizeMessageSystem(): void;
+        resizeMessageSystem(...args: args[]): void;
+        getDefaultWindowRect(): PIXI.Rectangle;
+        /** @deprecated */
+        windowWidth(): number;
+        /** @deprecated */
+        windowHeight(): number;
     }
 
     export interface Window_NameBox extends Window_Base {
@@ -274,6 +281,8 @@ export declare global {
 
     export interface Scene_Message {
         _messageWindow: Window_Message;
+
+        messageWindowRect(): PIXI.Rectangle;
     }
 
     export interface Scene_Battle {
