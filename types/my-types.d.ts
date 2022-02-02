@@ -363,7 +363,7 @@ export declare global {
         updateBalloonPosition(): void;
         updateDefaultOpacity(): void;
         updateContentsOpacity(): void;
-        setFaceZIndex(index: number): void;
+        setFaceZIndex(index?: number): void;
         setHeight: (n: number) => void;
         createFaceContents(): void;
         removeEventHandler: () => void;
@@ -395,6 +395,18 @@ export declare global {
          * @param text
          */
         calcBalloonRect(text: string): void;
+
+        updateBalloonPositionInBattle(): void;
+
+        isAlreadyDrawnFace(): Bitmap | boolean;
+        clearFaceBitmap(): void;
+        redrawFaceImage(): void;
+
+        /**
+         * start the message window using balloon window mode.
+         * @param sign
+         */
+        openBalloon(sign: number): void;
     }
 
     export interface Window_NameBox extends Window_Base {

@@ -203,7 +203,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         }
     }
 
-    setBalloonPlacement(data: BalloonRectData) {
+    setBalloonPlacement(data: BalloonRectData): BalloonRectData | void {
+        console.log("setBalloonPlacement() + " + JSON.stringify(data));
         // 화면 좌측
         if (!data) return;
         if (data.mx - this._bWidth / 2 < 0) {
@@ -303,7 +304,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
 
         console.log(JSON.stringify(data));
 
-        data = <BalloonRectData>this.setBalloonPlacement(Object.create(data));
+        data = <BalloonRectData>this.setBalloonPlacement(data);
 
         if (
             data.dx + RS.MessageSystem.Params.windowOffset.x !== this.x ||
@@ -404,7 +405,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             this._nameWindow.height -
             RS.MessageSystem.Params.nameWindowY;
 
-        data = <BalloonRectData>this.setBalloonPlacement(Object.create(data));
+        data = <BalloonRectData>this.setBalloonPlacement(data);
 
         // 말풍선 위치 및 크기 설정
         this.setBalloonRect(data);

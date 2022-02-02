@@ -1127,6 +1127,18 @@ executor
             alias_Window_Message_checkToNotClose.call(this);
         };
 
+        Window_Message.prototype.updateBalloonPosition = function () {
+            // Get the component
+            const component = <BalloonWindowTransformComponent>(
+                DependencyInjector.getComponent(
+                    "BalloonWindowTransformComponent"
+                )
+            );
+            if (component) {
+                component.updateBalloonPosition();
+            }
+        };
+
         Window_Message.prototype.updatePlacement = function () {
             // TODO: try-catch statement will be deleted later.
             try {
@@ -1137,22 +1149,17 @@ executor
                 if ($gameMessage.getBalloon() === -2) {
                     console.log("말풍선 모드가 아닙니다");
                     this.x =
-                        Graphics.boxWidth / 2 -
+                        Graphics.width / 2 -
                         this.width / 2 +
                         RS.MessageSystem.Params.windowOffset.x;
                     this.y =
-                        (this._positionType *
-                            (Graphics.boxHeight - this.height)) /
+                        (this._positionType * (Graphics.height - this.height)) /
                             2 +
                         RS.MessageSystem.Params.windowOffset.y;
                 } else {
                     console.log("말풍선 모드입니다");
                     if (SceneManager._scene instanceof Scene_Map) {
-                        (<BalloonWindowTransformComponent>(
-                            DependencyInjector.getComponent(
-                                "BalloonWindowTransformComponent"
-                            )
-                        )).updateBalloonPosition();
+                        this.updateBalloonPosition();
                     }
                 }
 
@@ -1171,6 +1178,9 @@ executor
                 this.updateBigFaceOpacity();
 
                 // 이름 윈도우 업데이트
+                if (this._nameBoxWindow.isOpen() || this.areSettingsChanged()) {
+                    this.updateNameWindow();
+                }
 
                 // 얼굴 이미지의 Z-Index 업데이트
                 if ($gameMessage.faceName() !== "") {
@@ -1189,14 +1199,61 @@ executor
             }
         };
 
-        Window_Message.prototype.setFaceZIndex = function (zIndex) {
-            zIndex = zIndex || 0;
+        Window_Message.prototype.isAlreadyDrawnFace = function () {
+            return this._faceContents.bitmap || this.newLineX() > 0;
+        };
 
+        Window_Message.prototype.setFaceZIndex = function (zIndex = 0) {
             const parent = this.parent;
             const isFaceSide = RS.MessageSystem.Params.faceSide;
 
             if (parent && isFaceSide) {
                 this.setChildIndex(this._faceContents, zIndex);
+            }
+        };
+
+        Window_Message.prototype.clearFaceBitmap = function () {
+            if (this._faceContents.bitmap) {
+                // @ts-ignore
+                this._faceContents.bitmap = null;
+            }
+        };
+
+        const alias_Window_Message_newPage = Window_Message.prototype.newPage;
+        Window_Message.prototype.newPage = function (textState) {
+            this.setFaceZIndex();
+            this.clearFaceBitmap();
+            this.loadWindowskin();
+            this.emit("onLoadWindowskin");
+            this.openBalloon($gameMessage.getBalloon());
+            alias_Window_Message_newPage.call(this, textState);
+        };
+
+        Window_Message.prototype.updateBalloonPositionInBattle = function () {
+            const component = <BalloonWindowTransformComponent>(
+                DependencyInjector.getComponent(
+                    "BalloonWindowTransformComponent"
+                )
+            );
+            if (component) {
+                component.updateBalloonPositionInBattle();
+            }
+        };
+
+        Window_Message.prototype.openBalloon = function (sign) {
+            // 말풍선 모드가 아니면 빠져나간다.
+            if (sign === -2) {
+                this.resizeMessageSystem();
+                return;
+            }
+
+            this.setupOwner(sign);
+
+            // 전투 중일 경우
+            if (SceneManager._scene instanceof Scene_Battle) {
+                this.updateBalloonPositionInBattle();
+            } else {
+                this.updateBalloonPosition();
             }
         };
 
@@ -1262,7 +1319,7 @@ executor
                     retName = retName.replace(":right", "");
                     RS.MessageSystem.Params.namePositionTypeAtX = "right";
                 }
-                (this._nameWindow as any).drawName(retName);
+                this._nameBoxWindow.setName(retName);
                 return "";
             });
             text = text.replace(
@@ -1354,9 +1411,14 @@ executor
             this._textState = textState;
 
             // 말풍선 영역을 계산합니다.
-            const tempText = textState.text.slice(0);
+            let tempText = textState.text.slice(0);
+            if (
+                $gameMessage.getBalloon() === -2 &&
+                RS.MessageSystem.Params.isParagraphMinifier
+            ) {
+                tempText = tempText.replace(/[\r\n]+/gm, " ");
+            }
             this.calcBalloonRect(tempText);
-
             this.newPage(this._textState);
 
             // width 와 height를 재설정한다.
