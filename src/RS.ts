@@ -77,8 +77,9 @@ const parameters = <Types.PluginParameters>(
     (pluginParams.length > 0 && pluginParams[0].parameters)
 );
 
-const RS = <RS>{};
-RS.MessageSystem = <IMessageSytem>{};
+const RS = <RS>{
+    MessageSystem: <IMessageSytem>{},
+};
 
 RS.MessageSystem.jsonParse = function (str: string) {
     const retData = JSON.parse(str, (k, v) => {

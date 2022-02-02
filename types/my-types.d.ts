@@ -1,23 +1,66 @@
 export declare global {
     interface Array<T> {
+        /**
+         * 배열에 매개변수로 전달된 값이 있는지 확인합니다.
+         * @param value
+         */
         contains(value: T): boolean;
     }
     interface String {
+        /**
+         * 문자열에 매개변수로 전달된 값이 있는지 확인합니다.
+         * @param value
+         */
         contains(value: string): boolean;
     }
 
     interface Number {
+        /**
+         * 숫자 값을 min과 max 사이로 제한합니다.
+         * @param min
+         * @param max
+         */
         clamp(min: number, max: number): number;
     }
 
     interface Bitmap {
+        /**
+         * 폰트가 굵게 설정되어있는지 여부
+         */
         fontBold: boolean;
+        /**
+         * 폰트를 그레디언트로 그려야 하는지 여부
+         */
         fontGradient: boolean;
+        /**
+         * 폰트 배경색.
+         */
         highlightTextColor: Required<string | null>;
+        /**
+         * CanvasRenderingContext2D 객체.
+         */
         _context: CanvasRenderingContext2D;
+        /**
+         * 기본 텍스쳐
+         */
         _baseTexture: PIXI.BaseTexture;
-
+        /**
+         * 비트맵 객체를 생성합니다.
+         *
+         * @param width
+         * @param height
+         */
         initialize(width: number, height: number): void;
+        /**
+         * 그레디언트를 설정합니다.
+         *
+         * @param text
+         * @param color1
+         * @param color2
+         * @param color3
+         * @param tx
+         * @param ty
+         */
         setGradient(
             text: string,
             color1: string,
@@ -26,6 +69,15 @@ export declare global {
             tx: number,
             ty: number
         ): void;
+        /**
+         * 그레디언트의 스타일을 설정합니다.
+         * @param text
+         * @param color1
+         * @param color2
+         * @param color3
+         * @param tx
+         * @param ty
+         */
         setGradientStyle(
             text: string,
             color1: string,
@@ -34,7 +86,17 @@ export declare global {
             tx: number,
             ty: number
         ): CanvasGradient;
+        /**
+         * 폰트 이름을 가져옵니다. 이탤릭, 굵게, 폰트 크기, font-family 정보가 포함되어야 합니다.
+         */
         _makeFontNameText(): string;
+        /**
+         * 텍스트를 그려냅니다.
+         * @param text
+         * @param tx
+         * @param ty
+         * @param maxWidth 텍스트가 그려질 텍스쳐의 가로 길이를 지정하세요.
+         */
         _drawTextBody(
             text: string,
             tx: number,
@@ -44,26 +106,95 @@ export declare global {
     }
 
     interface Game_Message {
+        /**
+         * Sets or gets wait time when using waiting mode.
+         */
         _waitTime: number;
+        /**
+         * Sets or gets the message text when using gradient text mode.
+         */
         _gradientText: string;
+        /**
+         * 말풍선 표시 위치를 설정하거나 가져옵니다.
+         * -1 이면 player,
+         * 0 이면 이 이벤트(this event)이며,
+         * 1 이상이면 맵에 있는 특정 이벤트(specific event)를 나타냅니다.
+         * -2면 normal window로 표시됩니다.
+         */
         _balloon: number;
+        /**
+         * 정렬 배열. left, center, right 정렬을 나타내는 숫자를 저장하여 차례대로 꺼내 처리합니다.
+         */
         _align: number[];
+
+        /**
+         * Gets or sets the height of map tile. This is used to calculate the position of balloon.
+         */
         _balloonPatternHeight: number;
+        /**
+         * 마지막 정렬 위치
+         */
         _lastAlign: number;
+        /**
+         * 최대 라인
+         */
         _maxLine: number;
 
+        /**
+         * Sets the wait time
+         * @param time
+         */
         setWaitTime(time: number): void;
+        /**
+         * Sets the message text in gradient text mode will use.
+         * @param text
+         */
         setGradientText(text: string): void;
+        /**
+         * Gets the wait time.
+         */
         getWaitTime: () => number;
+        /**
+         * Gets the message text in gradient text mode will use.
+         */
         getGradientText: () => string;
+        /**
+         * Gets the length of message lines.
+         */
         getMaxLine: () => number;
+        /**
+         * Sets the length of message lines.
+         * @param maxLine
+         */
         setMaxLine(maxLine: number): void;
+        /**
+         * Sets the balloon position.
+         * if -1, the message window will be shown on the player.
+         * else if 0, the message window will be shown on the current event.
+         * else the event id is 1 or above, the message window will be shown on the specific event.
+         * if the n is -2, the message window will be displayed as normal window.
+         * @param n -2 (normal), -1 (player), 0 (current event), 1 or more (any event).
+         */
         setBalloon(n: number): void;
+        /**
+         * Gets the balloon position.
+         * if -1, the message window will be shown on the player.
+         * else if 0, the message window will be shown on the current event.
+         * else the event id is 1 or above, the message window will be shown on the specific event.
+         * if the n is -2, the message window will be displayed as normal window.
+         * @param n -2 (normal), -1 (player), 0 (current event), 1 or more (any event).
+         */
         getBalloon(n?: number): number;
         setAlign: (n: number) => void;
         getAlign: (n?: number) => number;
         clearAlignLast(n?: number): void;
+        /**
+         * Sets the height of map tile.
+         */
         setBalloonPatternHeight(value: number): void;
+        /**
+         * Gets the height of mpa tile.
+         */
         getBalloonPatternHeight: () => number;
         isRTL: () => boolean;
     }
@@ -328,5 +459,5 @@ export declare global {
     interface Window {
         RS: RS;
     }
-    declare var RS: Window.RS;
+    declare var RS: RS;
 }
