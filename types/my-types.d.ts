@@ -244,6 +244,13 @@ export declare global {
         setupOwner(sign: number): void;
         resizeMessageSystem(): void;
         resizeMessageSystem(...args: args[]): void;
+
+        /**
+         * @method getDefaultWindowRect
+         * @description
+         * RPG Maker MZ에서는 Rectangle 데이터가 Window_Message 내부에 커플링(coupling) 되어있지 않습니다.
+         * 따라서 scene에서 Rectangle 데이터가 주입(inject) 됩니다.
+         */
         getDefaultWindowRect(): PIXI.Rectangle;
         /** @deprecated */
         windowWidth(): number;

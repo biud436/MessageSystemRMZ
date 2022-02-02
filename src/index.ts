@@ -1352,9 +1352,6 @@ executor
             return Scene_Message.prototype.messageWindowRect();
         };
 
-        /**
-         * @deprecated
-         */
         Window_Message.prototype.windowWidth = function () {
             const rect = this.getDefaultWindowRect();
             return rect.width;
