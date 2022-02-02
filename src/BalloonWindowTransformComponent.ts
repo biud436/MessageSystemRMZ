@@ -70,100 +70,100 @@ export class BalloonWindowTransformComponent extends BaseComponent {
      * @returns {Number}
      */
     calcBalloonRect(text: string) {
-        {
-            let temp: string,
-                baseWidth: number,
-                tempText: string[],
-                height: number,
-                min: number,
-                pad: number,
-                numOfLines: number;
-            // drawTextEx를 사용하기 전에 현재 상태를 저장한다.
-            this.save();
+        // {
+        //     let temp: string,
+        //         baseWidth: number,
+        //         tempText: string[],
+        //         height: number,
+        //         min: number,
+        //         pad: number,
+        //         numOfLines: number;
+        //     // drawTextEx를 사용하기 전에 현재 상태를 저장한다.
+        //     this.save();
 
-            temp = text;
+        //     temp = text;
 
-            // 라인 갯수를 구하기 위해 텍스트를 줄바꿈 문자를 기준으로 나눈다.
-            const copyText = text.slice(0);
-            tempText = copyText.split(/[\r\n]+/);
-            numOfLines = tempText.length;
+        //     // 라인 갯수를 구하기 위해 텍스트를 줄바꿈 문자를 기준으로 나눈다.
+        //     const copyText = text.slice(0);
+        //     tempText = copyText.split(/[\r\n]+/);
+        //     numOfLines = tempText.length;
 
-            pad = this.standardPadding() * 2;
+        //     pad = this.standardPadding() * 2;
 
-            // 높이를 구한다.
-            height = 0;
-            tempText.forEach((i) => (height += this.calcBalloonRectHeight(i)));
+        //     // 높이를 구한다.
+        //     height = 0;
+        //     tempText.forEach((i) => (height += this.calcBalloonRectHeight(i)));
 
-            if (height <= 0) {
-                // 높이를 구할 수 없었다면,
-                height = this.fittingHeight(numOfLines);
-            } else {
-                // 높이를 구했다면
-                height = height + pad;
-            }
+        //     if (height <= 0) {
+        //         // 높이를 구할 수 없었다면,
+        //         height = this.fittingHeight(numOfLines);
+        //     } else {
+        //         // 높이를 구했다면
+        //         height = height + pad;
+        //     }
 
-            const textPadding = this.textPadding();
+        //     const textPadding = this.textPadding();
 
-            // 폭을 계산한다.
-            let pw = 0;
-            for (var i = 0; i < numOfLines; i++) {
-                this._isUsedTextWidthEx = true;
-                const x = this.drawTextEx(tempText[i]);
-                this._isUsedTextWidthEx = false;
-                if (x >= pw) {
-                    pw = x;
-                }
-            }
+        //     // 폭을 계산한다.
+        //     let pw = 0;
+        //     for (var i = 0; i < numOfLines; i++) {
+        //         this._isUsedTextWidthEx = true;
+        //         const x = this.drawTextEx(tempText[i]);
+        //         this._isUsedTextWidthEx = false;
+        //         if (x >= pw) {
+        //             pw = x;
+        //         }
+        //     }
 
-            baseWidth = pw;
-            this._bWidth =
-                baseWidth + pad + textPadding || RS.MessageSystem.Params.WIDTH;
+        //     baseWidth = pw;
+        //     this._bWidth =
+        //         baseWidth + pad + textPadding || RS.MessageSystem.Params.WIDTH;
 
-            // 얼굴 이미지가 설정되어있다면 ?
-            if ($gameMessage.faceName() !== "") {
-                // 최소 높이를 설정한다.
-                min = this.fittingHeight(4);
-                // 기존 폭 값에 얼굴 이미지의 폭을 더한다.
-                this._bWidth += this.newLineX() + pad;
-                if (RS.MessageSystem.Params.faceDirection === 2) {
-                    this._bWidth += ImageManager.faceWidth;
-                }
-                // 높이 값이 최소 높이보다 작으면, 최소 높이 값으로 설정한다.
-                if (height < min)
-                    height = height.clamp(min, height + (min - height));
-            }
+        //     // 얼굴 이미지가 설정되어있다면 ?
+        //     if ($gameMessage.faceName() !== "") {
+        //         // 최소 높이를 설정한다.
+        //         min = this.fittingHeight(4);
+        //         // 기존 폭 값에 얼굴 이미지의 폭을 더한다.
+        //         this._bWidth += this.newLineX() + pad;
+        //         if (RS.MessageSystem.Params.faceDirection === 2) {
+        //             this._bWidth += ImageManager.faceWidth;
+        //         }
+        //         // 높이 값이 최소 높이보다 작으면, 최소 높이 값으로 설정한다.
+        //         if (height < min)
+        //             height = height.clamp(min, height + (min - height));
+        //     }
 
-            const type = RS.MessageSystem.Params.choiceWindowStyle;
+        //     const type = RS.MessageSystem.Params.choiceWindowStyle;
 
-            // 선택지가 있고, XP 스타일로 설정했을 때
-            if (type === "RMXP" && $gameMessage.isChoice()) {
-                const maxLines = tempText.length;
-                const maxChoices = $gameMessage.choices().length;
-                const lineHeight = this.lineHeight();
-                // 선택지 갯수를 확장했을 수도 있지만, 4개로 가정한다.
-                height = height + maxChoices * lineHeight;
-                // 선택지 윈도우의 폭이 말풍선보다 크면 제한을 둔다.
-                if (this._choiceWindow.windowWidth() > this._bWidth) {
-                    this._bWidth = this._choiceWindow.windowWidth();
-                }
-            }
+        //     // 선택지가 있고, XP 스타일로 설정했을 때
+        //     if (type === "RMXP" && $gameMessage.isChoice()) {
+        //         const maxLines = tempText.length;
+        //         const maxChoices = $gameMessage.choices().length;
+        //         const lineHeight = this.lineHeight();
+        //         // 선택지 갯수를 확장했을 수도 있지만, 4개로 가정한다.
+        //         height = height + maxChoices * lineHeight;
+        //         // 선택지 윈도우의 폭이 말풍선보다 크면 제한을 둔다.
+        //         if (this._choiceWindow.windowWidth() > this._bWidth) {
+        //             this._bWidth = this._choiceWindow.windowWidth();
+        //         }
+        //     }
 
-            this.restore();
-        }
+        //     this.restore();
+        // }
 
         {
             // TODO: 얼굴 이미지 설정 체크
             // TODO: 인라인 선택지 모드인지 체크
-            // this.save();
-            // const rect = this.textSizeEx(text);
-            // const padding = this.standardPadding();
-            // this._bWidth = rect.width + padding * 2;
-            // this._bHeight = Math.max(
-            //     rect.height + padding * 2,
-            //     this.fittingHeight(1)
-            // );
+            this.save();
+            const rect = this.textSizeEx(text);
+            const padding = this.standardPadding();
+            this._bWidth = rect.width + padding * 2;
+            this._bHeight = Math.max(
+                rect.height + padding * 2,
+                this.fittingHeight(1)
+            );
             // this.drawTextEx() 사용하기 이전 상태로 복구한다.
-            // this.restore();
+            this.restore();
         }
     }
 
