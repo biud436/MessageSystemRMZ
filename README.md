@@ -6,6 +6,8 @@
 
 This plugin package includes helpful features to get you on your way to create your game in RPG Maker MZ.
 
+![image](https://user-images.githubusercontent.com/13586185/152173839-79931cee-7fff-442d-a2e1-069cce1932ce.png)
+
 # How to build
 
 `yarn` is a new package manager. To build this plugin directly, You should install `yarn` or `npm` first after installing `Node.js`. I recommand a package manager called 'yarn' because it is more stable and easy to use.
