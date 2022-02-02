@@ -1353,8 +1353,9 @@ executor
             textState.startX = textState.x;
             this._textState = textState;
 
+            // 말풍선 영역을 계산합니다.
             const tempText = textState.text.slice(0);
-            // this.calcBalloonRect(tempText);
+            this.calcBalloonRect(tempText);
 
             this.newPage(this._textState);
 
