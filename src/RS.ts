@@ -222,23 +222,6 @@ RS.MessageSystem.Params = {
     fonts: {
         default: "rmmz-mainfont",
     },
-};
-
-(() => {
-    const systemFonts: Types.SystemFonts = RS.MessageSystem.jsonParse(
-        parameters["systemFont"]
-    );
-    if (!RS.MessageSystem.Params.fonts) return;
-
-    // ! 여기서부터 변환 시작해야함
-    systemFonts.settings.forEach((i) => {
-        const params = <{ [key: string]: any } | any>{};
-        params[i.languageCode] = i.fontName;
-        Object.assign(RS.MessageSystem.Params.fonts as {}, params);
-    });
-})();
-
-Object.assign(RS.MessageSystem.Params, {
     isTempSpriteContainerVisibility: false,
     lineHeight: 36,
     windowOffset: new Point(0, 0),
@@ -318,7 +301,21 @@ Object.assign(RS.MessageSystem.Params, {
     gradientStyle: parameters["Gradient Style"],
     faceOpacity: parseInt(parameters["face Opacity"] || 21),
     faceDirection: parseInt(parameters["face Direction"] || 0),
-});
+};
+
+(() => {
+    const systemFonts: Types.SystemFonts = RS.MessageSystem.jsonParse(
+        parameters["systemFont"]
+    );
+    if (!RS.MessageSystem.Params.fonts) return;
+
+    // ! 여기서부터 변환 시작해야함
+    systemFonts.settings.forEach((i) => {
+        const params = <{ [key: string]: any } | any>{};
+        params[i.languageCode] = i.fontName;
+        Object.assign(RS.MessageSystem.Params.fonts as {}, params);
+    });
+})();
 
 //============================================================================
 // Lazy Initialize Parameters (느린 초기화)

@@ -442,6 +442,7 @@ executor
                 RS.MessageSystem.Params.defaultOutlineWidth;
             this.contents.outlineColor =
                 RS.MessageSystem.Params.defaultOutlineColor;
+
             this.contents.fontGradient = false;
             this.contents.highlightTextColor = null;
             this.resetTextColor();
@@ -594,8 +595,9 @@ executor
         Window_Base.prototype.processAlign = function (textState) {
             textState = textState || this._textState;
 
-            // 아랍어 인가?
-            if (textState.rtl) {
+            const isArabic = textState.rtl;
+
+            if (isArabic) {
                 return;
             }
 
@@ -1133,6 +1135,7 @@ executor
 
                 // 말풍선 모드가 아니라면 X좌표를 화면 중앙에 맞춘다.
                 if ($gameMessage.getBalloon() === -2) {
+                    console.log("말풍선 모드가 아닙니다");
                     this.x =
                         Graphics.boxWidth / 2 -
                         this.width / 2 +
@@ -1143,13 +1146,13 @@ executor
                             2 +
                         RS.MessageSystem.Params.windowOffset.y;
                 } else {
+                    console.log("말풍선 모드입니다");
                     if (SceneManager._scene instanceof Scene_Map) {
                         (<BalloonWindowTransformComponent>(
                             DependencyInjector.getComponent(
                                 "BalloonWindowTransformComponent"
                             )
                         )).updateBalloonPosition();
-                        // this.updateBalloonPosition();
                     }
                 }
 
@@ -1183,6 +1186,17 @@ executor
             } catch (e) {
                 console.log("!------ updatePlacement error ------!");
                 console.error(e);
+            }
+        };
+
+        Window_Message.prototype.setFaceZIndex = function (zIndex) {
+            zIndex = zIndex || 0;
+
+            const parent = this.parent;
+            const isFaceSide = RS.MessageSystem.Params.faceSide;
+
+            if (parent && isFaceSide) {
+                this.setChildIndex(this._faceContents, zIndex);
             }
         };
 
@@ -1321,6 +1335,15 @@ executor
             this.on("onLoadWindowskin", this.onLoadWindowskin, this);
         };
 
+        Window_Message.prototype.calcBalloonRect = function (text: string) {
+            const component = <BalloonWindowTransformComponent>(
+                DependencyInjector.getComponent(
+                    "BalloonWindowTransformComponent"
+                )
+            );
+            component.calcBalloonRect(text);
+        };
+
         const alias_Window_Message_startMessage =
             Window_Message.prototype.startMessage;
         Window_Message.prototype.startMessage = function () {
@@ -1331,11 +1354,7 @@ executor
             this._textState = textState;
 
             const tempText = textState.text.slice(0);
-            (<BalloonWindowTransformComponent>(
-                DependencyInjector.getComponent(
-                    "BalloonWindowTransformComponent"
-                )
-            )).calcBalloonRect(tempText);
+            this.calcBalloonRect(tempText);
 
             this.newPage(this._textState);
 

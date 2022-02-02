@@ -1,6 +1,50 @@
 import { BaseComponent } from "./BaseComponent";
 import { ComponentProp } from "./Component";
 
+export type BalloonRectData = {
+    /**
+     *
+     */
+    mx: number;
+    /**
+     *
+     */
+    my: number;
+    /**
+     *
+     */
+    tx: number;
+    /**
+     *
+     */
+    ty: number;
+    /**
+     *
+     */
+    tileHeight: number;
+    /**
+     *
+     */
+    dx: number;
+    /**
+     *
+     */
+    dy: number;
+    /**
+     * Gets or sets the value related for the name window.
+     */
+    ny: number;
+    /**
+     *
+     */
+    scaleY: number;
+    /**
+     * Gets or sets the padding value (like value named `padding-bottom`)
+     * `screenX`와 `screenY`는 `right-bottom`에 위치하므로 `height` 만큼 빼야 합니다.
+     */
+    padY: number;
+};
+
 /**
  * @class BalloonWindowTransformComponent
  * @description
@@ -20,88 +64,110 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     /**
-     * 샌드박스 환경을 구성합니다.
+     * 말풍선 영역의 크기를 계산합니다.
      *
      * @param {String} text
      * @returns {Number}
      */
     calcBalloonRect(text: string) {
-        let temp, baseWidth, tempText, height: number, min, pad, numOfLines;
+        // {
+        //     let temp, baseWidth, tempText, height: number, min, pad, numOfLines;
+        //     // drawTextEx를 사용하기 전에 현재 상태를 저장한다.
+        //     this.save();
 
-        // drawTextEx를 사용하기 전에 현재 상태를 저장한다.
+        //     temp = text;
+
+        //     // 라인 갯수를 구하기 위해 텍스트를 줄바꿈 문자를 기준으로 나눈다.
+        //     tempText = text.slice(0);
+        //     tempText = tempText.split(/[\r\n]+/);
+        //     numOfLines = tempText.length;
+
+        //     pad = this.standardPadding() * 2;
+
+        //     // 높이를 구한다.
+        //     height = 0;
+        //     tempText.forEach((i) => (height += this.calcBalloonRectHeight(i)));
+
+        //     if (height <= 0) {
+        //         // 높이를 구할 수 없었다면,
+        //         height = this.fittingHeight(numOfLines);
+        //     } else {
+        //         // 높이를 구했다면
+        //         height = height + pad;
+        //     }
+
+        //     const textPadding = this.textPadding();
+
+        //     // 폭을 계산한다.
+        //     let pw = 0;
+        //     for (var i = 0; i < numOfLines; i++) {
+        //         this._isUsedTextWidthEx = true;
+        //         const x = this.drawTextEx(tempText[i]);
+        //         this._isUsedTextWidthEx = false;
+        //         if (x >= pw) {
+        //             pw = x;
+        //         }
+        //     }
+
+        //     baseWidth = pw;
+        //     this._bWidth =
+        //         baseWidth + pad + textPadding || RS.MessageSystem.Params.WIDTH;
+
+        //     // 얼굴 이미지가 설정되어있다면 ?
+        //     if ($gameMessage.faceName() !== "") {
+        //         // 최소 높이를 설정한다.
+        //         min = this.fittingHeight(4);
+        //         // 기존 폭 값에 얼굴 이미지의 폭을 더한다.
+        //         this._bWidth += this.newLineX() + pad;
+        //         if (RS.MessageSystem.Params.faceDirection === 2) {
+        //             this._bWidth += ImageManager.faceWidth;
+        //         }
+        //         // 높이 값이 최소 높이보다 작으면, 최소 높이 값으로 설정한다.
+        //         if (height < min)
+        //             height = height.clamp(min, height + (min - height));
+        //     }
+
+        //     const type = RS.MessageSystem.Params.choiceWindowStyle;
+
+        //     // 선택지가 있고, XP 스타일로 설정했을 때
+        //     if (type === "RMXP" && $gameMessage.isChoice()) {
+        //         const maxLines = tempText.length;
+        //         const maxChoices = $gameMessage.choices().length;
+        //         const lineHeight = this.lineHeight();
+        //         // 선택지 갯수를 확장했을 수도 있지만, 4개로 가정한다.
+        //         height = height + maxChoices * lineHeight;
+        //         // 선택지 윈도우의 폭이 말풍선보다 크면 제한을 둔다.
+        //         if (this._choiceWindow.windowWidth() > this._bWidth) {
+        //             this._bWidth = this._choiceWindow.windowWidth();
+        //         }
+        //     }
+        // }
+
+        // TODO: 얼굴 이미지 설정 체크
+        // TODO: 인라인 선택지 모드인지 체크
         this.save();
+        const rect = this.textSizeEx(text);
+        const padding = this.standardPadding();
 
-        temp = text;
-
-        // 라인 갯수를 구하기 위해 텍스트를 줄바꿈 문자를 기준으로 나눈다.
-        tempText = text.slice(0);
-        tempText = tempText.split(/[\r\n]+/);
-        numOfLines = tempText.length;
-
-        pad = this.standardPadding() * 2;
-
-        // 높이를 구한다.
-        height = 0;
-        tempText.forEach((i) => (height += this.calcBalloonRectHeight(i)));
-
-        if (height <= 0) {
-            // 높이를 구할 수 없었다면,
-            height = this.fittingHeight(numOfLines);
-        } else {
-            // 높이를 구했다면
-            height = height + pad;
-        }
-
-        const textPadding = this.textPadding();
-
-        // 폭을 계산한다.
-        let pw = 0;
-        for (var i = 0; i < numOfLines; i++) {
-            this._isUsedTextWidthEx = true;
-            const x = this.drawTextEx(tempText[i]);
-            this._isUsedTextWidthEx = false;
-            if (x >= pw) {
-                pw = x;
-            }
-        }
-
-        baseWidth = pw;
-        this._bWidth =
-            baseWidth + pad + textPadding || RS.MessageSystem.Params.WIDTH;
-
-        // 얼굴 이미지가 설정되어있다면 ?
-        if ($gameMessage.faceName() !== "") {
-            // 최소 높이를 설정한다.
-            min = this.fittingHeight(4);
-            // 기존 폭 값에 얼굴 이미지의 폭을 더한다.
-            this._bWidth += this.newLineX() + pad;
-            if (RS.MessageSystem.Params.faceDirection === 2) {
-                this._bWidth += ImageManager.faceWidth;
-            }
-            // 높이 값이 최소 높이보다 작으면, 최소 높이 값으로 설정한다.
-            if (height < min)
-                height = height.clamp(min, height + (min - height));
-        }
-
-        const type = RS.MessageSystem.Params.choiceWindowStyle;
-
-        // 선택지가 있고, XP 스타일로 설정했을 때
-        if (type === "RMXP" && $gameMessage.isChoice()) {
-            const maxLines = tempText.length;
-            const maxChoices = $gameMessage.choices().length;
-            const lineHeight = this.lineHeight();
-            // 선택지 갯수를 확장했을 수도 있지만, 4개로 가정한다.
-            height = height + maxChoices * lineHeight;
-            // 선택지 윈도우의 폭이 말풍선보다 크면 제한을 둔다.
-            if (this._choiceWindow.windowWidth() > this._bWidth) {
-                this._bWidth = this._choiceWindow.windowWidth();
-            }
-        }
-
-        this._bHeight = height;
+        this._bWidth = rect.width + padding * 2;
+        this._bHeight = Math.max(
+            rect.height + padding * 2,
+            this.fittingHeight(1)
+        );
 
         // this.drawTextEx() 사용하기 이전 상태로 복구한다.
         this.restore();
+    }
+
+    textSizeEx(text: string): TextSizeRect {
+        return this.messageWindow.textSizeEx(text);
+    }
+
+    /**
+     * @override
+     */
+    updatePlacement() {
+        this.messageWindow.updatePlacement();
     }
 
     isActiveInBalloon() {
@@ -113,7 +179,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         return true;
     }
 
-    setBalloonRect(data: { [key: string]: any }) {
+    setBalloonRect(data: BalloonRectData) {
         const ox = RS.MessageSystem.Params.windowOffset.x;
         const oy = RS.MessageSystem.Params.windowOffset.y;
         this.x = data.dx + ox;
@@ -129,7 +195,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         }
     }
 
-    setBalloonPlacement(data: { [key: string]: any }) {
+    setBalloonPlacement(data: BalloonRectData) {
         // 화면 좌측
         if (!data) return;
         if (data.mx - this._bWidth / 2 < 0) {
@@ -161,7 +227,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         return data;
     }
 
-    updateSubBalloonElements(data: { [key: string]: any }) {
+    updateSubBalloonElements(data: BalloonRectData) {
         // deprecated
     }
 
@@ -170,9 +236,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             "============ DEBUG updateBalloonPosition() ===================="
         );
 
-        console.log(this.messageWindow);
-
-        let data: { [key: string]: any } = {};
+        let data = <BalloonRectData>{};
 
         if (!this.isActiveInBalloon()) return;
 
@@ -193,9 +257,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             this._nameWindow.height -
             RS.MessageSystem.Params.nameWindowY;
 
-        data = <{ [key: string]: any }>(
-            this.setBalloonPlacement(Object.create(data))
-        );
+        data = <BalloonRectData>this.setBalloonPlacement(Object.create(data));
 
         if (
             data.dx + RS.MessageSystem.Params.windowOffset.x !== this.x ||
@@ -223,7 +285,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             return;
         }
 
-        let data = <{ [key: string]: any }>{};
+        let data = <BalloonRectData>{};
 
         // 타겟의 화면 좌표 설정
         let owner = $gameMap.getMsgOwner();
@@ -296,9 +358,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             this._nameWindow.height -
             RS.MessageSystem.Params.nameWindowY;
 
-        data = <{ [key: string]: any }>(
-            this.setBalloonPlacement(Object.create(data))
-        );
+        data = <BalloonRectData>this.setBalloonPlacement(Object.create(data));
 
         // 말풍선 위치 및 크기 설정
         this.setBalloonRect(data);

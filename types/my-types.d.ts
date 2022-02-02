@@ -1,5 +1,5 @@
+import { Point } from "pixi.js";
 import { isParameter, NumericLiteral } from "typescript";
-
 export declare global {
     interface Array<T> {
         /**
@@ -389,6 +389,12 @@ export declare global {
         windowWidth(): number;
         /** @deprecated */
         windowHeight(): number;
+
+        /**
+         * BalloonWindowTransformComponent를 이용하여 샌드박스 환경에서 calcBalloonRect를 실행합니다.
+         * @param text
+         */
+        calcBalloonRect(text: string): void;
     }
 
     export interface Window_NameBox extends Window_Base {
@@ -444,8 +450,15 @@ export declare global {
             | "right";
     }
 
+    /**
+     * Gets the data that returns using a method nemd `textSizeEx` in the `Window_Base` class.
+     */
+    export type TextSizeRect = {
+        width: number;
+        height: number;
+    };
+
     export interface MessageSystemParams {
-        [key: string]: any;
         faceStartOriginX: number;
         nameWindowWidth: number;
         nameWindowRows: number;
@@ -458,9 +471,9 @@ export declare global {
         maxFontSize: number;
         textStartX: number;
         numVisibleRows: number;
-        gradientColor1: string;
-        gradientColor2: string;
-        gradientColor3: string;
+        gradientColor1: Color;
+        gradientColor2: Color;
+        gradientColor3: Color;
         nameWindowX: number;
         nameWindowY: number;
         nameWindowStdPadding: number;
@@ -472,12 +485,37 @@ export declare global {
         HEIGHT: number;
         TabSize: number;
         backOpacity: number;
-        translucentOpacity: number;
+        translucentOpacity: Opacity;
         defaultOpacity: number;
         contentsOpacity: number;
         defaultOutlineWidth: number;
-        defaultOutlineColor: string;
+        defaultOutlineColor: Color;
         fonts: Parameter.Fonts;
+        [key: string]: any;
+        isTempSpriteContainerVisibility: boolean;
+        lineHeight: number;
+        windowOffset: PIXI.Point;
+        fontSmoothingEnabled: boolean;
+        customFont: Boolean;
+        customFontName: string;
+        customFontSrc: string;
+        windowskin: string;
+        windowskinForNameWindow: string;
+        choiceWindowStyle: string;
+        defaultChoicePostion: string;
+        exTextColors: any[];
+        isPlayTextSound: boolean;
+        pathTextSound: string;
+        textSoundEval1: string;
+        textSoundEval2: string;
+        textSoundInterval: number;
+        textSoundPoolSize: number;
+        langCode: string;
+        preloadWindowskins: string[];
+        isParagraphMinifier: boolean;
+        gradientStyle: string;
+        faceOpacity: number;
+        faceDirection: number;
     }
 
     export interface IMessageSytem {

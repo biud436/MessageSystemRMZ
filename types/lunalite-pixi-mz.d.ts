@@ -42238,6 +42238,9 @@ declare namespace rm.types {
         index: number;
         outputHeight: number;
         outputWidth: number;
+        /**
+         * 아랍어(Arabic or right to left language) 인가?
+         */
         rtl: boolean;
         startX: number;
         startY: number;
