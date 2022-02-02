@@ -1178,9 +1178,9 @@ executor
                 this.updateBigFaceOpacity();
 
                 // 이름 윈도우 업데이트
-                if (this._nameBoxWindow.isOpen() || this.areSettingsChanged()) {
-                    this.updateNameWindow();
-                }
+                // if (this._nameBoxWindow.isOpen() || this.areSettingsChanged()) {
+                //     this.updateNameWindow();
+                // }
 
                 // 얼굴 이미지의 Z-Index 업데이트
                 if ($gameMessage.faceName() !== "") {
@@ -1216,44 +1216,6 @@ executor
             if (this._faceContents.bitmap) {
                 // @ts-ignore
                 this._faceContents.bitmap = null;
-            }
-        };
-
-        const alias_Window_Message_newPage = Window_Message.prototype.newPage;
-        Window_Message.prototype.newPage = function (textState) {
-            this.setFaceZIndex();
-            this.clearFaceBitmap();
-            this.loadWindowskin();
-            this.emit("onLoadWindowskin");
-            this.openBalloon($gameMessage.getBalloon());
-            alias_Window_Message_newPage.call(this, textState);
-        };
-
-        Window_Message.prototype.updateBalloonPositionInBattle = function () {
-            const component = <BalloonWindowTransformComponent>(
-                DependencyInjector.getComponent(
-                    "BalloonWindowTransformComponent"
-                )
-            );
-            if (component) {
-                component.updateBalloonPositionInBattle();
-            }
-        };
-
-        Window_Message.prototype.openBalloon = function (sign) {
-            // 말풍선 모드가 아니면 빠져나간다.
-            if (sign === -2) {
-                this.resizeMessageSystem();
-                return;
-            }
-
-            this.setupOwner(sign);
-
-            // 전투 중일 경우
-            if (SceneManager._scene instanceof Scene_Battle) {
-                this.updateBalloonPositionInBattle();
-            } else {
-                this.updateBalloonPosition();
             }
         };
 
@@ -1401,6 +1363,44 @@ executor
             component.calcBalloonRect(text);
         };
 
+        const alias_Window_Message_newPage = Window_Message.prototype.newPage;
+        Window_Message.prototype.newPage = function (textState) {
+            this.setFaceZIndex();
+            this.clearFaceBitmap();
+            this.loadWindowskin();
+            this.emit("onLoadWindowskin");
+            this.openBalloon($gameMessage.getBalloon());
+            alias_Window_Message_newPage.call(this, textState);
+        };
+
+        Window_Message.prototype.updateBalloonPositionInBattle = function () {
+            const component = <BalloonWindowTransformComponent>(
+                DependencyInjector.getComponent(
+                    "BalloonWindowTransformComponent"
+                )
+            );
+            if (component) {
+                component.updateBalloonPositionInBattle();
+            }
+        };
+
+        Window_Message.prototype.openBalloon = function (sign) {
+            // 말풍선 모드가 아니면 빠져나간다.
+            if (sign === -2) {
+                this.resizeMessageSystem();
+                return;
+            }
+
+            this.setupOwner(sign);
+
+            // 전투 중일 경우
+            if (SceneManager._scene instanceof Scene_Battle) {
+                this.updateBalloonPositionInBattle();
+            } else {
+                this.updateBalloonPosition();
+            }
+        };
+
         const alias_Window_Message_startMessage =
             Window_Message.prototype.startMessage;
         Window_Message.prototype.startMessage = function () {
@@ -1418,7 +1418,7 @@ executor
             ) {
                 tempText = tempText.replace(/[\r\n]+/gm, " ");
             }
-            this.calcBalloonRect(tempText);
+            // this.calcBalloonRect(tempText);
             this.newPage(this._textState);
 
             // width 와 height를 재설정한다.
@@ -1448,6 +1448,8 @@ executor
             ...args: any[]
         ) {
             const isResetOwner: Boolean = !(args.length > 0);
+
+            console.log("resize message system");
 
             if (!isResetOwner && SceneManager._scene instanceof Scene_Battle) {
                 return;
