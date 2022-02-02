@@ -1,3 +1,5 @@
+import { isParameter, NumericLiteral } from "typescript";
+
 export declare global {
     interface Array<T> {
         /**
@@ -427,6 +429,57 @@ export declare global {
         _spriteset: Spriteset_Battle;
     }
 
+    namespace Parameter {
+        export interface Fonts {
+            [key: string]: string;
+            default: string;
+        }
+
+        export type NamePositionKeyMap =
+            | "left"
+            | "auto"
+            | "center"
+            | "opacity0"
+            | "defaultOpacity"
+            | "right";
+    }
+
+    export interface MessageSystemParams {
+        [key: string]: any;
+        faceStartOriginX: number;
+        nameWindowWidth: number;
+        nameWindowRows: number;
+        FONT_SIZE: number;
+        STD_PADDING: number;
+        isValidShakingChoice: boolean;
+        fontSize: number;
+        textSpeed: number;
+        minFontSize: number;
+        maxFontSize: number;
+        textStartX: number;
+        numVisibleRows: number;
+        gradientColor1: string;
+        gradientColor2: string;
+        gradientColor3: string;
+        nameWindowX: number;
+        nameWindowY: number;
+        nameWindowStdPadding: number;
+        namePositionTypeAtX: Parameter.NamePositionKeyMap;
+        faceOX: number;
+        faceOY: number;
+        faceSide: boolean;
+        WIDTH: number;
+        HEIGHT: number;
+        TabSize: number;
+        backOpacity: number;
+        translucentOpacity: number;
+        defaultOpacity: number;
+        contentsOpacity: number;
+        defaultOutlineWidth: number;
+        defaultOutlineColor: string;
+        fonts: Parameter.Fonts;
+    }
+
     export interface IMessageSytem {
         jsonParse: (str: string) => any;
         popParameter: (...args: any[]) => any;
@@ -446,9 +499,7 @@ export declare global {
         };
         Reg: Record<string, any>;
         TextCodes: TextCode;
-        Params: Record<string, any> & {
-            fonts: Record<string, any>;
-        };
+        Params: MessageSystemParams;
     }
 
     export interface RS {
