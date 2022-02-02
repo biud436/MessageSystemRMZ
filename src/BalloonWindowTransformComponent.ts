@@ -108,7 +108,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
             let pw = 0;
             for (var i = 0; i < numOfLines; i++) {
                 this._isUsedTextWidthEx = true;
-                const x = this.textSizeEx(tempText[i]).width;
+                const x = this.drawTextEx(tempText[i]);
                 this._isUsedTextWidthEx = false;
                 if (x >= pw) {
                     pw = x;
