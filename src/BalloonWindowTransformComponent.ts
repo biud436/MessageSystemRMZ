@@ -23,11 +23,11 @@ export type BalloonRectData = {
      */
     tileHeight: number;
     /**
-     *
+     * Sets or gets `dx` that means the destination x coordinate.
      */
     dx: number;
     /**
-     *
+     * Sets or gets `dy` that means the destination y coordinate.
      */
     dy: number;
     /**
@@ -145,7 +145,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
 
         // TODO: 얼굴 이미지 설정 체크
         // TODO: 인라인 선택지 모드인지 체크
-        this.save();
+        // this.save();
         const rect = this.textSizeEx(text);
         const padding = this.standardPadding();
 
@@ -156,7 +156,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         );
 
         // this.drawTextEx() 사용하기 이전 상태로 복구한다.
-        this.restore();
+        // this.restore();
     }
 
     textSizeEx(text: string): TextSizeRect {
@@ -227,9 +227,46 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         return data;
     }
 
+    /**
+     * Updates position of the pause sprite and the name window.
+     *
+     * @param data
+     */
     updateSubBalloonElements(data: BalloonRectData) {
-        // deprecated
+        const _pauseSignSprite = this.messageWindow._pauseSignSprite;
+        if (_pauseSignSprite) {
+            _pauseSignSprite.move(data.tx, data.ty);
+            _pauseSignSprite.scale.y = data.scaleY;
+        }
+        this._nameWindow.y = data.ny;
     }
+
+    getNameWindowY(): number {
+        const ny =
+            this.y -
+            this._nameWindow.height -
+            RS.MessageSystem.Params.nameWindowY;
+
+        return ny ? ny : 0;
+    }
+
+    // canvasToLocalX(x: number) {
+    //     let node: any = this.messageWindow;
+    //     while (node) {
+    //         x -= node.x;
+    //         node = <Sprite>node.parent;
+    //     }
+    //     return x;
+    // }
+
+    // canvasToLocalY(y: number) {
+    //     let node: any = this.messageWindow;
+    //     while (node) {
+    //         y -= node.y;
+    //         node = node.parent;
+    //     }
+    //     return y;
+    // }
 
     updateBalloonPosition() {
         console.log(
@@ -246,16 +283,17 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         data.mx = (owner as Game_Character).screenX();
         data.my = (owner as Game_Character).screenY();
 
+        console.log("%d %d", data.mx, data.my);
+
         data.tx = this._bWidth / 2;
         data.ty = this._bHeight;
         data.scaleY = 1;
         data.tileHeight = $gameMessage.getBalloonPatternHeight();
         data.dx = data.mx - this._bWidth / 2;
         data.dy = data.my - this._bHeight - data.tileHeight;
-        data.ny =
-            this.y -
-            this._nameWindow.height -
-            RS.MessageSystem.Params.nameWindowY;
+        data.ny = this.getNameWindowY();
+
+        console.log(JSON.stringify(data));
 
         data = <BalloonRectData>this.setBalloonPlacement(Object.create(data));
 

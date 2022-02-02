@@ -1354,7 +1354,7 @@ executor
             this._textState = textState;
 
             const tempText = textState.text.slice(0);
-            this.calcBalloonRect(tempText);
+            // this.calcBalloonRect(tempText);
 
             this.newPage(this._textState);
 
