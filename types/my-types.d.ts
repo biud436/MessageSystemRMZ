@@ -199,6 +199,7 @@ export declare global {
          */
         getBalloonPatternHeight: () => number;
         isRTL: () => boolean;
+        setSpeakerName(speakerName: string): void;
     }
 
     interface Game_Temp {
@@ -257,7 +258,7 @@ export declare global {
         _msgOwner: MsgOwner;
         _msgEvent: MsgEvent;
 
-        getMsgOwner(): MsgOwner;
+        getMsgOwner(): MsgOwner | null;
         setMsgOwner(o: MsgOwner): void;
         getMsgEvent(): MsgEvent;
         setMsgEvent(ev: MsgEvent): void;
@@ -421,7 +422,7 @@ export declare global {
 
         processMessageParams(eventId: number, index: number): void;
         isValidMultiLine(): boolean;
-        command101(): boolean;
+        command101(params: any): boolean;
         multiLineAddMessage(): void;
         initLineHeight(): void;
         isMultiLine(): boolean;

@@ -277,7 +277,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     //     return y;
     // }
 
-    updateBalloonPosition() {
+    updateBalloonPosition(): never | void {
         console.log(
             "============ DEBUG updateBalloonPosition() ===================="
         );
@@ -287,10 +287,15 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         if (!this.isActiveInBalloon()) return;
 
         // 말풍선 소유자의 화면 좌표
-        const owner = $gameMap.getMsgOwner();
+        const owner = <Game_Character>$gameMap.getMsgOwner();
 
-        data.mx = (owner as Game_Character).screenX();
-        data.my = (owner as Game_Character).screenY();
+        if (!owner) {
+            console.warn($gameMap.getMsgOwner());
+            throw new Error("말풍선 소유자가 없습니다.");
+        }
+
+        data.mx = owner.screenX();
+        data.my = owner.screenY();
 
         console.log("%d %d", data.mx, data.my);
 

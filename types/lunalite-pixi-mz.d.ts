@@ -35575,7 +35575,7 @@ declare class Game_Interpreter {
     /**
      * Show Text
      */
-    command101(): boolean;
+    command101(params: any): boolean;
     /**
      * Show Choices
      */

@@ -1401,6 +1401,9 @@ executor
             }
         };
 
+        /**
+         * 1. start
+         */
         const alias_Window_Message_startMessage =
             Window_Message.prototype.startMessage;
         Window_Message.prototype.startMessage = function () {
@@ -1418,7 +1421,9 @@ executor
             ) {
                 tempText = tempText.replace(/[\r\n]+/gm, " ");
             }
+            // ! BUG의 원인
             // this.calcBalloonRect(tempText);
+
             this.newPage(this._textState);
 
             // width 와 height를 재설정한다.
@@ -1815,44 +1820,46 @@ executor
             }
         };
 
-        // Game_Interpreter.prototype.command101 = function () {
-        //     if (!$gameMessage.isBusy()) {
-        //         $gameMap.setMsgEvent(this.character(this._eventId > 0 ? 0 : -1));
-        //         $gameMessage.setFaceImage(this._params[0], this._params[1]);
-        //         $gameMessage.setBackground(this._params[2]);
-        //         $gameMessage.setPositionType(this._params[3]);
+        Game_Interpreter.prototype.command101 = function (params) {
+            if ($gameMessage.isBusy()) {
+                return false;
+            }
 
-        //         this.processMessageParams(this._eventId, this._index);
+            $gameMap.setMsgEvent(this.character(this._eventId > 0 ? 0 : -1));
+            $gameMessage.setFaceImage(params[0], params[1]);
+            $gameMessage.setBackground(params[2]);
+            $gameMessage.setPositionType(params[3]);
+            $gameMessage.setSpeakerName(params[4]);
 
-        //         if (this.isMultiLine()) {
-        //             this.multiLineAddMessage();
-        //         } else {
-        //             while (this.nextEventCode() === 401) {
-        //                 // Text data
-        //                 this._index++;
-        //                 $gameMessage.add(this.currentCommand().parameters[0]);
-        //             }
-        //         }
+            this.processMessageParams(this._eventId, this._index);
 
-        //         switch (this.nextEventCode()) {
-        //             case 102: // Show Choices
-        //                 this._index++;
-        //                 this.setupChoices(this.currentCommand().parameters);
-        //                 break;
-        //             case 103: // Input Number
-        //                 this._index++;
-        //                 this.setupNumInput(this.currentCommand().parameters);
-        //                 break;
-        //             case 104: // Select Item
-        //                 this._index++;
-        //                 this.setupItemChoice(this.currentCommand().parameters);
-        //                 break;
-        //         }
-        //         this._index++;
-        //         this.setWaitMode("message");
-        //     }
-        //     return false;
-        // };
+            if (this.isMultiLine()) {
+                this.multiLineAddMessage();
+            } else {
+                while (this.nextEventCode() === 401) {
+                    // Text data
+                    this._index++;
+                    $gameMessage.add(this.currentCommand().parameters[0]);
+                }
+            }
+
+            switch (this.nextEventCode()) {
+                case 102: // Show Choices
+                    this._index++;
+                    this.setupChoices(this.currentCommand().parameters);
+                    break;
+                case 103: // Input Number
+                    this._index++;
+                    this.setupNumInput(this.currentCommand().parameters);
+                    break;
+                case 104: // Select Item
+                    this._index++;
+                    this.setupItemChoice(this.currentCommand().parameters);
+                    break;
+            }
+            this.setWaitMode("message");
+            return true;
+        };
 
         Game_Interpreter.prototype.multiLineAddMessage = function () {
             this.initLineHeight();
