@@ -21,7 +21,7 @@ export class EventEmitter {
     /**
      * 호출할 이벤트를 등록합니다.
      *
-     * @param eventName
+     * @param eventName 호출할 이벤트 명
      * @param func
      * @returns
      */
@@ -42,7 +42,7 @@ export class EventEmitter {
     /**
      * 등록된 이벤트를 호출합니다.
      *
-     * @param eventName
+     * @param eventName 호출할 이벤트 명
      * @param args
      * @returns
      */

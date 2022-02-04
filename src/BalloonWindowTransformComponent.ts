@@ -53,14 +53,12 @@ export type BalloonRectData = {
 export class BalloonWindowTransformComponent extends BaseComponent {
     private _bWidth: number = 0;
     private _bHeight: number = 0;
-    private _isUsedTextWidthEx: boolean = false;
     public transform!: PIXI.Transform;
 
     onReady(props: ComponentProp) {
         super.onReady(props);
         this._bWidth = this.width;
         this._bHeight = this.height;
-        this._isUsedTextWidthEx = false;
     }
 
     /**
@@ -188,6 +186,9 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     setBalloonRect(data: BalloonRectData) {
+        const faceName = $gameMessage.faceName();
+        const faceDirection = RS.MessageSystem.Params.faceDirection;
+
         const ox = RS.MessageSystem.Params.windowOffset.x;
         const oy = RS.MessageSystem.Params.windowOffset.y;
         this.x = data.dx + ox;
@@ -195,10 +196,7 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         this.width = this._bWidth;
         this.height = this._bHeight;
 
-        if (
-            $gameMessage.faceName() &&
-            RS.MessageSystem.Params.faceDirection === 2
-        ) {
+        if (faceName && faceDirection === 2) {
             this.drawMessageFace();
         }
     }
