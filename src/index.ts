@@ -1063,33 +1063,30 @@ executor
             Window_Message.prototype.flushTextState;
         Window_Message.prototype.flushTextState = function (textState) {
             const isDrawing = textState.drawing; // !this._isUsedTextWidthEx와 같은 효과
-            // 기본 지연 시간 설정
-            if (!this._showFast && !this.isEndOfText(textState) && isDrawing) {
-                this.startWait($gameMessage.getWaitTime() || 0);
-            }
-
-            // 배경색의 처리
+            const isSlowTextMode =
+                !this._showFast && !this.isEndOfText(textState) && isDrawing;
             const isDrawingTextBackground =
                 !this._isUsedTextWidthEx &&
                 this._backBuffer &&
                 this._backBuffer.isDirty;
-            if (isDrawingTextBackground) {
-                if (isDrawing) {
-                    /**
-                     * @type {Bitmap}
-                     */
-                    const bitmap = this._backBuffer.buffer;
-                    const tx = (<TextState>textState).px;
-                    const ty = (<TextState>textState).py;
-                    const x = (<TextState>textState).x;
-                    const y = (<TextState>textState).y;
-                    const w = Math.floor(bitmap.width);
-                    const h = Math.floor(bitmap.height);
 
-                    this.contents.blt(bitmap, 0, 0, w, h, x, y);
-                    this._backBuffer.isDirty = false;
-                }
+            if (isSlowTextMode) {
+                this.startWait($gameMessage.getWaitTime() || 0);
             }
+
+            if (isDrawingTextBackground && isDrawing) {
+                const bitmap = this._backBuffer.buffer;
+                const tx = (<TextState>textState).px;
+                const ty = (<TextState>textState).py;
+                const x = (<TextState>textState).x;
+                const y = (<TextState>textState).y;
+                const w = Math.floor(bitmap.width);
+                const h = Math.floor(bitmap.height);
+
+                this.contents.blt(bitmap, 0, 0, w, h, x, y);
+                this._backBuffer.isDirty = false;
+            }
+
             alias_Window_Message_flushTextState.call(this, textState);
         };
 
