@@ -801,7 +801,8 @@ executor
         };
 
         Window_Message.prototype.setTextIndent = function (textState) {
-            textState.x += <number>this.obtainEscapeParam(textState);
+            const value = parseInt(<string>this.obtainEscapeParam(textState));
+            textState.x += value;
         };
 
         Window_Message.prototype.setHighlightTextColor = function (
@@ -1034,7 +1035,8 @@ executor
             }
 
             // 배경색의 위치를 계산하고 비트맵 인스턴스를 생성한다.
-            if (contents.highlightTextColor !== null) {
+            const isValidTextBackground = contents.highlightTextColor !== null;
+            if (isValidTextBackground) {
                 const contentW = Math.floor(w * 2) + 1.0;
                 const contentH = this.lineHeight();
 
@@ -1048,7 +1050,9 @@ executor
                 const { px, py } = <TextState>textState;
 
                 // 배경 버퍼는 내부 버퍼의 초기 위치로부터 계산된다.
-                this._backBuffer.buffer.fillAll(contents.highlightTextColor);
+                this._backBuffer.buffer.fillAll(
+                    <string>contents.highlightTextColor
+                );
                 // 이 플래그가 활성화되어있다면 flushTextState에서 그리기 처리를 해야 한다.
                 this._backBuffer.isDirty = true;
                 this._backBuffer.textState = textState;
@@ -1058,22 +1062,23 @@ executor
         const alias_Window_Message_flushTextState =
             Window_Message.prototype.flushTextState;
         Window_Message.prototype.flushTextState = function (textState) {
+            const isDrawingSkip = !textState.drawing; // !this._isUsedTextWidthEx와 같은 효과
             // 기본 지연 시간 설정
             if (
                 !this._showFast &&
                 !this.isEndOfText(textState) &&
-                !this._isUsedTextWidthEx
+                isDrawingSkip
             ) {
                 this.startWait($gameMessage.getWaitTime() || 0);
             }
 
             // 배경색의 처리
-            if (
+            const isDrawingTextBackground =
                 !this._isUsedTextWidthEx &&
                 this._backBuffer &&
-                this._backBuffer.isDirty
-            ) {
-                if (textState.drawing) {
+                this._backBuffer.isDirty;
+            if (isDrawingTextBackground) {
+                if (isDrawingSkip) {
                     /**
                      * @type {Bitmap}
                      */
@@ -1082,8 +1087,8 @@ executor
                     const ty = (<TextState>textState).py;
                     const x = (<TextState>textState).x;
                     const y = (<TextState>textState).y;
-                    const w = bitmap.width;
-                    const h = bitmap.height;
+                    const w = Math.floor(bitmap.width);
+                    const h = Math.floor(bitmap.height);
 
                     this.contents.blt(bitmap, 0, 0, w, h, x, y);
                     this._backBuffer.isDirty = false;
