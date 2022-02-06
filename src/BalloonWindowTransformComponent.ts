@@ -177,8 +177,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     isActiveInBalloon() {
-        const isValidBalloon = $gameMessage.getBalloon() === -2;
-        if (isValidBalloon) {
+        const isInValidBalloon = $gameMessage.getBalloon() === -2;
+        if (isInValidBalloon) {
             this.updatePlacement();
             return false;
         }

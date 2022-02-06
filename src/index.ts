@@ -1092,10 +1092,6 @@ executor
             alias_Window_Message_flushTextState.call(this, textState);
         };
 
-        // [X] Window_Message.prototype.createSubWindows
-        // [X] RS.MessageSystem.Params.extraSubWindows = [];
-        // [X] Window_Message.prototype.subWindows
-
         Window_Message.prototype.updateBigFaceOpacity = function () {
             if (!this._faceContents) {
                 return;
