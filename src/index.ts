@@ -1061,7 +1061,9 @@ executor
 
         const alias_Window_Message_flushTextState =
             Window_Message.prototype.flushTextState;
-        Window_Message.prototype.flushTextState = function (textState) {
+        Window_Message.prototype.flushTextState = function (
+            textState: TextState
+        ) {
             const isDrawing = textState.drawing; // !this._isUsedTextWidthEx와 같은 효과
             const isSlowTextMode =
                 !this._showFast && !this.isEndOfText(textState) && isDrawing;
@@ -1076,10 +1078,10 @@ executor
 
             if (isDrawingTextBackground && isDrawing) {
                 const bitmap = this._backBuffer.buffer;
-                const tx = (<TextState>textState).px;
-                const ty = (<TextState>textState).py;
-                const x = (<TextState>textState).x;
-                const y = (<TextState>textState).y;
+                const tx = textState.px;
+                const ty = textState.py;
+                const x = textState.x;
+                const y = textState.y;
                 const w = Math.floor(bitmap.width);
                 const h = Math.floor(bitmap.height);
 
