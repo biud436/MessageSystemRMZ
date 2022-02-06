@@ -1018,7 +1018,7 @@ executor
             // 일반 메시지 모드에서만 동작 한다.
             let isValid =
                 $gameMessage.getBalloon() === -2 &&
-                !this._isUsedTextWidthEx &&
+                textState.drawing &&
                 RS.MessageSystem.Params.isParagraphMinifier;
 
             // 소수점 자리를 버려야 정확히 계산된다.
@@ -1062,13 +1062,9 @@ executor
         const alias_Window_Message_flushTextState =
             Window_Message.prototype.flushTextState;
         Window_Message.prototype.flushTextState = function (textState) {
-            const isDrawingSkip = !textState.drawing; // !this._isUsedTextWidthEx와 같은 효과
+            const isDrawing = textState.drawing; // !this._isUsedTextWidthEx와 같은 효과
             // 기본 지연 시간 설정
-            if (
-                !this._showFast &&
-                !this.isEndOfText(textState) &&
-                isDrawingSkip
-            ) {
+            if (!this._showFast && !this.isEndOfText(textState) && isDrawing) {
                 this.startWait($gameMessage.getWaitTime() || 0);
             }
 
@@ -1078,7 +1074,7 @@ executor
                 this._backBuffer &&
                 this._backBuffer.isDirty;
             if (isDrawingTextBackground) {
-                if (isDrawingSkip) {
+                if (isDrawing) {
                     /**
                      * @type {Bitmap}
                      */
