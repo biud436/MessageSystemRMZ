@@ -202,6 +202,11 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     setBalloonPlacement(data: BalloonRectData): BalloonRectData | void {
+        const gw = Graphics.width;
+        const gh = Graphics.height;
+        const bw = Graphics.boxWidth;
+        const bh = Graphics.boxHeight;
+
         console.log("setBalloonPlacement() + " + JSON.stringify(data));
         // 화면 좌측
         if (!data) return;
@@ -211,8 +216,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         }
 
         // 화면 우측
-        if (data.mx - this._bWidth / 2 > Graphics.boxWidth - this._bWidth) {
-            data.dx = Graphics.boxWidth - this._bWidth;
+        if (data.mx - this._bWidth / 2 > bw - this._bWidth) {
+            data.dx = bw - this._bWidth;
             data.tx = this.canvasToLocalX(data.mx);
         }
 
@@ -226,8 +231,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
         }
 
         // 화면 하단
-        if (data.my - this._bHeight > Graphics.boxHeight - this._bHeight) {
-            data.dy = Graphics.boxWidth - this._bHeight;
+        if (data.my - this._bHeight > bh - this._bHeight) {
+            data.dy = bh - this._bHeight;
             data.ty = this._height;
         }
 
