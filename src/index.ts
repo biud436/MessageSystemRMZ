@@ -257,20 +257,17 @@ executor
                 this._isSaved = false;
             }
 
-            /**
-             *
-             * @param {Bitmap} contents
-             */
-            save(contents: Bitmap) {
-                this.fontFace = contents.fontFace;
-                this.fontSize = contents.fontSize;
-                this.fontBold = contents.fontBold;
-                this.fontItalic = contents.fontItalic;
-                this.textColor = contents.textColor;
-                this.outlineColor = contents.outlineColor;
-                this.outlineWidth = contents.outlineWidth;
-                this.fontGradient = contents.fontGradient;
-                this.highlightTextColor = contents.highlightTextColor;
+            save(messageWindow: Window_Base) {
+                this.fontFace = messageWindow.contents.fontFace;
+                this.fontSize = messageWindow.contents.fontSize;
+                this.fontBold = messageWindow.contents.fontBold;
+                this.fontItalic = messageWindow.contents.fontItalic;
+                this.textColor = messageWindow.contents.textColor;
+                this.outlineColor = messageWindow.contents.outlineColor;
+                this.outlineWidth = messageWindow.contents.outlineWidth;
+                this.fontGradient = messageWindow.contents.fontGradient;
+                this.highlightTextColor =
+                    messageWindow.contents.highlightTextColor;
 
                 if ($gameMessage) {
                     this.textSpeed = $gameMessage.getWaitTime();
@@ -279,18 +276,19 @@ executor
                 this._isSaved = true;
             }
 
-            restore(contents: Bitmap) {
+            restore(messageWindow: Window_Base) {
                 if (!this._isSaved) return;
-                if (!(contents instanceof Bitmap)) return;
-                contents.fontFace = this.fontFace;
-                contents.fontSize = this.fontSize;
-                contents.fontBold = this.fontBold;
-                contents.fontItalic = this.fontItalic;
-                contents.textColor = this.textColor;
-                contents.outlineColor = this.outlineColor;
-                contents.outlineWidth = this.outlineWidth;
-                contents.fontGradient = this.fontGradient;
-                contents.highlightTextColor = this.highlightTextColor;
+                if (!(messageWindow.contents instanceof Bitmap)) return;
+                messageWindow.contents.fontFace = this.fontFace;
+                messageWindow.contents.fontSize = this.fontSize;
+                messageWindow.contents.fontBold = this.fontBold;
+                messageWindow.contents.fontItalic = this.fontItalic;
+                messageWindow.contents.textColor = this.textColor;
+                messageWindow.contents.outlineColor = this.outlineColor;
+                messageWindow.contents.outlineWidth = this.outlineWidth;
+                messageWindow.contents.fontGradient = this.fontGradient;
+                messageWindow.contents.highlightTextColor =
+                    this.highlightTextColor;
                 if ($gameMessage) {
                     $gameMessage.setWaitTime(this.textSpeed);
                 }
@@ -456,12 +454,12 @@ executor
 
         Window_Base.prototype.save = function () {
             this._messageDesc = new MessageDesc();
-            this._messageDesc.save(this.contents);
+            this._messageDesc.save(this);
         };
 
         Window_Base.prototype.restore = function () {
             if (!this._messageDesc) return;
-            this._messageDesc.restore(this.contents);
+            this._messageDesc.restore(this);
             this._messageDesc = undefined;
         };
 
@@ -1016,9 +1014,11 @@ executor
             let width = this.contentsWidth();
 
             // 일반 메시지 모드에서만 동작 한다.
+            const isNormalMessageWindow = $gameMessage.getBalloon() === -2;
+            const isRealDrawingMode = textState.drawing;
             let isValid =
-                $gameMessage.getBalloon() === -2 &&
-                textState.drawing &&
+                isNormalMessageWindow &&
+                isRealDrawingMode &&
                 RS.MessageSystem.Params.isParagraphMinifier;
 
             // 소수점 자리를 버려야 정확히 계산된다.
@@ -1418,7 +1418,7 @@ executor
                 tempText = tempText.replace(/[\r\n]+/gm, " ");
             }
             // ! BUG의 원인
-            // this.calcBalloonRect(tempText);
+            this.calcBalloonRect(tempText);
 
             this.newPage(this._textState);
 

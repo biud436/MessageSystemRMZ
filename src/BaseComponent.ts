@@ -59,18 +59,12 @@ export class BaseComponent extends Component {
               };
     }
 
-    save() {
-        // 'this._messageWindow?.save()'의 구현입니다.
-        // 하지만 save는 함수가 아닐 수도 있습니다.
-        // 타입의 안전성은 체크하지 않습니다.
-        this._messageWindow.save ? this._messageWindow.save() : null;
+    save(): void {
+        this._messageWindow.save();
     }
 
-    restore() {
-        // 'this._messageWindow?.restore()'의 구현입니다.
-        // 하지만 save는 함수가 아닐 수도 있습니다.
-        // 타입의 안전성은 체크하지 않습니다.
-        this._messageWindow.restore ? this._messageWindow.restore() : null;
+    restore(): void {
+        this._messageWindow.restore();
     }
 
     standardPadding() {

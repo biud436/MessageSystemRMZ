@@ -148,11 +148,12 @@ export class BalloonWindowTransformComponent extends BaseComponent {
 
         //     this.restore();
         // }
+        this.save();
 
         {
             // TODO: 얼굴 이미지 설정 체크
             // TODO: 인라인 선택지 모드인지 체크
-            this.save();
+
             const rect = this.textSizeEx(text);
             const padding = this.standardPadding();
             this._bWidth = rect.width + padding * 2;
@@ -161,8 +162,8 @@ export class BalloonWindowTransformComponent extends BaseComponent {
                 this.fittingHeight(1)
             );
             // this.drawTextEx() 사용하기 이전 상태로 복구한다.
-            this.restore();
         }
+        this.restore();
     }
 
     textSizeEx(text: string): TextSizeRect {

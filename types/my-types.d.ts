@@ -430,8 +430,8 @@ export declare global {
     }
 
     export interface MessageDesc {
-        save(contents: Bitmap): void;
-        restore(contents: Bitmap): void;
+        save(messageWindow: Window_Base): void;
+        restore(messageWindow: Window_Base): void;
     }
 
     export interface Scene_Map {
