@@ -257,9 +257,9 @@ executor
                 this._isSaved = false;
             }
 
-            save(messageWindow: Window_Base) {
+            save<T extends Window_Base>(messageWindow: T) {
                 this.fontFace = messageWindow.contents.fontFace;
-                this.fontSize = messageWindow.contents.fontSize;
+                this.fontSize = +messageWindow.contents.fontSize;
                 this.fontBold = messageWindow.contents.fontBold;
                 this.fontItalic = messageWindow.contents.fontItalic;
                 this.textColor = messageWindow.contents.textColor;
@@ -276,7 +276,7 @@ executor
                 this._isSaved = true;
             }
 
-            restore(messageWindow: Window_Base) {
+            restore<T extends Window_Base>(messageWindow: T) {
                 if (!this._isSaved) return;
                 if (!(messageWindow.contents instanceof Bitmap)) return;
                 messageWindow.contents.fontFace = this.fontFace;
@@ -334,9 +334,9 @@ executor
             if (c > 0 && c < 32) {
                 color = ColorManager.textColor(color);
             }
-            if (!this._isUsedTextWidthEx) {
-                this.contents.textColor = color;
-            }
+            // if (!this._isUsedTextWidthEx) {
+            this.contents.textColor = color;
+            // }
         };
 
         const alias_Window_Base_processEscapeCharacter =
@@ -417,13 +417,13 @@ executor
             return textState.outputWidth;
         };
 
-        Window_Base.prototype.processAllText = function (textState) {
-            this._isUsedTextWidthEx = !textState.drawing;
-            while (textState.index < textState.text.length) {
-                this.processCharacter(textState);
-            }
-            this.flushTextState(textState);
-        };
+        // Window_Base.prototype.processAllText = function (textState) {
+        //     this._isUsedTextWidthEx = !textState.drawing;
+        //     while (textState.index < textState.text.length) {
+        //         this.processCharacter(textState);
+        //     }
+        //     this.flushTextState(textState);
+        // };
 
         Window_Base.prototype.makeFontSmaller = function () {
             if (this.contents.fontSize >= RS.MessageSystem.Params.minFontSize) {
@@ -455,6 +455,7 @@ executor
         Window_Base.prototype.save = function () {
             this._messageDesc = new MessageDesc();
             this._messageDesc.save(this);
+            console.log(this._messageDesc);
         };
 
         Window_Base.prototype.restore = function () {
@@ -1068,9 +1069,7 @@ executor
             const isSlowTextMode =
                 !this._showFast && !this.isEndOfText(textState) && isDrawing;
             const isDrawingTextBackground =
-                !this._isUsedTextWidthEx &&
-                this._backBuffer &&
-                this._backBuffer.isDirty;
+                isDrawing && this._backBuffer && this._backBuffer.isDirty;
 
             if (isSlowTextMode) {
                 this.startWait($gameMessage.getWaitTime() || 0);

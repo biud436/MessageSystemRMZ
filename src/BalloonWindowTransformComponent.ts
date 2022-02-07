@@ -167,7 +167,11 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     }
 
     textSizeEx(text: string): TextSizeRect {
-        return this.messageWindow.textSizeEx(text);
+        this.messageWindow._isUsedTextWidthEx = true;
+        const rect = this.messageWindow.textSizeEx(text);
+        this.messageWindow._isUsedTextWidthEx = false;
+
+        return rect;
     }
 
     /**
