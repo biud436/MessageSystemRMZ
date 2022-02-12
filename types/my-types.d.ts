@@ -564,6 +564,7 @@ export declare global {
         gradientStyle: string;
         faceOpacity: number;
         faceDirection: number;
+        DEBUG: boolean;
     }
 
     export interface IMessageSytem {
