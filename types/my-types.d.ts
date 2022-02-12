@@ -425,6 +425,24 @@ export declare global {
          * 새로운 라인이 시작되기 전에 이전 라인에 그려야 할 배경색을 마저 그리는 기능입니다.
          */
         flushTextBackgbround(textState: TextState): void;
+
+        /**
+         *
+         */
+        getDefaultSizeOption(): SizeOption;
+    }
+
+    export interface Scene_Base {
+        calcWindowHeight(numLines: number, selectable?: boolean);
+    }
+
+    interface SizeOption {
+        maxSW: number;
+        maxSH: number;
+        maxWidth: number;
+        maxHeight: number;
+        maxY: number;
+        maxX: number;
     }
 
     export interface Window_NameBox extends Window_Base {

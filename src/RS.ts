@@ -224,7 +224,7 @@ RS.MessageSystem.Params = {
     },
     isTempSpriteContainerVisibility: false,
     lineHeight: 36,
-    windowOffset: new Point(0, 0),
+    windowOffset: new Point(-4, -4),
     fontSmoothingEnabled: true,
     customFont: Boolean(
         RS.MessageSystem.popParameter(

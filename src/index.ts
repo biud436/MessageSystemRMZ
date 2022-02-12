@@ -1169,63 +1169,81 @@ executor
             }
         };
 
+        Window_Message.prototype.getDefaultSizeOption = function () {
+            const isMobileDevice = Utils.isMobileDevice();
+            const maxSW = isMobileDevice
+                ? window.outerWidth
+                : window.screen.availWidth;
+            const maxSH = isMobileDevice
+                ? window.outerHeight
+                : window.screen.availHeight;
+            const maxWidth = this.width;
+            const maxHeight = this.height;
+
+            return {
+                maxSW,
+                maxSH,
+                maxWidth,
+                maxHeight,
+                maxY: maxSH - maxHeight,
+                maxX: maxSW - maxWidth,
+            };
+        };
+
         Window_Message.prototype.updatePlacement = function () {
-            // TODO: try-catch statement will be deleted later.
-            try {
-                const goldWindow = this._goldWindow;
-                this._positionType = $gameMessage.positionType();
+            const goldWindow = this._goldWindow;
+            const isNormalWindowMode = $gameMessage.getBalloon() === -2;
+            const isValidSceneIsMap = SceneManager._scene instanceof Scene_Map;
+            this._positionType = $gameMessage.positionType();
 
-                // 말풍선 모드가 아니라면 X좌표를 화면 중앙에 맞춘다.
-                if ($gameMessage.getBalloon() === -2) {
-                    console.log("말풍선 모드가 아닙니다");
-                    this.x =
-                        Graphics.width / 2 -
-                        this.width / 2 +
-                        RS.MessageSystem.Params.windowOffset.x;
-                    this.y =
-                        (this._positionType * (Graphics.height - this.height)) /
-                            2 +
-                        RS.MessageSystem.Params.windowOffset.y;
+            // 말풍선 모드가 아니라면 X좌표를 화면 중앙에 맞춘다.
+            if (isNormalWindowMode) {
+                const { maxWidth, maxHeight, maxX, maxY } =
+                    this.getDefaultSizeOption();
+
+                const desiredX =
+                    Graphics.width / 2 -
+                    maxWidth / 2 +
+                    RS.MessageSystem.Params.windowOffset.x;
+                const desiredY =
+                    (this._positionType * (Graphics.height - maxHeight)) / 2 +
+                    RS.MessageSystem.Params.windowOffset.y;
+
+                this.x = Math.min(desiredX, maxX);
+                this.y = Math.min(desiredY, maxY);
+            } else {
+                if (isValidSceneIsMap) {
+                    this.updateBalloonPosition();
+                }
+            }
+
+            // 골드 윈도우의 위치 설정
+            if (goldWindow) {
+                const minGoldY = goldWindow.height;
+                this._goldWindow.y =
+                    this.y > minGoldY ? 0 : Graphics.height - goldWindow.height;
+            }
+
+            // 투명도 업데이트
+            this.updateDefaultOpacity();
+            this.updateContentsOpacity();
+            this.updateBigFaceOpacity();
+
+            // 이름 윈도우 업데이트
+            // if (this._nameBoxWindow.isOpen() || this.areSettingsChanged()) {
+            //     this.updateNameWindow();
+            // }
+
+            // 얼굴 이미지의 Z-Index 업데이트
+            if ($gameMessage.faceName() !== "") {
+                const isBigFace = /^Big_/.exec($gameMessage.faceName());
+                const backIndex = 2;
+
+                if (RS.MessageSystem.Params.faceSide) {
+                    this.setFaceZIndex(isBigFace ? 0 : backIndex);
                 } else {
-                    console.log("말풍선 모드입니다");
-                    if (SceneManager._scene instanceof Scene_Map) {
-                        this.updateBalloonPosition();
-                    }
+                    this.setFaceZIndex(backIndex);
                 }
-
-                // 골드 윈도우의 위치 설정
-                if (goldWindow) {
-                    const minGoldY = goldWindow.height;
-                    this._goldWindow.y =
-                        this.y > minGoldY
-                            ? 0
-                            : Graphics.boxHeight - goldWindow.height;
-                }
-
-                // 투명도 업데이트
-                this.updateDefaultOpacity();
-                this.updateContentsOpacity();
-                this.updateBigFaceOpacity();
-
-                // 이름 윈도우 업데이트
-                // if (this._nameBoxWindow.isOpen() || this.areSettingsChanged()) {
-                //     this.updateNameWindow();
-                // }
-
-                // 얼굴 이미지의 Z-Index 업데이트
-                if ($gameMessage.faceName() !== "") {
-                    const isBigFace = /^Big_/.exec($gameMessage.faceName());
-                    const backIndex = 2;
-
-                    if (RS.MessageSystem.Params.faceSide) {
-                        this.setFaceZIndex(isBigFace ? 0 : backIndex);
-                    } else {
-                        this.setFaceZIndex(backIndex);
-                    }
-                }
-            } catch (e) {
-                console.log("!------ updatePlacement error ------!");
-                console.error(e);
             }
         };
 
@@ -1498,8 +1516,8 @@ executor
                 width: this.windowWidth(),
                 height: this.windowHeight(),
             };
-            const x = Graphics.boxWidth / 2 - windowRect.width / 2 + ox;
-            const y = (n * (Graphics.boxHeight - windowRect.height)) / 2 + oy;
+            const x = Graphics.width / 2 - windowRect.width / 2 + ox;
+            const y = (n * (Graphics.height - windowRect.height)) / 2 + oy;
             const width = windowRect.width;
             const height = windowRect.height;
 
@@ -2004,6 +2022,14 @@ executor
             const messageWindow = this._messageWindow;
             DependencyInjector.injectMessageWindow(messageWindow);
             DependencyInjector.ready();
+        };
+
+        Scene_Message.prototype.messageWindowRect = function () {
+            const ww = Graphics.width;
+            const wh = this.calcWindowHeight(4, false) + 8;
+            const wx = (Graphics.height - ww) / 2;
+            const wy = 0;
+            return new Rectangle(wx, wy, ww, wh);
         };
 
         const alias_Scene_Message_terminate = Scene_Message.prototype.terminate;

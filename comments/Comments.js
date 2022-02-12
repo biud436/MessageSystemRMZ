@@ -303,8 +303,8 @@
  * @text Window Width
  * @type string
  * @desc Specify the window width
- * (Graphics.boxWidth is the same as the screen width)
- * @default Graphics.boxWidth
+ * (Graphics.width is the same as the screen width)
+ * @default Graphics.width
  *
  * @param Gradient Style
  * @text Gradient Style
@@ -1055,8 +1055,8 @@
  * @text 윈도우 폭
  * @type string
  * @desc 윈도우 폭 지정
- * (Graphics.boxWidth는 화면 가로 길이)
- * @default (Graphics.boxWidth / 2) + (Graphics.boxWidth / 3)
+ * (Graphics.width는 화면 가로 길이)
+ * @default Graphics.width
  * 
  * @param Gradient Style
  * @text 그레디언트 스타일
