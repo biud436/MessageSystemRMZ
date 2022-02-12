@@ -949,6 +949,11 @@ executor
             // 내부 버퍼의 위치를 시작 지점으로 초기화한다.
             (<TextState>textState).px =
                 textState.startX || (<TextState>textState).x;
+
+            // background buffer 초기화
+            if (this._backBuffer && this._backBuffer.isDirty) {
+                const backTextState = this._backBuffer.textState;
+            }
         };
 
         /**
@@ -1041,14 +1046,17 @@ executor
                 const contentW = Math.floor(w * 2) + 1.0;
                 const contentH = this.lineHeight();
 
+                // 내부 버퍼의 텍스트 위치를 받아옵니다 (글자 하나의 버퍼 위치)
+                const { px, py } = <TextState>textState;
+
                 // 배경 버퍼의 생성
                 this._backBuffer = {
                     buffer: new Bitmap(contentW, contentH),
-                    textState: null,
+                    textState: textState,
                     isDirty: false,
+                    x: px,
+                    y: py,
                 };
-
-                const { px, py } = <TextState>textState;
 
                 // 배경 버퍼는 내부 버퍼의 초기 위치로부터 계산된다.
                 this._backBuffer.buffer.fillAll(
@@ -1075,21 +1083,48 @@ executor
                 this.startWait($gameMessage.getWaitTime() || 0);
             }
 
+            // 텍스트 코드를 만나면, flush가 시작되는데 배경색의 시작 라인이 달라지면,
+            // 다음 라인까지 배경색이 제대로 그려지지 않게 됩니다.
+            // 이는 MZ에서는 버퍼 방식이기 때문에 한 글자씩 배경색이 그려지지 않기 때문입니다.
+            // 따라서 라인이 달라질 때, flushBackground를 해줘야 합니다.
             if (isDrawingTextBackground && isDrawing) {
-                const bitmap = this._backBuffer.buffer;
-                const tx = textState.px;
-                const ty = textState.py;
+                const backBuffer = this._backBuffer;
+                const bitmap = backBuffer.buffer;
+                const backTextState = backBuffer.textState!;
+
+                if (backTextState.py !== textState.y) {
+                    this._backBuffer.isDirty = false;
+                    alias_Window_Message_flushTextState.call(this, textState);
+                    return;
+                }
+                let tx = backBuffer.x;
+                let ty = backBuffer.y;
                 const x = textState.x;
                 const y = textState.y;
-                const w = Math.floor(bitmap.width);
-                const h = Math.floor(bitmap.height);
+                const w = Math.min(this.innerWidth, Math.floor(bitmap.width));
+                const h = Math.min(this.innerHeight, Math.floor(bitmap.height));
 
-                this.contents.blt(bitmap, 0, 0, w, h, x, y);
+                // this.contents.blt(
+                //     bitmap,
+                //     0,
+                //     0,
+                //     w,
+                //     h,
+                //     Math.min(tx, y),
+                //     Math.min(ty, y)
+                // );
                 this._backBuffer.isDirty = false;
             }
 
             alias_Window_Message_flushTextState.call(this, textState);
         };
+
+        /**
+         * 새로운 라인이 시작되기 전에 이전 라인에 그려야 할 배경색을 마저 그리는 기능입니다.
+         */
+        Window_Message.prototype.flushTextBackgbround = function (
+            textState: TextState
+        ) {};
 
         Window_Message.prototype.updateBigFaceOpacity = function () {
             if (!this._faceContents) {
