@@ -2042,7 +2042,7 @@ executor
 
         // ! [DEBUG]
         if (RS.MessageSystem.Params.DEBUG) {
-            nw.Window.get().showDevTools();
+            SceneManager.showDevTools();
             const win = nw.Window.get();
             win.moveTo(window.outerWidth / 3, 153);
         }
