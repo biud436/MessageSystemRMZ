@@ -301,7 +301,9 @@ RS.MessageSystem.Params = {
     gradientStyle: parameters["Gradient Style"],
     faceOpacity: parseInt(parameters["face Opacity"] || 21),
     faceDirection: parseInt(parameters["face Direction"] || 0),
-    DEBUG: true,
+    DEBUG: (() => {
+        return Utils.isNwjs() && Utils.isOptionValid("test");
+    })(),
 };
 
 (() => {
