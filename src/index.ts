@@ -1441,8 +1441,9 @@ executor
 
             this.setupOwner(sign);
 
+            const isBattleScene = SceneManager._scene instanceof Scene_Battle;
             // 전투 중일 경우
-            if (SceneManager._scene instanceof Scene_Battle) {
+            if (isBattleScene) {
                 this.updateBalloonPositionInBattle();
             } else {
                 this.updateBalloonPosition();
@@ -1502,9 +1503,8 @@ executor
         ) {
             const isResetOwner: Boolean = !(args.length > 0);
 
-            console.log("resize message system");
-
-            if (!isResetOwner && SceneManager._scene instanceof Scene_Battle) {
+            const isBattleScene = SceneManager._scene instanceof Scene_Battle;
+            if (!isResetOwner && isBattleScene) {
                 return;
             }
 
@@ -1630,7 +1630,11 @@ executor
                     : RS.MessageSystem.Params.textStartX;
                 return faceIndex > 0 ? 0 : faceStartX;
             } else {
-                if (RS.MessageSystem.Params.faceDirection === 2) return 0;
+                const isRightDirection =
+                    RS.MessageSystem.Params.faceDirection === 2;
+                if (isRightDirection) {
+                    return 0;
+                }
                 return faceName ? RS.MessageSystem.Params.faceStartOriginX : 0;
             }
         };
@@ -1752,19 +1756,18 @@ executor
                 if (RS.MessageSystem.Params.isPlayTextSound) {
                     const interval = RS.MessageSystem.Params.textSoundInterval;
 
-                    // prettier-ignore
-                    if ((this._textSoundInterval--) <= 0) {
-              AudioManager.playStaticSe(< rm.types.AudioParameters >{
-                  name: RS.MessageSystem.popParameter(
-                      "Text Sound",
-                      "텍스트 효과음"
-                  ),
-                  pan: 0,
-                  pitch: 100,
-                  volume: 90,
-              });
-              this._textSoundInterval = interval;
-          }
+                    if (this._textSoundInterval-- <= 0) {
+                        AudioManager.playStaticSe(<rm.types.AudioParameters>{
+                            name: RS.MessageSystem.popParameter(
+                                "Text Sound",
+                                "텍스트 효과음"
+                            ),
+                            pan: 0,
+                            pitch: 100,
+                            volume: 90,
+                        });
+                        this._textSoundInterval = interval;
+                    }
                 }
             }
 
