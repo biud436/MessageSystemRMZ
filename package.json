@@ -22,7 +22,5 @@
   "scripts": {
     "build": "webpack --config=webpack.config.js"
   },
-  "devDependencies": {
-    "awesome-typescript-loader": "^5.2.1"
-  }
+  "devDependencies": {}
 }
