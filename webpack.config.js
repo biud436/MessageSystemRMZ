@@ -16,6 +16,36 @@ function loadConfig() {
     }
 }
 
+/**
+ * This function will be executed after the build is complete.
+ */
+function getAfterBuildOptions() {
+    return {
+        apply: (compiler) => {
+            compiler.hooks.afterEmit.tap("AfterEmitPlugin", (compilation) => {
+                const outputPath = path.resolve(__dirname, "dist");
+                // const outputFileName = "RS_MessageSystem.js";
+                const config = loadConfig();
+                const outputFileName = config.outputs.name;
+
+                const topOfCommentAndLicense = fs.readFileSync(
+                    path.resolve(__dirname, "comments", "Comments.js"),
+                    "utf-8"
+                );
+                const content = fs.readFileSync(
+                    path.resolve(outputPath, outputFileName),
+                    "utf-8"
+                );
+                const output = `${topOfCommentAndLicense}${content}`;
+                fs.writeFileSync(
+                    path.resolve(outputPath, outputFileName),
+                    output
+                );
+            });
+        },
+    };
+}
+
 const target = {
     mode: "production", // none' | 'development' | 'production'
     entry: path.join(__dirname, "src", "index.ts"),
@@ -38,37 +68,10 @@ const target = {
         extensions: [".ts", ".json"],
     },
     plugins: [
-        // new CheckerPlugin(),
         new webpack.DefinePlugin({
             RS: "RS",
         }),
-        {
-            apply: (compiler) => {
-                compiler.hooks.afterEmit.tap(
-                    "AfterEmitPlugin",
-                    (compilation) => {
-                        const outputPath = path.resolve(__dirname, "dist");
-                        // const outputFileName = "RS_MessageSystem.js";
-                        const config = loadConfig();
-                        const outputFileName = config.outputs.name;
-
-                        const topOfCommentAndLicense = fs.readFileSync(
-                            path.resolve(__dirname, "comments", "Comments.js"),
-                            "utf-8"
-                        );
-                        const content = fs.readFileSync(
-                            path.resolve(outputPath, outputFileName),
-                            "utf-8"
-                        );
-                        const output = `${topOfCommentAndLicense}${content}`;
-                        fs.writeFileSync(
-                            path.resolve(outputPath, outputFileName),
-                            output
-                        );
-                    }
-                );
-            },
-        },
+        getAfterBuildOptions(),
     ],
     devtool: "source-map",
 };
