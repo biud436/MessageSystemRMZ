@@ -1,7 +1,8 @@
+import { Executuor } from "../core/ComponentExecutor";
 import { MessageDesc } from "../core/MessageDesc";
 import { Color } from "../core/RS";
 
-export function getWindowBaseCommand(): Function {
+export function getWindowBaseCommand(): Executuor {
     return () => {
         //============================================================================
         // Window_Base

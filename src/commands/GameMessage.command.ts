@@ -1,4 +1,6 @@
-export function getGameCommandCommand(): Function {
+import { Executuor } from "../core/ComponentExecutor";
+
+export function getGameCommandCommand(): Executuor {
     return () => {
         //============================================================================
         // Game_Message

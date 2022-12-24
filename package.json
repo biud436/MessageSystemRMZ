@@ -24,6 +24,7 @@
         "build": "webpack --config=webpack.config.js"
     },
     "devDependencies": {
-        "js-yaml": "^4.1.0"
+        "js-yaml": "^4.1.0",
+        "vite": "^4.0.3"
     }
 }

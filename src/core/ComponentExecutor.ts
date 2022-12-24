@@ -1,5 +1,7 @@
+export type Executuor = () => void;
+
 interface DataLinkSet {
-    callbackFunction: Function;
+    callbackFunction: Executuor;
     active: boolean;
 }
 
@@ -24,7 +26,7 @@ export default class ComponentExecutor {
 
     public constructor() {}
 
-    public add(name: string, func: Function): ComponentExecutor {
+    public add(name: string, func: Executuor): ComponentExecutor {
         if (name === "") {
             let startChar = 97; // a
             let endChar = 122; // z
@@ -48,11 +50,11 @@ export default class ComponentExecutor {
         return this;
     }
 
-    public wrap(name: string, func: Function): ComponentExecutor {
+    public wrap(name: string, func: Executuor): ComponentExecutor {
         return this.add(name, func);
     }
 
-    public get(name: string): Function {
+    public get(name: string): Executuor {
         const prop = this._components[name];
 
         return prop.callbackFunction;

@@ -1,8 +1,10 @@
+import { Executuor } from "../core/ComponentExecutor";
+
 /**
  * ? Bitmap
  * @description 텍스트에 그라데이션을 채우는 기능을 추가합니다.
  */
-export function getBitmapCommand(): Function {
+export function getBitmapCommand(): Executuor {
     return () => {
         const alias_Bitmap_initialize = Bitmap.prototype.initialize;
         Bitmap.prototype.initialize = function (width: number, height: number) {

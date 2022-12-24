@@ -7,6 +7,7 @@ import { getGameCommandCommand } from "./commands/GameMessage.command";
 import { getSpriteBattlerCommand } from "./commands/SpriteBattler.command";
 import { getWindowBaseCommand } from "./commands/WindowBase.command";
 import { getWindowMessageCommand } from "./commands/WindowMessage.command";
+import { getGameInterpreterCommand } from "./commands/GameInterpreter.command";
 
 const executor = ComponentExecutor.getInstance();
 
@@ -17,6 +18,7 @@ executor
     .add("Sprite_Battler", getSpriteBattlerCommand())
     .add("Window_Base", getWindowBaseCommand())
     .add("Window_Message", getWindowMessageCommand())
+    .add("Game_Interpreter", getGameInterpreterCommand())
     .add("main", getMainCommand())
     // active commands
     .ready("bitmap")
@@ -24,6 +26,7 @@ executor
     .ready("Sprite_Battler")
     .ready("Window_Base")
     .ready("Window_Message")
+    .ready("Game_Interpreter")
     .ready("main")
     // execute commands
     .executeAll();

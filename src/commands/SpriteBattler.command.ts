@@ -1,4 +1,6 @@
-export function getSpriteBattlerCommand(): Function {
+import { Executuor } from "../core/ComponentExecutor";
+
+export function getSpriteBattlerCommand(): Executuor {
     return () => {
         //============================================================================
         // Sprite_Battler
