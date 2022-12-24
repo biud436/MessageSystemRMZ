@@ -1,3 +1,7 @@
+/**
+ * ? Bitmap
+ * @description 텍스트에 그라데이션을 채우는 기능을 추가합니다.
+ */
 export function getBitmapCommand(): Function {
     return () => {
         const alias_Bitmap_initialize = Bitmap.prototype.initialize;

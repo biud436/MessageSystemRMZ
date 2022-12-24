@@ -2,6 +2,11 @@ import { Color } from "../core/RS";
 import { DependencyInjector } from "../core/DependencyInjector";
 import { BalloonWindowTransformComponent } from "../components/BalloonWindowTransformComponent";
 
+/**
+ * ? Main
+ * @description
+ * 메인 엔트리 포인트입니다.
+ */
 export function getMainCommand(): Function {
     return () => {
         //============================================================================

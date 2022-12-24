@@ -8,16 +8,7 @@ import { getMainCommand } from "./commands/Main.command";
 const executor = ComponentExecutor.getInstance();
 
 executor
-    /**
-     * ? Bitmap
-     * @description 텍스트에 그라데이션을 채우는 기능을 추가합니다.
-     */
     .add("bitmap", getBitmapCommand())
-    /**
-     * ? Main
-     * @description
-     * 메인 엔트리 포인트입니다.
-     */
     .add("main", getMainCommand())
     .ready("bitmap")
     .ready("main")
