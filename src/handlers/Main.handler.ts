@@ -1,5 +1,5 @@
-import { Color } from "../RS";
-import { DependencyInjector } from "../DependencyInjector";
+import { Color } from "../core/RS";
+import { DependencyInjector } from "../core/DependencyInjector";
 import { BalloonWindowTransformComponent } from "../components/BalloonWindowTransformComponent";
 
 export function processMain(): Function {

@@ -1,8 +1,8 @@
 import { Rectangle } from "pixi.js";
-import { BalloonWindowTransformComponent } from "./components/BalloonWindowTransformComponent";
-import { BaseComponent } from "./components/BaseComponent";
-import { Component } from "./components/Component";
-import { NameWindowPositionComponent } from "./components/NameWindowPositionComponent";
+import { BalloonWindowTransformComponent } from "../components/BalloonWindowTransformComponent";
+import { BaseComponent } from "../components/BaseComponent";
+import { Component } from "./Component";
+import { NameWindowPositionComponent } from "../components/NameWindowPositionComponent";
 
 type BaseComponentName =
     | "NameWindowPositionComponent"

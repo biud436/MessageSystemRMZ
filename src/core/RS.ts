@@ -1,7 +1,7 @@
 /***
  * 이것은 RPG Maker MV 호환성을 위해 존재하며 타입스크립트로 재작성되어야 합니다.
  */
-import { Types } from "../types/parameters";
+import { Types } from "../../types/parameters";
 
 type TextCodeKey =
     | "COLOR"

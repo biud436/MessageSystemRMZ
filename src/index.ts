@@ -1,7 +1,7 @@
 /// <reference types="../types/my-types" />
 /// <reference types="../types/lunalite-pixi-mz" />
 import { NameWindowPositionComponent } from "./components/NameWindowPositionComponent";
-import ComponentExecutor from "./ComponentExecutor";
+import ComponentExecutor from "./core/ComponentExecutor";
 import { processBitmap } from "./handlers/Bitmap.handler";
 import { processMain } from "./handlers/Main.handler";
 
