@@ -9,6 +9,8 @@ import { getWindowBaseCommand } from "./commands/WindowBase.command";
 import { getWindowMessageCommand } from "./commands/WindowMessage.command";
 import { getGameInterpreterCommand } from "./commands/GameInterpreter.command";
 import { getWindowNameBoxCommand } from "./commands/WindowNameBox.command";
+import { getGameTempCommand } from "./commands/GameTemp.command";
+import { getGameMapCommand } from "./commands/GameMap.command";
 
 const executor = ComponentExecutor.getInstance();
 
@@ -21,6 +23,8 @@ executor
     .add("Window_Message", getWindowMessageCommand())
     .add("Game_Interpreter", getGameInterpreterCommand())
     .add("Window_NameBox", getWindowNameBoxCommand())
+    .add("Game_Temp", getGameTempCommand())
+    .add("Game_Map", getGameMapCommand())
     .add("main", getMainCommand())
     // active commands
     .ready("bitmap")
@@ -30,6 +34,8 @@ executor
     .ready("Window_Message")
     .ready("Game_Interpreter")
     .ready("Window_NameBox")
+    .ready("Game_Temp")
+    .ready("Game_Map")
     .ready("main")
     // execute commands
     .executeAll();
