@@ -125,10 +125,12 @@ export default class ComponentExecutor {
             for (const key of this._order) {
                 const prop = components[key];
 
-                const currentCallback = this.get(key);
+                if (prop.active) {
+                    const currentCallback = this.get(key);
 
-                if (currentCallback instanceof Function) {
-                    currentCallback();
+                    if (currentCallback instanceof Function) {
+                        currentCallback();
+                    }
                 }
             }
         } catch (e) {
