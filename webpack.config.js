@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
 const yaml = require("js-yaml");
+const config = loadConfig();
 
 function loadConfig() {
     try {
@@ -24,8 +25,6 @@ function getAfterBuildOptions() {
         apply: (compiler) => {
             compiler.hooks.afterEmit.tap("AfterEmitPlugin", (compilation) => {
                 const outputPath = path.resolve(__dirname, "dist");
-                // const outputFileName = "RS_MessageSystem.js";
-                const config = loadConfig();
                 const outputFileName = config.outputs.name;
 
                 const topOfCommentAndLicense = fs.readFileSync(
@@ -51,7 +50,7 @@ const target = {
     entry: path.join(__dirname, "src", "index.ts"),
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: `RS_MessageSystem.js`,
+        filename: config.outputs.name ?? `RS_MessageSystem.js`,
     },
     target: "web",
     module: {
