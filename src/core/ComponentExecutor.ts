@@ -13,6 +13,7 @@ interface DataLinkSet {
 export default class ComponentExecutor {
     public static INSTANCE: ComponentExecutor;
     private _components: Record<string, DataLinkSet> = {};
+    private _order: string[] = [];
 
     public static getInstance(): ComponentExecutor {
         if (!ComponentExecutor.INSTANCE) {
@@ -41,6 +42,8 @@ export default class ComponentExecutor {
             callbackFunction: func,
             active: false,
         };
+
+        this._order.push(name);
 
         return this;
     }
@@ -77,8 +80,10 @@ export default class ComponentExecutor {
 
     public executeAll() {
         try {
-            for (const key in this._components) {
+            for (const key of this._order) {
                 const prop = this._components[key];
+
+                console.log(key);
 
                 if (prop.active) {
                     const currentCallback = this.get(key);
