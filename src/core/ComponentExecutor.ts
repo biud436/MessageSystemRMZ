@@ -54,6 +54,13 @@ export default class ComponentExecutor {
         return this.add(name, func);
     }
 
+    public inject(name: string, func: Executuor): ComponentExecutor {
+        this.add(name, func);
+        this.active(name);
+
+        return this;
+    }
+
     public get(name: string): Executuor {
         const prop = this._components[name];
 
