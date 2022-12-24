@@ -3,6 +3,7 @@ export type Executuor = () => void;
 interface DataLinkSet {
     callbackFunction: Executuor;
     active: boolean;
+    isLazy?: boolean;
 }
 
 /**
@@ -43,6 +44,7 @@ export default class ComponentExecutor {
         this._components[name] = <DataLinkSet>{
             callbackFunction: func,
             active: false,
+            isLazy: false,
         };
 
         this._order.push(name);
@@ -94,12 +96,39 @@ export default class ComponentExecutor {
 
                 console.log(key);
 
-                if (prop.active) {
+                if (prop.active && !prop.isLazy) {
                     const currentCallback = this.get(key);
 
                     if (currentCallback instanceof Function) {
                         currentCallback();
                     }
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /**
+     * 테스트 용 커맨드를 실행합니다.
+     */
+    public executeLazyCommandAll() {
+        try {
+            const components: Record<string, DataLinkSet> = {};
+
+            Object.entries(this._components)
+                .filter(([k, v]) => v.isLazy)
+                .forEach(([k, v]) => {
+                    components[k] = v;
+                });
+
+            for (const key of this._order) {
+                const prop = components[key];
+
+                const currentCallback = this.get(key);
+
+                if (currentCallback instanceof Function) {
+                    currentCallback();
                 }
             }
         } catch (e) {

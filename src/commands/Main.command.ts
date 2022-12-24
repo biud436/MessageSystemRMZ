@@ -1,7 +1,7 @@
 import { Color } from "../core/RS";
 import { DependencyInjector } from "../core/DependencyInjector";
 import { BalloonWindowTransformComponent } from "../components/BalloonWindowTransformComponent";
-import { Executuor } from "../core/ComponentExecutor";
+import ComponentExecutor, { Executuor } from "../core/ComponentExecutor";
 
 /**
  * ? Main
@@ -20,6 +20,8 @@ export function getMainCommand(): Executuor {
             const messageWindow = this._messageWindow;
             DependencyInjector.injectMessageWindow(messageWindow);
             DependencyInjector.ready();
+
+            ComponentExecutor.getInstance().executeLazyCommandAll();
         };
 
         Scene_Message.prototype.messageWindowRect = function () {
