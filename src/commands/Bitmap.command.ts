@@ -106,7 +106,7 @@ export function getBitmapCommand(): Executuor {
                 RS.MessageSystem.Params.fontSmoothingEnabled;
 
             if (this.fontGradient) {
-                var gradient = this.setGradientStyle(
+                const gradient = this.setGradientStyle(
                     text,
                     RS.MessageSystem.Params.gradientColor1,
                     RS.MessageSystem.Params.gradientColor2,

@@ -63,6 +63,19 @@ export default class ComponentExecutor {
         return this;
     }
 
+    public lazy(name: string, func: Executuor): ComponentExecutor {
+        this.addCommand(name, func);
+
+        if (this._components[name]) {
+            this._components[name] = {
+                ...this._components[name],
+                isLazy: true,
+            };
+        }
+
+        return this;
+    }
+
     public get(name: string): Executuor {
         const prop = this._components[name];
 
@@ -94,8 +107,6 @@ export default class ComponentExecutor {
             for (const key of this._order) {
                 const prop = this._components[key];
 
-                console.log(key);
-
                 if (prop.active && !prop.isLazy) {
                     const currentCallback = this.get(key);
 
@@ -117,7 +128,7 @@ export default class ComponentExecutor {
             const components: Record<string, DataLinkSet> = {};
 
             Object.entries(this._components)
-                .filter(([k, v]) => v.isLazy)
+                .filter(([k, v]) => !!v.isLazy)
                 .forEach(([k, v]) => {
                     components[k] = v;
                 });
@@ -125,7 +136,7 @@ export default class ComponentExecutor {
             for (const key of this._order) {
                 const prop = components[key];
 
-                if (prop.active) {
+                if (prop && prop.active) {
                     const currentCallback = this.get(key);
 
                     if (currentCallback instanceof Function) {

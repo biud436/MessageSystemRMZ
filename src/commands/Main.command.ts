@@ -20,8 +20,6 @@ export function getMainCommand(): Executuor {
             const messageWindow = this._messageWindow;
             DependencyInjector.injectMessageWindow(messageWindow);
             DependencyInjector.ready();
-
-            ComponentExecutor.getInstance().executeLazyCommandAll();
         };
 
         Scene_Message.prototype.messageWindowRect = function () {
@@ -40,11 +38,10 @@ export function getMainCommand(): Executuor {
 
         RS.MessageSystem.initSystem();
 
-        // ! [DEBUG]
-        if (RS.MessageSystem.Params.DEBUG) {
-            SceneManager.showDevTools();
-            const win = nw.Window.get();
-            win.moveTo(window.outerWidth / 3, 153);
-        }
+        const alias_Scene_Map_start = Scene_Map.prototype.start;
+        Scene_Map.prototype.start = function () {
+            alias_Scene_Map_start.call(this);
+            ComponentExecutor.getInstance().executeLazyCommandAll();
+        };
     };
 }
