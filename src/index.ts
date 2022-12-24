@@ -4,12 +4,18 @@ import { NameWindowPositionComponent } from "./components/NameWindowPositionComp
 import ComponentExecutor from "./core/ComponentExecutor";
 import { getBitmapCommand } from "./commands/Bitmap.command";
 import { getMainCommand } from "./commands/Main.command";
+import { getGameCommandCommand } from "./commands/GameMessage.command";
 
 const executor = ComponentExecutor.getInstance();
 
 executor
+    // commands
     .add("bitmap", getBitmapCommand())
+    .add("gameMessage", getGameCommandCommand())
     .add("main", getMainCommand())
+    // active commands
     .ready("bitmap")
+    .ready("gameMessage")
     .ready("main")
+    // execute commands
     .executeAll();
