@@ -16,15 +16,15 @@ const executor = ComponentExecutor.getInstance();
 
 executor
     // commands
-    .inject("bitmap", getBitmapCommand())
-    .inject("Game_Message", getGameCommandCommand())
-    .inject("Sprite_Battler", getSpriteBattlerCommand())
-    .inject("Window_Base", getWindowBaseCommand())
-    .inject("Window_Message", getWindowMessageCommand())
-    .inject("Game_Interpreter", getGameInterpreterCommand())
-    .inject("Window_NameBox", getWindowNameBoxCommand())
-    .inject("Game_Temp", getGameTempCommand())
-    .inject("Game_Map", getGameMapCommand())
-    .inject("main", getMainCommand())
+    .addCommand("bitmap", getBitmapCommand())
+    .addCommand("Game_Message", getGameCommandCommand())
+    .addCommand("Sprite_Battler", getSpriteBattlerCommand())
+    .addCommand("Window_Base", getWindowBaseCommand())
+    .addCommand("Window_Message", getWindowMessageCommand())
+    .addCommand("Game_Interpreter", getGameInterpreterCommand())
+    .addCommand("Window_NameBox", getWindowNameBoxCommand())
+    .addCommand("Game_Temp", getGameTempCommand())
+    .addCommand("Game_Map", getGameMapCommand())
+    .addCommand("main", getMainCommand())
     // execute commands
     .executeAll();

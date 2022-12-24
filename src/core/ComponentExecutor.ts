@@ -54,7 +54,7 @@ export default class ComponentExecutor {
         return this.add(name, func);
     }
 
-    public inject(name: string, func: Executuor): ComponentExecutor {
+    public addCommand(name: string, func: Executuor): ComponentExecutor {
         this.add(name, func);
         this.active(name);
 
