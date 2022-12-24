@@ -1,9 +1,9 @@
 /// <reference types="../types/my-types" />
 /// <reference types="../types/lunalite-pixi-mz" />
-import { NameWindowPositionComponent } from "./NameWindowPositionComponent";
+import { NameWindowPositionComponent } from "./components/NameWindowPositionComponent";
 import ComponentExecutor from "./ComponentExecutor";
-import { processBitmap } from "./BitmapHandler";
-import { processMain } from "./MainHandler";
+import { processBitmap } from "./handlers/Bitmap.handler";
+import { processMain } from "./handlers/Main.handler";
 
 const executor = ComponentExecutor.getInstance();
 
