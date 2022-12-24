@@ -1,4 +1,4 @@
-export function processBitmap(): Function {
+export function getBitmapCommand(): Function {
     return () => {
         const alias_Bitmap_initialize = Bitmap.prototype.initialize;
         Bitmap.prototype.initialize = function (width: number, height: number) {

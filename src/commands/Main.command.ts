@@ -2,7 +2,7 @@ import { Color } from "../core/RS";
 import { DependencyInjector } from "../core/DependencyInjector";
 import { BalloonWindowTransformComponent } from "../components/BalloonWindowTransformComponent";
 
-export function processMain(): Function {
+export function getMainCommand(): Function {
     return () => {
         //============================================================================
         // Game_Message
