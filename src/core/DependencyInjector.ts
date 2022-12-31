@@ -4,11 +4,11 @@ import { BaseComponent } from "../components/BaseComponent";
 import { Component } from "./Component";
 import { NameWindowPositionComponent } from "../components/NameWindowPositionComponent";
 
-type BaseComponentName =
+export type BaseComponentName =
     | "NameWindowPositionComponent"
     | "BalloonWindowTransformComponent";
 
-interface Class<T> {
+export interface Class<T> {
     new (...args: any[]): T;
 }
 
@@ -20,7 +20,7 @@ interface Class<T> {
 // >(
 //     messageWindow: R
 // ) => InstanceType<new (messageWindow: R) => Component>;
-type InjectFunctionWithInfer = <
+export type InjectFunctionWithInfer = <
     R = InstanceType<new (rect: Rectangle) => Window_Message>
 >(
     messageWindow: R
@@ -32,7 +32,7 @@ type InjectFunctionWithInfer = <
  * @param key
  * @returns
  */
-function getComponentValue<T, K extends keyof T>(item: T, key: K): T[K] {
+export function getComponentValue<T, K extends keyof T>(item: T, key: K): T[K] {
     return item[key];
 }
 
