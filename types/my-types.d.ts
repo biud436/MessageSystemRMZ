@@ -323,8 +323,16 @@ export declare global {
         y: number;
     }
 
+    type MessageEventMap = "added" | "removed" | "onLoadWindowskin";
+
     interface Window_Message extends Window_Base {
         new (...args: any): Window_Message;
+
+        on(
+            event: MessageEventMap,
+            fn: (displayObject: DisplayObject) => void,
+            context?: any
+        ): this;
 
         _pauseSignSprite: Sprite;
         _width: number;
