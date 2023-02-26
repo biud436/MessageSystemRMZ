@@ -581,44 +581,44 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
             `\x1b${tcGroup[TC.HIDE_PICTURE]}\\[(\\d+)\\]`,
             "gi"
         ); // 그림 제거
-        RS.MessageSystem.Reg[e][26] = new RegExp(
-            `(?:\x1b${tcGroup[26]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ITEM] = new RegExp(
+            `(?:\x1b${tcGroup[TC.ITEM]})\\[(\\d+)\\]`,
             "g"
         ); // 아이템
-        RS.MessageSystem.Reg[e][27] = new RegExp(
-            `(?:\x1b${tcGroup[27]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.WEAPON] = new RegExp(
+            `(?:\x1b${tcGroup[TC.WEAPON]})\\[(\\d+)\\]`,
             "g"
         ); // 무기구
-        RS.MessageSystem.Reg[e][28] = new RegExp(
-            `(?:\x1b${tcGroup[28]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ARMOR] = new RegExp(
+            `(?:\x1b${tcGroup[TC.ARMOR]})\\[(\\d+)\\]`,
             "g"
         ); // 방어구
-        RS.MessageSystem.Reg[e][29] = new RegExp(
-            `(?:\x1b${tcGroup[29]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.CLASSES] = new RegExp(
+            `(?:\x1b${tcGroup[TC.CLASSES]})\\[(\\d+)\\]`,
             "g"
         ); // 직업
-        RS.MessageSystem.Reg[e][30] = new RegExp(
-            `(?:\x1b${tcGroup[30]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ENEMY] = new RegExp(
+            `(?:\x1b${tcGroup[TC.ENEMY]})\\[(\\d+)\\]`,
             "g"
         ); // 적군
-        RS.MessageSystem.Reg[e][31] = new RegExp(
-            `(?:\x1b${tcGroup[31]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.STATE] = new RegExp(
+            `(?:\x1b${tcGroup[TC.STATE]})\\[(\\d+)\\]`,
             "g"
         ); // 상태
-        RS.MessageSystem.Reg[e][32] = new RegExp(
-            `(?:\x1b${tcGroup[32]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.SKILL] = new RegExp(
+            `(?:\x1b${tcGroup[TC.SKILL]})\\[(\\d+)\\]`,
             "g"
         ); // 스킬
-        RS.MessageSystem.Reg[e][33] = new RegExp(
-            `\x1b${tcGroup[33]}\\<(.*)\\>`,
+        RS.MessageSystem.Reg[e][TC.FACE] = new RegExp(
+            `\x1b${tcGroup[TC.FACE]}\\<(.*)\\>`,
             "gi"
         ); // 얼굴
-        RS.MessageSystem.Reg[e][34] = new RegExp(
-            `(?:\x1b${tcGroup[34]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.FRIENDLY_TROOPS] = new RegExp(
+            `(?:\x1b${tcGroup[TC.FRIENDLY_TROOPS]})\\[(\\d+)\\]`,
             "gi"
         ); // 아군
-        RS.MessageSystem.Reg[e][35] = new RegExp(
-            `(?:\x1b${tcGroup[35]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ENEMY_TROOPS] = new RegExp(
+            `(?:\x1b${tcGroup[TC.ENEMY_TROOPS]})\\[(\\d+)\\]`,
             "gi"
         ); // 적군
 
