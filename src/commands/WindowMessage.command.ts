@@ -123,7 +123,7 @@ export function getWindowMessageCommand(): Executuor {
                     this.startWait(15);
                 case textCode[tcGroup.FACE]:
                     if (this._isUsedTextWidthEx) break;
-                    var params = this.obtainSoundName(
+                    const params = this.obtainSoundName(
                         <TextState>textState
                     ).split(",");
                     // this.redrawFaceImage(textState, params[0], params[1], 0, 0);

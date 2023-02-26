@@ -1,5 +1,6 @@
 import { Point } from "pixi.js";
 import { isParameter, NumericLiteral } from "typescript";
+import { TextCode } from "../src/core/RS";
 export declare global {
     interface Array<T> {
         /**

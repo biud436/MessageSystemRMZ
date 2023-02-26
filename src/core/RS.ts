@@ -60,11 +60,15 @@ type TextCodeKey =
     | "HIGHLIGHT_TEXT_COLOR"
     | "FACE_DIRECTION";
 
-interface TextCodeEnum {
+export interface TextCodeEnum {
     ENUM: Record<TextCodeKey, number>;
 }
 
-type TextCode = Record<string, any> & TextCodeEnum;
+export interface TextCodeMain {
+    Main: Array<string>;
+}
+
+export type TextCode = Record<string, any> & TextCodeEnum & TextCodeMain;
 
 const pluginParams = $plugins.filter((i) => {
     return i.description.contains("<RS_MessageSystem>");
