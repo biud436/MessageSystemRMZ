@@ -647,14 +647,35 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
             "gi"
         ); // [\^]
 
-        RS.MessageSystem.Reg[e][42] = new RegExp(`\x1b${tcGroup[42]}`, "gi"); // AS굵게!
-        RS.MessageSystem.Reg[e][43] = new RegExp(`\x1b${tcGroup[43]}`, "gi"); // AE굵게!
-        RS.MessageSystem.Reg[e][44] = new RegExp(`\x1b${tcGroup[44]}`, "gi"); // AS이탤릭!
-        RS.MessageSystem.Reg[e][45] = new RegExp(`\x1b${tcGroup[45]}`, "gi"); // AE이탤릭!
+        RS.MessageSystem.Reg[e][TC.BOLD_START] = new RegExp(
+            `\x1b${tcGroup[TC.BOLD_START]}`,
+            "gi"
+        ); // AS굵게!
+        RS.MessageSystem.Reg[e][TC.BOLD_END] = new RegExp(
+            `\x1b${tcGroup[TC.BOLD_END]}`,
+            "gi"
+        ); // AE굵게!
+        RS.MessageSystem.Reg[e][TC.ITALIC_START] = new RegExp(
+            `\x1b${tcGroup[TC.ITALIC_START]}`,
+            "gi"
+        ); // AS이탤릭!
+        RS.MessageSystem.Reg[e][TC.ITALIC_END] = new RegExp(
+            `\x1b${tcGroup[TC.ITALIC_END]}`,
+            "gi"
+        ); // AE이탤릭!
 
-        RS.MessageSystem.Reg[e][46] = new RegExp(`(?:<${tcGroup[46]}>)`, "gi"); // LEFT
-        RS.MessageSystem.Reg[e][47] = new RegExp(`(?:<${tcGroup[47]}>)`, "gi"); // CENTER
-        RS.MessageSystem.Reg[e][48] = new RegExp(`(?:<${tcGroup[48]}>)`, "gi"); // RIGHT
+        RS.MessageSystem.Reg[e][TC.ALIGN_LEFT] = new RegExp(
+            `(?:<${tcGroup[TC.ALIGN_LEFT]}>)`,
+            "gi"
+        ); // LEFT
+        RS.MessageSystem.Reg[e][TC.ALIGN_CENTER] = new RegExp(
+            `(?:<${tcGroup[TC.ALIGN_CENTER]}>)`,
+            "gi"
+        ); // CENTER
+        RS.MessageSystem.Reg[e][TC.ALIGN_RIGHT] = new RegExp(
+            `(?:<${tcGroup[TC.ALIGN_RIGHT]}>)`,
+            "gi"
+        ); // RIGHT
 
         RS.MessageSystem.Reg[e][49] = new RegExp(
             `(?:<[${tcGroup[49]}]>)`,
