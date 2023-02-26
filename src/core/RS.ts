@@ -709,8 +709,8 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
 })();
 
 RS.MessageSystem.initSystem = function () {
-    var type = RS.MessageSystem.Params.langCode;
-    var ret = false;
+    const type = RS.MessageSystem.Params.langCode;
+    let ret = false;
     if (type.match(/ko/)) {
         RS.MessageSystem.Reg.Group = RS.MessageSystem.Reg.Korean;
         RS.MessageSystem.Reg.defaultEscapeCode =
@@ -762,10 +762,10 @@ interface IColor {
 export const Color = <IColor>{};
 
 Color.getColor = function (n: number) {
-    var r = n & 255;
-    var g = (n >> 8) & 255;
-    var b = (n >> 16) & 255;
-    var result = `rgba(${r},${g},${b},1)`;
+    const r = n & 255;
+    const g = (n >> 8) & 255;
+    const b = (n >> 16) & 255;
+    const result = `rgba(${r},${g},${b},1)`;
     return result;
 };
 
@@ -778,18 +778,18 @@ Color.getBaseColor = function () {
 Color.getUserCustomColor = function (str) {
     "use strict";
 
-    var obj: any[] = RS.MessageSystem.Params.exTextColors;
-    var ret = str;
+    const obj: any[] = RS.MessageSystem.Params.exTextColors;
+    let ret = str;
 
     if (!(typeof obj[0] === "object")) return ret;
     if (!obj[0].hasOwnProperty("Color Name")) return ret;
 
     obj.forEach((e: any, i: number, arr: any[]) => {
         if (e["Color Name"] === str) {
-            var r = parseInt(e["Red"]) || 0;
-            var g = parseInt(e["Green"]) || 0;
-            var b = parseInt(e["Blue"]) || 0;
-            var a = parseFloat(e["Alpha"]) || 1.0;
+            const r = parseInt(e["Red"]) || 0;
+            const g = parseInt(e["Green"]) || 0;
+            const b = parseInt(e["Blue"]) || 0;
+            const a = parseFloat(e["Alpha"]) || 1.0;
 
             ret = `rgba(${r},${g},${b},${a})`;
         }
@@ -1041,8 +1041,8 @@ RS.MessageSystem.getJapaneseColor = function (str: string) {
 
 RS.MessageSystem.getBrowser = function () {
     /* Refer to https://stackoverflow.com/a/16938481 */
-    var ua = navigator.userAgent,
-        tem,
+    const ua = navigator.userAgent;
+    let tem,
         M =
             ua.match(
                 /(opera|chrome|edge|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
