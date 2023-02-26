@@ -622,12 +622,30 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
             "gi"
         ); // 적군
 
-        RS.MessageSystem.Reg[e][36] = new RegExp(`\x1b${tcGroup[36]}`, "gi"); // [.]
-        RS.MessageSystem.Reg[e][37] = new RegExp(`\x1b${tcGroup[37]}`, "gi"); // [|]
-        RS.MessageSystem.Reg[e][38] = new RegExp(`\x1b${tcGroup[38]}`, "gi"); // [!]
-        RS.MessageSystem.Reg[e][39] = new RegExp(`\x1b${tcGroup[39]}`, "gi"); // [<]
-        RS.MessageSystem.Reg[e][40] = new RegExp(`\x1b${tcGroup[40]}`, "gi"); // [>]
-        RS.MessageSystem.Reg[e][41] = new RegExp(`\x1b${tcGroup[41]}`, "gi"); // [\^]
+        RS.MessageSystem.Reg[e][TC.WAIT_SEC_15] = new RegExp(
+            `\x1b${tcGroup[TC.WAIT_SEC_15]}`,
+            "gi"
+        ); // [.]
+        RS.MessageSystem.Reg[e][TC.WAIT_SEC_60] = new RegExp(
+            `\x1b${tcGroup[TC.WAIT_SEC_60]}`,
+            "gi"
+        ); // [|]
+        RS.MessageSystem.Reg[e][TC.START_PAUSE] = new RegExp(
+            `\x1b${tcGroup[TC.START_PAUSE]}`,
+            "gi"
+        ); // [!]
+        RS.MessageSystem.Reg[e][TC.LINE_SHOW_FAST_LT] = new RegExp(
+            `\x1b${tcGroup[TC.LINE_SHOW_FAST_LT]}`,
+            "gi"
+        ); // [<]
+        RS.MessageSystem.Reg[e][TC.LINE_SHOW_FAST_GT] = new RegExp(
+            `\x1b${tcGroup[TC.LINE_SHOW_FAST_GT]}`,
+            "gi"
+        ); // [>]
+        RS.MessageSystem.Reg[e][TC.PAUSE_SKIP] = new RegExp(
+            `\x1b${tcGroup[TC.PAUSE_SKIP]}`,
+            "gi"
+        ); // [\^]
 
         RS.MessageSystem.Reg[e][42] = new RegExp(`\x1b${tcGroup[42]}`, "gi"); // AS굵게!
         RS.MessageSystem.Reg[e][43] = new RegExp(`\x1b${tcGroup[43]}`, "gi"); // AE굵게!
