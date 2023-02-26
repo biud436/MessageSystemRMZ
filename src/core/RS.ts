@@ -561,18 +561,24 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
             `\x1b${tcGroup[TC.TEXT_SIZE]}\\[(\\d+)\\]`,
             "gi"
         ); // 크기
-        RS.MessageSystem.Reg[e][21] = new RegExp(`\x1b${tcGroup[21]}`, "gi"); // r
-        RS.MessageSystem.Reg[e][22] = new RegExp(`\x1b${tcGroup[22]}`, "gi"); // t
-        RS.MessageSystem.Reg[e][23] = new RegExp(
-            `\x1b${tcGroup[23]}\\<(.+?)\\>`,
+        RS.MessageSystem.Reg[e][TC.TAB] = new RegExp(
+            `\x1b${tcGroup[TC.TAB]}`,
+            "gi"
+        ); // r
+        RS.MessageSystem.Reg[e][TC.CARRIAGE_RETURN] = new RegExp(
+            `\x1b${tcGroup[TC.CARRIAGE_RETURN]}`,
+            "gi"
+        ); // t
+        RS.MessageSystem.Reg[e][TC.PLAY_SE] = new RegExp(
+            `\x1b${tcGroup[TC.PLAY_SE]}\\<(.+?)\\>`,
             "gi"
         ); // 효과음
-        RS.MessageSystem.Reg[e][24] = new RegExp(
-            `\x1b${tcGroup[24]}\\<(.+?)\\>`,
+        RS.MessageSystem.Reg[e][TC.SHOW_PICTURE] = new RegExp(
+            `\x1b${tcGroup[TC.SHOW_PICTURE]}\\<(.+?)\\>`,
             "gi"
         ); // 그림 표시
-        RS.MessageSystem.Reg[e][25] = new RegExp(
-            `\x1b${tcGroup[25]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.HIDE_PICTURE] = new RegExp(
+            `\x1b${tcGroup[TC.HIDE_PICTURE]}\\[(\\d+)\\]`,
             "gi"
         ); // 그림 제거
         RS.MessageSystem.Reg[e][26] = new RegExp(
