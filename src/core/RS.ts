@@ -2,73 +2,7 @@
  * 이것은 RPG Maker MV 호환성을 위해 존재하며 타입스크립트로 재작성되어야 합니다.
  */
 import { Types } from "../../types/parameters";
-
-type TextCodeKey =
-    | "COLOR"
-    | "TEXT_SPEED"
-    | "OUTLINE_COLOR"
-    | "OUTLINE_WIDTH"
-    | "INDENT"
-    | "BOLD"
-    | "ITALIC"
-    | "NAME"
-    | "GRADIENT"
-    | "PARTY_MEMBER"
-    | "PLAYER"
-    | "VAR"
-    | "ICON"
-    | "INCREASE"
-    | "DECREASE"
-    | "GOLD"
-    | "BALLOON"
-    | "ALIGN"
-    | "NUM"
-    | "TEXT_SIZE"
-    | "TAB"
-    | "CARRIAGE_RETURN"
-    | "PLAY_SE"
-    | "SHOW_PICTURE"
-    | "HIDE_PICTURE"
-    | "ITEM"
-    | "WEAPON"
-    | "ARMOR"
-    | "CLASSES"
-    | "ENEMY"
-    | "STATE"
-    | "SKILL"
-    | "FACE"
-    | "FRIENDLY_TROOPS"
-    | "ENEMY_TROOPS"
-    | "WAIT_SEC_15"
-    | "WAIT_SEC_60"
-    | "START_PAUSE"
-    | "LINE_SHOW_FAST_LT"
-    | "LINE_SHOW_FAST_GT"
-    | "PAUSE_SKIP"
-    | "BOLD_START"
-    | "BOLD_END"
-    | "ITALIC_START"
-    | "ITALIC_END"
-    | "ALIGN_LEFT"
-    | "ALIGN_CENTER"
-    | "ALIGN_RIGHT"
-    | "BOLD_START_CV"
-    | "BOLD_END_CV"
-    | "ITALIC_START_CV"
-    | "ITALIC_END_CV"
-    | "ALIGN_CLEAR"
-    | "HIGHLIGHT_TEXT_COLOR"
-    | "FACE_DIRECTION";
-
-export interface TextCodeEnum {
-    ENUM: Record<TextCodeKey, number>;
-}
-
-export interface TextCodeMain {
-    Main: Array<string>;
-}
-
-export type TextCode = Record<string, any> & TextCodeEnum & TextCodeMain;
+import { TextCode, LanguageType, TC } from "./interfaces/RS.interface";
 
 const pluginParams = $plugins.filter((i) => {
     return i.description.contains("<RS_MessageSystem>");
@@ -328,7 +262,7 @@ RS.MessageSystem.Params = {
 // Lazy Initialize Parameters (느린 초기화)
 //============================================================================
 
-var alias_Game_Temp_initialize = Game_Temp.prototype.initialize;
+const alias_Game_Temp_initialize = Game_Temp.prototype.initialize;
 Game_Temp.prototype.initialize = function () {
     alias_Game_Temp_initialize.call(this);
     RS.MessageSystem.Params.windowWidth =
@@ -527,97 +461,104 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
 
 (() => {
     "use strict";
-    var regData = ["Korean", "English", "Chinese", "Japanese"];
-    regData.forEach(function (e, i, a) {
-        var tcGroup = RS.MessageSystem.TextCodes[e];
-        tcGroup = tcGroup.map((e: any, i: number, a: any[]) => {
+    const regData = ["Korean", "English", "Chinese", "Japanese"];
+    regData.forEach((e) => {
+        let tcGroup = RS.MessageSystem.TextCodes[e];
+
+        tcGroup = tcGroup.map((e: LanguageType) => {
             if (e === undefined) return;
-            var data = [];
-            var ret = "";
-            for (var str of e) {
+            const data = [];
+            let ret = "";
+            for (const str of e) {
                 if (/[a-zA-Z]/i) {
                     data.push(str);
                     continue;
                 }
-                var text = str.charCodeAt().toString(16);
+                const text = str.charCodeAt(0).toString(16);
                 data.push("\\u" + "{" + text + "}");
             }
             ret = data.join("");
             return ret;
         });
-        RS.MessageSystem.Reg[e][0] = undefined;
-        RS.MessageSystem.Reg[e][1] = new RegExp(
-            `(?:\x1bC|\x1b${tcGroup[1]})\\[(.+?)\\]`,
+        RS.MessageSystem.Reg[e][TC.UNKNOWN] = undefined;
+        RS.MessageSystem.Reg[e][TC.COLOR] = new RegExp(
+            `(?:\x1bC|\x1b${tcGroup[TC.COLOR]})\\[(.+?)\\]`,
             "gi"
         ); // 색
-        RS.MessageSystem.Reg[e][2] = new RegExp(
-            `\x1b${tcGroup[2]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.TEXT_SPEED] = new RegExp(
+            `\x1b${tcGroup[TC.TEXT_SPEED]}\\[(\\d+)\\]`,
             "gi"
         ); // 속도
-        RS.MessageSystem.Reg[e][3] = new RegExp(
-            `\x1b${tcGroup[3]}\\[(.+?)\\]`,
+        RS.MessageSystem.Reg[e][TC.OUTLINE_COLOR] = new RegExp(
+            `\x1b${tcGroup[TC.OUTLINE_COLOR]}\\[(.+?)\\]`,
             "gi"
         ); // 테두리색
-        RS.MessageSystem.Reg[e][4] = new RegExp(
-            `\x1b${tcGroup[4]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.OUTLINE_WIDTH] = new RegExp(
+            `\x1b${tcGroup[TC.OUTLINE_WIDTH]}\\[(\\d+)\\]`,
             "gi"
         ); // 테두리크기
-        RS.MessageSystem.Reg[e][5] = new RegExp(
-            `\x1b${tcGroup[5]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.INDENT] = new RegExp(
+            `\x1b${tcGroup[TC.INDENT]}\\[(\\d+)\\]`,
             "gi"
         ); // 들여쓰기
-        RS.MessageSystem.Reg[e][6] = new RegExp(`\x1b${tcGroup[6]}`, "gi"); // 굵게!
-        RS.MessageSystem.Reg[e][7] = new RegExp(`\x1b${tcGroup[7]}`, "gi"); // 이탤릭!
-        RS.MessageSystem.Reg[e][8] = new RegExp(
-            `\x1b${tcGroup[8]}\\<(.+?)\\>`,
+        RS.MessageSystem.Reg[e][TC.BOLD] = new RegExp(
+            `\x1b${tcGroup[TC.BOLD]}`,
+            "gi"
+        ); // 굵게!
+        RS.MessageSystem.Reg[e][TC.ITALIC] = new RegExp(
+            `\x1b${tcGroup[TC.ITALIC]}`,
+            "gi"
+        ); // 이탤릭!
+        RS.MessageSystem.Reg[e][TC.NAME] = new RegExp(
+            `\x1b${tcGroup[TC.NAME]}\\<(.+?)\\>`,
             "gi"
         ); // 이름
-        RS.MessageSystem.Reg[e][9] = new RegExp(
-            `\x1b${tcGroup[9]}\\<(.+)\\>`,
+        RS.MessageSystem.Reg[e][TC.GRADIENT] = new RegExp(
+            `\x1b${tcGroup[TC.GRADIENT]}\\<(.+)\\>`,
             "gi"
         ); // 그레디언트
-        RS.MessageSystem.Reg[e][10] = new RegExp(
-            `(?:\x1bP|\x1b${tcGroup[10]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.PARTY_MEMBER] = new RegExp(
+            `(?:\x1bP|\x1b${tcGroup[TC.PARTY_MEMBER]})\\[(\\d+)\\]`,
             "gi"
         ); // 파티원
-        RS.MessageSystem.Reg[e][11] = new RegExp(
-            `(?:\x1bN|\x1b${tcGroup[11]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.PLAYER] = new RegExp(
+            `(?:\x1bN|\x1b${tcGroup[TC.PLAYER]})\\[(\\d+)\\]`,
             "gi"
         ); // 주인공
-        RS.MessageSystem.Reg[e][12] = new RegExp(
-            `(?:\x1bV|\x1b${tcGroup[12]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.VAR] = new RegExp(
+            `(?:\x1bV|\x1b${tcGroup[TC.VAR]})\\[(\\d+)\\]`,
             "gi"
         ); // 변수
-        RS.MessageSystem.Reg[e][13] = new RegExp(
-            `(?:\x1bI|\x1b${tcGroup[13]})\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ICON] = new RegExp(
+            `(?:\x1bI|\x1b${tcGroup[TC.ICON]})\\[(\\d+)\\]`,
             "g"
         ); // 아이콘
-        RS.MessageSystem.Reg[e][14] = new RegExp(
-            `(?:\x1b{|\x1b${tcGroup[14]})`,
+        RS.MessageSystem.Reg[e][TC.INCREASE] = new RegExp(
+            `(?:\x1b{|\x1b${tcGroup[TC.INCREASE]})`,
             "gi"
         ); // 확대!
-        RS.MessageSystem.Reg[e][15] = new RegExp(
-            `(?:\x1b}|\x1b${tcGroup[15]})`,
+        RS.MessageSystem.Reg[e][TC.DECREASE] = new RegExp(
+            `(?:\x1b}|\x1b${tcGroup[TC.DECREASE]})`,
             "gi"
         ); // 축소!
-        RS.MessageSystem.Reg[e][16] = new RegExp(
-            `(?:\x1bG|\x1b${tcGroup[16]})`,
+        RS.MessageSystem.Reg[e][TC.GOLD] = new RegExp(
+            `(?:\x1bG|\x1b${tcGroup[TC.GOLD]})`,
             "gi"
         ); // 골드
-        RS.MessageSystem.Reg[e][17] = new RegExp(
-            `\x1b${tcGroup[17]}\\[(.*?)\\]`,
+        RS.MessageSystem.Reg[e][TC.BALLOON] = new RegExp(
+            `\x1b${tcGroup[TC.BALLOON]}\\[(.*?)\\]`,
             "gi"
         ); // 말풍선
-        RS.MessageSystem.Reg[e][18] = new RegExp(
-            `\x1b${tcGroup[18]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.ALIGN] = new RegExp(
+            `\x1b${tcGroup[TC.ALIGN]}\\[(\\d+)\\]`,
             "gi"
         ); // 정렬자
-        RS.MessageSystem.Reg[e][19] = new RegExp(
-            `\x1b${tcGroup[19]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.NUM] = new RegExp(
+            `\x1b${tcGroup[TC.NUM]}\\[(\\d+)\\]`,
             "gi"
         ); // 숫자
-        RS.MessageSystem.Reg[e][20] = new RegExp(
-            `\x1b${tcGroup[20]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.TEXT_SIZE] = new RegExp(
+            `\x1b${tcGroup[TC.TEXT_SIZE]}\\[(\\d+)\\]`,
             "gi"
         ); // 크기
         RS.MessageSystem.Reg[e][21] = new RegExp(`\x1b${tcGroup[21]}`, "gi"); // r
