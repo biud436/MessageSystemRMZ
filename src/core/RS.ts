@@ -677,29 +677,32 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
             "gi"
         ); // RIGHT
 
-        RS.MessageSystem.Reg[e][49] = new RegExp(
-            `(?:<[${tcGroup[49]}]>)`,
+        RS.MessageSystem.Reg[e][TC.BOLD_START_CV] = new RegExp(
+            `(?:<[${tcGroup[TC.BOLD_START_CV]}]>)`,
             "gi"
         ); // B
-        RS.MessageSystem.Reg[e][50] = new RegExp(
-            `(?:<\/[${tcGroup[50]}]>)`,
+        RS.MessageSystem.Reg[e][TC.BOLD_END_CV] = new RegExp(
+            `(?:<\/[${tcGroup[TC.BOLD_END_CV]}]>)`,
             "gi"
         ); // B
-        RS.MessageSystem.Reg[e][51] = new RegExp(
-            `(?:<[${tcGroup[51]}]>)`,
+        RS.MessageSystem.Reg[e][TC.ITALIC_START_CV] = new RegExp(
+            `(?:<[${tcGroup[TC.ITALIC_START_CV]}]>)`,
             "gi"
         ); // I
-        RS.MessageSystem.Reg[e][52] = new RegExp(
-            `(?:<\/[${tcGroup[52]}]>)`,
+        RS.MessageSystem.Reg[e][TC.ITALIC_END_CV] = new RegExp(
+            `(?:<\/[${tcGroup[TC.ITALIC_END_CV]}]>)`,
             "gi"
         ); // I
-        RS.MessageSystem.Reg[e][53] = new RegExp(`\x1b${tcGroup[53]}`, "gi"); // AEND : ALIGN_CLEAR
-        RS.MessageSystem.Reg[e][54] = new RegExp(
-            `\x1b${tcGroup[54]}\\[(.*)\\]`,
+        RS.MessageSystem.Reg[e][TC.ALIGN_CLEAR] = new RegExp(
+            `\x1b${tcGroup[TC.ALIGN_CLEAR]}`,
+            "gi"
+        ); // AEND : ALIGN_CLEAR
+        RS.MessageSystem.Reg[e][TC.HIGHLIGHT_TEXT_COLOR] = new RegExp(
+            `\x1b${tcGroup[TC.HIGHLIGHT_TEXT_COLOR]}\\[(.*)\\]`,
             "gi"
         ); // \배경색[색상] \HC[색상]
-        RS.MessageSystem.Reg[e][55] = new RegExp(
-            `\x1b${tcGroup[55]}\\[(\\d+)\\]`,
+        RS.MessageSystem.Reg[e][TC.FACE_DIRECTION] = new RegExp(
+            `\x1b${tcGroup[TC.FACE_DIRECTION]}\\[(\\d+)\\]`,
             "gi"
         ); // \FD
     });
