@@ -25,7 +25,7 @@ To build this plugin, you need to run the following command:
 
 ```
 yarn install
-yarn run build
+yarn build
 cd ./dist
 open .
 ```

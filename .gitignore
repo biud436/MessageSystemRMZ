@@ -126,3 +126,5 @@ CEF
 Games
 *.DS_Store
 *-lock.json
+
+dist
