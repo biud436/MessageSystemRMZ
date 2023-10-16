@@ -1,6 +1,6 @@
 import { Executuor } from "../core/component-executor";
 import { MessageDesc } from "../core/message-desc";
-import { Color } from "../core/RS";
+import { Color } from "../core/rs2";
 
 export function getWindowBaseCommand(): Executuor {
   return () => {
