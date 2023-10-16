@@ -1,5 +1,5 @@
 import { Color } from "../core/RS";
-import { DependencyInjector } from "../core/DependencyInjector";
+import { DependencyInjector } from "../core/dependency-injector";
 import { BalloonWindowTransformComponent } from "../components/balloon-window-transform.component";
 import ComponentExecutor, { Executuor } from "../core/component-executor";
 

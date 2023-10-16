@@ -1,5 +1,5 @@
 import Container, { Service } from "typedi";
-import { Component } from "../core/component";
+import { Component } from "../core/component2";
 
 @Service()
 export class MetadataStorage {

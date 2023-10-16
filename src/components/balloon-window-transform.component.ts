@@ -1,5 +1,5 @@
 import { BaseComponent } from "./base.component";
-import { ComponentProp } from "../core/component";
+import { ComponentProp } from "../core/component2";
 
 export type BalloonRectData = {
   /**

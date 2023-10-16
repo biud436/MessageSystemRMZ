@@ -1,4 +1,4 @@
-import { Component, ComponentProp } from "../core/component";
+import { Component, ComponentProp } from "../core/component2";
 
 /**
  * @class BaseComponent

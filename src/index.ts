@@ -1,8 +1,8 @@
 /// <reference types="../types/my-types" />
 /// <reference types="../types/lunalite-pixi-mz" />
 import ComponentExecutor from "./core/component-executor";
-import { getBitmapCommand } from "./commands/bitmap.command";
-import { getMainCommand } from "./commands/main.command";
+import { getBitmapCommand } from "./commands/bitmap2.command";
+import { getMainCommand } from "./commands/main2.command";
 import { getGameCommandCommand } from "./commands/game-message.command";
 import { getSpriteBattlerCommand } from "./commands/sprite-battler.command";
 import { getWindowBaseCommand } from "./commands/window-base.command";

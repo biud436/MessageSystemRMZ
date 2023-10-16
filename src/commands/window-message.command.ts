@@ -1,6 +1,6 @@
 import { BalloonWindowTransformComponent } from "../components/balloon-window-transform.component";
 import { Executuor } from "../core/component-executor";
-import { DependencyInjector } from "../core/DependencyInjector";
+import { DependencyInjector } from "../core/dependency-injector";
 import { Color } from "../core/RS";
 
 export function getWindowMessageCommand(): Executuor {
