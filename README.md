@@ -34,14 +34,20 @@ https://user-images.githubusercontent.com/13586185/151744058-28915439-666c-4126-
 
 # Check List
 
+## 동작 확인
+
 - [x] \색[색상명] : Change Color
 - [x] \테두리색[색상명] : Change Outline Color
 - [x] \배경색[색상명] : Change Background Color
 - [x] \속도[값]
-- [x] \이름<이벤트명>
-- [ ] \이름<이벤트명:right>
-- [ ] \이름<이벤트명:left>
-- [ ] \이름<\색[red]이벤트명>
+
+## 이름 윈도우
+
+- [x] 이름:right
+- [x] 색상 변경
+
+## 미확인
+
 - [ ] \그레디언트<텍스트>
 - [ ] \테두리크기[값]
 - [ ] \들여쓰기[값]
