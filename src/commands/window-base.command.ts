@@ -248,9 +248,9 @@ export function getWindowBaseCommand(): Executuor {
         }.bind(this)
       );
       text = text.replace(regGroup[tcGroup.ALIGN], (...args: any[]) => {
-        // if (!this._isUsedTextWidthEx) {
-        $gameMessage.setAlign(Number(args[1] || 0));
-        // }
+        if (!this._isUsedTextWidthEx) {
+          $gameMessage.setAlign(Number(args[1] || 0));
+        }
         return "";
       });
       text = text.replace(
