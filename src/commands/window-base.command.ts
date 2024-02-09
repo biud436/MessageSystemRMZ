@@ -314,14 +314,14 @@ export function getWindowBaseCommand(): Executuor {
     Window_Base.prototype.setAlignCenter = function (textState) {
       const padding = this.textPadding();
       textState.x =
-        (this.newLineX(textState) + this.contentsWidth() + padding) / 2 -
-        textState.outputWidth / 2;
+        (this.newLineX(textState) + this.contentsWidth()) / 2 -
+        textState.px / 2;
       textState.startX = textState.x;
     };
 
     Window_Base.prototype.setAlignRight = function (textState) {
       const padding = this.textPadding();
-      textState.x = this.contentsWidth() - padding - textState.outputWidth;
+      textState.x = this.contentsWidth() - textState.outputWidth;
       textState.startX = textState.x;
     };
   };
