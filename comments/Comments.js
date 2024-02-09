@@ -15,8 +15,8 @@
  * @param Font Size
  * @type number
  * @desc Specifies the text size as integer type.
- * (default : 28)
- * @default 28
+ * (default : 26)
+ * @default 26
  *
  * @param numVisibleRows
  * @type number
@@ -747,8 +747,8 @@
  * @param 글꼴 크기
  * @type number
  * @desc 글꼴의 크기를 정수로 지정하세요
- * 기본 값 : 28
- * @default 28
+ * 기본 값 : 26
+ * @default 26
  *
  * @param 라인 갯수
  * @type number

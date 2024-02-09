@@ -42101,6 +42101,8 @@ declare namespace rm.types {
     startY: number;
     text: string;
     width: number;
+
+    targetX: number;
   };
 }
 

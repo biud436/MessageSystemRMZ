@@ -278,6 +278,7 @@ export declare global {
     y: number;
     px: number;
     py: number;
+    gradientX: number;
   };
 
   interface Window_Base {

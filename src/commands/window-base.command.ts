@@ -282,16 +282,20 @@ export function getWindowBaseCommand(): Executuor {
         return;
       }
 
-      switch ($gameMessage.getAlign()) {
-        case 0:
-          this.setAlignLeft(textState);
-          break;
-        case 1:
-          this.setAlignCenter(textState);
-          break;
-        case 2:
-          this.setAlignRight(textState);
-          break;
+      console.log("호출되었습니다", $gameMessage._align);
+
+      if (textState.drawing) {
+        switch ($gameMessage.getAlign()) {
+          case 0:
+            this.setAlignLeft(textState);
+            break;
+          case 1:
+            this.setAlignCenter(textState);
+            break;
+          case 2:
+            this.setAlignRight(textState);
+            break;
+        }
       }
     };
 

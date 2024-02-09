@@ -169,6 +169,12 @@ export function getWindowMessageCommand(): Executuor {
       // TODO: 여기에서는 텍스트를 그리지 않는다.
       // TODO: 그레디언트 모드임을 명시하고 flush 단계에서 한 번에 그려야 한다 (배경색도 마찬가지이다)
       this.contents.fontGradient = true;
+
+      const arr = /^<(.+?)>/.exec(textState.text.slice(textState.index));
+
+      if (arr) {
+        textState.targetX += arr[0].length;
+      }
     };
 
     Window_Message.prototype.playSe = function (seName) {
@@ -237,6 +243,7 @@ export function getWindowMessageCommand(): Executuor {
     // 새로 추가된 메서드
     Window_Message.prototype.resetGradient = function (textState) {
       this.contents.fontGradient = false;
+      textState.targetX = textState.x;
     };
 
     // 폰트 사이즈 설정 메서드는 MZ에서 없다
