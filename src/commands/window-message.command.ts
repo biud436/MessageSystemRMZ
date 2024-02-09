@@ -291,7 +291,6 @@ export function getWindowMessageCommand(): Executuor {
     const alias_Window_Message_processNewLinePW =
       Window_Message.prototype.processNewLine;
     Window_Message.prototype.processNewLine = function (textState) {
-      alias_Window_Message_processNewLinePW.call(this, textState);
       // 내부 버퍼의 위치를 시작 지점으로 초기화한다.
       (<TextState>textState).px = textState.startX || (<TextState>textState).x;
 
@@ -299,6 +298,8 @@ export function getWindowMessageCommand(): Executuor {
       if (this._backBuffer && this._backBuffer.isDirty) {
         const backTextState = this._backBuffer.textState;
       }
+
+      alias_Window_Message_processNewLinePW.call(this, textState);
     };
 
     /**
