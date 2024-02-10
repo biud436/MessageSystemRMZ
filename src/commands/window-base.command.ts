@@ -282,8 +282,6 @@ export function getWindowBaseCommand(): Executuor {
         return;
       }
 
-      console.log("호출되었습니다", $gameMessage._align);
-
       if (textState.drawing) {
         switch ($gameMessage.getAlign()) {
           case 0:
