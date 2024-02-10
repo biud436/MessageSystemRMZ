@@ -594,6 +594,9 @@ export function getWindowMessageCommand(): Executuor {
     };
 
     Window_Message.prototype.clearFaceBitmap = function () {
+      if (!this._faceContents) {
+        return;
+      }
       if (this._faceContents.bitmap) {
         // @ts-ignore
         this._faceContents.bitmap = null;

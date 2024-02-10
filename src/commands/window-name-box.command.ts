@@ -8,6 +8,7 @@ export function getWindowNameBoxCommand(): Executuor {
       _Window_NameBox_initialize.call(this);
 
       this._isRight = false;
+      this._isOpacity0 = false;
     };
 
     Window_NameBox.prototype.setName = function (name) {
@@ -16,6 +17,13 @@ export function getWindowNameBoxCommand(): Executuor {
         this._isRight = true;
       } else {
         this._isRight = false;
+      }
+
+      if (name.includes(":opacity0")) {
+        name = name.replace(":opacity0", "");
+        this._isOpacity0 = true;
+      } else {
+        this._isOpacity0 = false;
       }
 
       if (this._name !== name) {
