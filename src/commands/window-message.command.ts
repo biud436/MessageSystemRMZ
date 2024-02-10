@@ -450,15 +450,6 @@ export function getWindowMessageCommand(): Executuor {
         const w = Math.min(this.innerWidth, Math.floor(bitmap.width));
         const h = Math.min(this.innerHeight, Math.floor(bitmap.height));
 
-        // this.contents.blt(
-        //     bitmap,
-        //     0,
-        //     0,
-        //     w,
-        //     h,
-        //     Math.min(tx, y),
-        //     Math.min(ty, y)
-        // );
         this._backBuffer.isDirty = false;
       }
 
