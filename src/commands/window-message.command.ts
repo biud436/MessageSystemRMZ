@@ -634,36 +634,6 @@ export function getWindowMessageCommand(): Executuor {
           return regGroup[tcGroup.ITALIC_END].source;
         }.bind(this)
       );
-      text = text.replace(regGroup[tcGroup.NAME], (...args) => {
-        let retName = args[1];
-
-        if (retName.endsWith(":left")) {
-          retName = retName.replace(":left", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "left";
-        }
-        if (retName.endsWith(":auto")) {
-          retName = retName.replace(":auto", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "auto";
-        }
-        if (retName.endsWith(":center")) {
-          retName = retName.replace(":center", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "center";
-        }
-        if (retName.endsWith(":opacity0")) {
-          retName = retName.replace(":opacity0", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "opacity0";
-        }
-        if (retName.endsWith(":defaultOpacity")) {
-          retName = retName.replace(":defaultOpacity", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "defaultOpacity";
-        }
-        if (retName.endsWith(":right")) {
-          retName = retName.replace(":right", "");
-          RS.MessageSystem.Params.namePositionTypeAtX = "right";
-        }
-        this._nameBoxWindow.setName(retName);
-        return "";
-      });
       text = text.replace(
         regGroup[tcGroup.BALLOON],
         function () {
