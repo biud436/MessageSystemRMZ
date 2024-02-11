@@ -1,11 +1,11 @@
 import { Executuor } from "../core/component-executor";
 
 enum TextAlignment {
-  RIGHT = ":right",
-  OPACITY0 = ":opacity0",
-  LEFT = ":left",
-  CENTER = ":center",
-  DEFAULT_OPACITY = ":defaultOpacity",
+  RIGHT = "right",
+  OPACITY0 = "opacity0",
+  LEFT = "left",
+  CENTER = "center",
+  DEFAULT_OPACITY = "defaultOpacity",
 }
 
 export function getWindowNameBoxCommand(): Executuor {
@@ -25,41 +25,48 @@ export function getWindowNameBoxCommand(): Executuor {
     };
 
     Window_NameBox.prototype.setName = function (name) {
-      // change a name box window position to center.
-      if (name.includes(TextAlignment.RIGHT)) {
-        name = name.replace(TextAlignment.RIGHT, "");
-        this._flag.isRight = true;
-      } else {
-        this._flag.isRight = false;
+      this.clearFlags();
+
+      if (!name) {
+        this._name = "";
+        this.refresh();
+        return;
       }
 
-      // changes the opacity is to 0.
-      if (name.includes(TextAlignment.OPACITY0)) {
-        name = name.replace(TextAlignment.OPACITY0, "");
-        this._flag.isOpacity0 = true;
-      } else {
-        this._flag.isOpacity0 = false;
+      const [nameRaw, nameCommand] = name.split(":");
+
+      switch (nameCommand) {
+        case TextAlignment.RIGHT:
+          this._flag.isRight = true;
+          break;
+        case TextAlignment.OPACITY0:
+          this._flag.isOpacity0 = true;
+          break;
+        case TextAlignment.LEFT:
+          this._flag.isLeft = true;
+          break;
+        case TextAlignment.CENTER:
+          this._flag.isCenter = true;
+          break;
+        case TextAlignment.DEFAULT_OPACITY:
+          this._flag.defaultOpacity = true;
+          break;
       }
 
-      // changes the name box window position to left.
-      if (name.includes(TextAlignment.CENTER)) {
-        name = name.replace(TextAlignment.CENTER, "");
-        this._flag.isCenter = true;
-      } else {
-        this._flag.isCenter = false;
-      }
-
-      if (name.includes(TextAlignment.DEFAULT_OPACITY)) {
-        name = name.replace(TextAlignment.DEFAULT_OPACITY, "");
-        this._flag.defaultOpacity = true;
-      } else {
-        this._flag.defaultOpacity = false;
-      }
-
-      if (this._name !== name) {
-        this._name = name;
+      if (this._name !== nameRaw) {
+        this._name = nameRaw;
         this.refresh();
       }
+    };
+
+    Window_NameBox.prototype.clearFlags = function () {
+      this._flag = {
+        isRight: false,
+        isOpacity0: false,
+        isCenter: false,
+        isLeft: false,
+        defaultOpacity: false,
+      };
     };
 
     //============================================================================

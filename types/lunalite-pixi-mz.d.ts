@@ -44696,6 +44696,8 @@ declare class Window_NameBox extends Window_Base {
    * @return Int
    */
   refresh(): void;
+
+  clearFlags(): void;
 }
 
 /**
