@@ -1,10 +1,35 @@
 import { Executuor } from "../core/component-executor";
 
+/**
+ * TextAlignment is an enum that represents the text alignment.
+ * @enum TextAlignment
+ */
 enum TextAlignment {
+  /**
+   * RIGHT
+   * align the text to the right.
+   */
   RIGHT = "right",
+
+  /**
+   * OPACITY0
+   * set the opacity to 0.
+   */
   OPACITY0 = "opacity0",
+  /**
+   * LEFT
+   * align the text to the left.
+   */
   LEFT = "left",
+  /**
+   * CENTER
+   * align the text to the center.
+   */
   CENTER = "center",
+  /**
+   * DEFAULT_OPACITY
+   * set the opacity to the default value.
+   */
   DEFAULT_OPACITY = "defaultOpacity",
 }
 
@@ -15,13 +40,7 @@ export function getWindowNameBoxCommand(): Executuor {
     Window_NameBox.prototype.initialize = function () {
       _Window_NameBox_initialize.call(this);
 
-      this._flag = {
-        isRight: false,
-        isOpacity0: false,
-        isCenter: false,
-        isLeft: false,
-        defaultOpacity: false,
-      };
+      this.clearFlags();
     };
 
     Window_NameBox.prototype.setName = function (name) {
@@ -59,6 +78,9 @@ export function getWindowNameBoxCommand(): Executuor {
       }
     };
 
+    /**
+     * Clear all flags
+     */
     Window_NameBox.prototype.clearFlags = function () {
       this._flag = {
         isRight: false,
