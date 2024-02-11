@@ -310,7 +310,6 @@ export function getWindowBaseCommand(): Executuor {
     };
 
     Window_Base.prototype.setAlignCenter = function (textState) {
-      const padding = this.textPadding();
       textState.x =
         (this.newLineX(textState) + this.contentsWidth()) / 2 -
         textState.px / 2;
@@ -318,7 +317,7 @@ export function getWindowBaseCommand(): Executuor {
     };
 
     Window_Base.prototype.setAlignRight = function (textState) {
-      const padding = this.textPadding();
+      // TODO: padding 값을 고려하지 않았습니다.
       textState.x = this.contentsWidth() - textState.outputWidth;
       textState.startX = textState.x;
     };
