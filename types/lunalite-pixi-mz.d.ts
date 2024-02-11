@@ -44636,8 +44636,12 @@ declare class Window_Message extends Window_Base {
  * the message window.
  */
 declare class Window_NameBox extends Window_Base {
-  public _isRight: boolean;
-  public _isOpacity0: boolean;
+  public _flag: {
+    isRight: boolean;
+    isCenter: boolean;
+    isOpacity0: boolean;
+    isLeft: boolean;
+  };
   protected constructor();
   /**
    * Sets the current message window.

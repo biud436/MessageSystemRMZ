@@ -1,5 +1,12 @@
 import { Executuor } from "../core/component-executor";
 
+enum TextAlignment {
+  RIGHT = ":right",
+  OPACITY0 = ":opacity0",
+  LEFT = ":left",
+  CENTER = ":center",
+}
+
 export function getWindowNameBoxCommand(): Executuor {
   return () => {
     const _Window_NameBox_initialize = Window_NameBox.prototype
@@ -7,23 +14,37 @@ export function getWindowNameBoxCommand(): Executuor {
     Window_NameBox.prototype.initialize = function () {
       _Window_NameBox_initialize.call(this);
 
-      this._isRight = false;
-      this._isOpacity0 = false;
+      this._flag = {
+        isRight: false,
+        isOpacity0: false,
+        isCenter: false,
+        isLeft: false,
+      };
     };
 
     Window_NameBox.prototype.setName = function (name) {
-      if (name.includes(":right")) {
-        name = name.replace(":right", "");
-        this._isRight = true;
+      // change a name box window position to center.
+      if (name.includes(TextAlignment.RIGHT)) {
+        name = name.replace(TextAlignment.RIGHT, "");
+        this._flag.isRight = true;
       } else {
-        this._isRight = false;
+        this._flag.isRight = false;
       }
 
-      if (name.includes(":opacity0")) {
-        name = name.replace(":opacity0", "");
-        this._isOpacity0 = true;
+      // changes the opacity is to 0.
+      if (name.includes(TextAlignment.OPACITY0)) {
+        name = name.replace(TextAlignment.OPACITY0, "");
+        this._flag.isOpacity0 = true;
       } else {
-        this._isOpacity0 = false;
+        this._flag.isOpacity0 = false;
+      }
+
+      // changes the name box window position to left.
+      if (name.includes(TextAlignment.CENTER)) {
+        name = name.replace(TextAlignment.CENTER, "");
+        this._flag.isCenter = true;
+      } else {
+        this._flag.isCenter = false;
       }
 
       if (this._name !== name) {
@@ -39,11 +60,16 @@ export function getWindowNameBoxCommand(): Executuor {
       this.width = this.windowWidth();
       this.height = this.windowHeight();
       const messageWindow = this._messageWindow;
-      if ($gameMessage.isRTL() || this._isRight) {
+      if ($gameMessage.isRTL() || this._flag.isRight) {
         this.x = messageWindow.x + messageWindow.width - this.width;
       } else {
         this.x = messageWindow.x;
       }
+
+      if (this._flag.isCenter) {
+        this.x = messageWindow.x + (messageWindow.width - this.width) / 2;
+      }
+
       if (messageWindow.y > 0) {
         this.y = messageWindow.y - this.height;
       } else {
