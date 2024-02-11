@@ -44641,6 +44641,7 @@ declare class Window_NameBox extends Window_Base {
     isCenter: boolean;
     isOpacity0: boolean;
     isLeft: boolean;
+    defaultOpacity: boolean;
   };
   protected constructor();
   /**

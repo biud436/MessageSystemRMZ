@@ -5,6 +5,7 @@ enum TextAlignment {
   OPACITY0 = ":opacity0",
   LEFT = ":left",
   CENTER = ":center",
+  DEFAULT_OPACITY = ":defaultOpacity",
 }
 
 export function getWindowNameBoxCommand(): Executuor {
@@ -19,6 +20,7 @@ export function getWindowNameBoxCommand(): Executuor {
         isOpacity0: false,
         isCenter: false,
         isLeft: false,
+        defaultOpacity: false,
       };
     };
 
@@ -45,6 +47,13 @@ export function getWindowNameBoxCommand(): Executuor {
         this._flag.isCenter = true;
       } else {
         this._flag.isCenter = false;
+      }
+
+      if (name.includes(TextAlignment.DEFAULT_OPACITY)) {
+        name = name.replace(TextAlignment.DEFAULT_OPACITY, "");
+        this._flag.defaultOpacity = true;
+      } else {
+        this._flag.defaultOpacity = false;
       }
 
       if (this._name !== name) {
@@ -74,6 +83,12 @@ export function getWindowNameBoxCommand(): Executuor {
         this.y = messageWindow.y - this.height;
       } else {
         this.y = messageWindow.y + messageWindow.height;
+      }
+
+      if (this._flag.defaultOpacity) {
+        this.opacity = this.translucentOpacity();
+      } else if (this._flag.isOpacity0) {
+        this.opacity = 0;
       }
     };
   };
