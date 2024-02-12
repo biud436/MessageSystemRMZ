@@ -22,7 +22,9 @@ export function getGameMapCommand(): Executuor {
      */
     Game_Map.prototype.setMsgOwner = function (o) {
       this._msgOwner = o;
-      $gameMessage.setBalloonPatternHeight(this.tileHeight());
+
+      const tileHeight = this.tileHeight();
+      $gameMessage.setBalloonPatternHeight(tileHeight);
     };
 
     Game_Map.prototype.getMsgEvent = function () {

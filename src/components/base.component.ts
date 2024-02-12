@@ -98,9 +98,6 @@ export class BaseComponent extends Component {
     return this._messageWindow.lineHeight();
   }
 
-  /**
-   * TODO: 상속 시, 이 메소드를 오버라이드 하세요.
-   */
   updatePlacement() {}
 
   drawMessageFace() {

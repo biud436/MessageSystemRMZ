@@ -10,7 +10,9 @@ export function getGameTempCommand(): Executuor {
     };
 
     Game_Temp.prototype.setMaxLine = function (n) {
-      if (this._callMSHeightFunc) this._callMSHeightFunc(n);
+      if (this._callMSHeightFunc) {
+        this._callMSHeightFunc(n);
+      }
     };
   };
 }
