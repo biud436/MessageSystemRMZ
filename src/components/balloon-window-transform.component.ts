@@ -283,10 +283,6 @@ export class BalloonWindowTransformComponent extends BaseComponent {
   // }
 
   updateBalloonPosition(): never | void {
-    console.log(
-      "============ DEBUG updateBalloonPosition() ===================="
-    );
-
     let data = <BalloonRectData>{};
 
     if (!this.isActiveInBalloon()) return;
@@ -295,14 +291,11 @@ export class BalloonWindowTransformComponent extends BaseComponent {
     const owner = <Game_Character>$gameMap.getMsgOwner();
 
     if (!owner) {
-      console.warn($gameMap.getMsgOwner());
       throw new Error("말풍선 소유자가 없습니다.");
     }
 
     data.mx = owner.screenX();
     data.my = owner.screenY();
-
-    console.log("%d %d", data.mx, data.my);
 
     data.tx = this._bWidth / 2;
     data.ty = this._bHeight;
