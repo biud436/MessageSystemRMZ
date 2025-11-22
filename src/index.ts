@@ -11,7 +11,6 @@ import { getGameInterpreterCommand } from "./commands/game-interpreter.command";
 import { getWindowNameBoxCommand } from "./commands/window-name-box.command";
 import { getGameTempCommand } from "./commands/game-temp.command";
 import { getGameMapCommand } from "./commands/game-map.command";
-import { getDefaultCommandTest } from "./__test__/default-command.test";
 
 const executor = ComponentExecutor.getInstance();
 
@@ -27,6 +26,5 @@ executor
   .addCommand("Game_Temp", getGameTempCommand())
   .addCommand("Game_Map", getGameMapCommand())
   .addCommand("main", getMainCommand())
-  .lazy("test", getDefaultCommandTest())
   // execute commands
   .executeAll();
