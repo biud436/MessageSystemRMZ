@@ -453,7 +453,7 @@ RS.MessageSystem.getEventComments = function (eventId: number, index: number) {
       const data = [];
       let ret = "";
       for (const str of e) {
-        if (/[a-zA-Z]/i) {
+        if (/[a-zA-Z]/i.test(str.charAt(0))) {
           data.push(str);
           continue;
         }
